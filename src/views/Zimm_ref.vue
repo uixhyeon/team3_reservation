@@ -1,29 +1,13 @@
 <template>
   <div class="res-inner">
-    <!-- ✅ 상단 스텝 -->
-    <div class="stepper">
-      <div class="step active">
-        <div class="circle"></div>
-        <p>예약 하기</p>
-        <div class="dotline"></div>
-      </div>
-      <div class="step">
-        <div class="circle"></div>
-        <p>확인 및 결제</p>
-        <div class="dotline"></div>
-      </div>
-      <div class="step">
-        <div class="circle"></div>
-        <p>변경 완료</p>
-      </div>
-    </div>
 
+<h1>Zimm_ref 예약창</h1>
     <!-- ✅ 예약 페이지 -->
     <div class="reservation_page">
       <div class="container">
         <!-- 왼쪽 입력 카드 -->
         <div class="left">
-          <!-- ✅ 사물함 예약 -->
+          <!-- 사물함 예약 -->
           <div class="form_card toggle_card" :class="{ open: openSection === 'locker' }">
             <div class="card_header" @click="toggleSection('locker')">
               <h3>사물함 예약</h3>
@@ -71,7 +55,7 @@
             </transition>
           </div>
 
-          <!-- ✅ 도착지 -->
+          <!-- 짐 가져오기 -->
           <div class="form_card toggle_card" :class="{ open: openSection === 'arrival' }">
             <div class="card_header" @click="toggleSection('arrival')">
               <h3>짐 가져오기</h3>
@@ -87,31 +71,13 @@
                 </div>
 
                 <div class="form_group">
-                  <label>휴대폰 번호*</label>
-                  <input type="text" placeholder="01012345678 (- 제외)" />
-                  <p class="label">숫자만 입력해주세요</p>
-                </div>
-
-                <div class="form_group">
-                  <label>사물함 사이즈*</label>
-                  <select>
-                    <option value="">사이즈를 선택해 주세요</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                  <p class="label">필수 입력 사항 입니다.</p>
-                </div>
-
-                <div class="form_group">
-                  <label>대여 장소*</label>
+                  <label>픽업 장소*</label>
                   <input type="text" placeholder="지번 및 주소를 입력해주세요" />
-                  <p class="label">대여장소를 선택해 주세요</p>
+                  <p class="label">픽업받으실 주소를 입력해 주세요</p>
                 </div>
 
                 <div class="form_group">
-                  <label>예약 날짜*</label>
+                  <label>배송 지정일*</label>
                   <input type="date" />
                   <p class="label">날짜를 입력하세요</p>
                 </div>
@@ -119,49 +85,31 @@
             </transition>
           </div>
 
-          <!-- ✅ 수하물 -->
+          <!-- 짐 배송하기 -->
           <div class="form_card toggle_card" :class="{ open: openSection === 'luggage' }">
             <div class="card_header" @click="toggleSection('luggage')">
-              <h3>짐 배송하기</h3>
+              <h3>집으로 보내기</h3>
               <img src="https://placehold.co/24x24/aaa/fff?text=▼" :class="{ rotate: openSection === 'luggage' }" />
             </div>
 
             <transition name="fade">
               <div v-show="openSection === 'luggage'" class="card_content" @click.stop>
                 <div class="form_group">
-                  <label>성함*</label>
-                  <input type="text" placeholder="성함을 입력해주세요" />
-                  <p class="label">문자만 입력하세요</p>
-                </div>
-
-                <div class="form_group">
-                  <label>휴대폰 번호*</label>
-                  <input type="text" placeholder="01012345678 (- 제외)" />
-                  <p class="label">숫자만 입력해주세요</p>
-                </div>
-
-                <div class="form_group">
-                  <label>사물함 사이즈*</label>
-                  <select>
-                    <option value="">사이즈를 선택해 주세요</option>
-                    <option>S</option>
-                    <option>M</option>
-                    <option>L</option>
-                    <option>XL</option>
-                  </select>
-                  <p class="label">필수 입력 사항 입니다.</p>
-                </div>
-
-                <div class="form_group">
-                  <label>대여 장소*</label>
+                  <label>주소*</label>
                   <input type="text" placeholder="지번 및 주소를 입력해주세요" />
                   <p class="label">대여장소를 선택해 주세요</p>
                 </div>
 
                 <div class="form_group">
-                  <label>예약 날짜*</label>
+                  <label>상세주소*</label>
+                  <input type="text" placeholder="상세주소를 입력해주세요" />
+                  <p class="label">상세주소를 입력해 주세요</p>
+                </div>
+
+                <div class="form_group">
+                  <label>배송일*</label>
                   <input type="date" />
-                  <p class="label">날짜를 입력하세요</p>
+                  <p class="label">배송일을 지정해 주세요</p>
                 </div>
               </div>
             </transition>
@@ -213,35 +161,45 @@ $bg: #f5f7f7;
 $shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 $reserve-radius: 10px;
 
-/* ========== 🧱 레이아웃 ========== */
+/* ========== 🧱 레이아웃 (Grid 기반 반 나눔) ========== */
 .reservation_page {
   background: $bg;
   padding: 80px 0;
 
   .container {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 3fr 2fr; // 🔹 정확히 반 나눔
     gap: 40px;
+    width: 90%;
+    max-width: 1400px;
+    margin: 0 auto;
+    align-items: flex-start;
   }
 
-  /* 왼쪽 입력 카드 영역 */
+  /* 왼쪽 카드 묶음 */
   .left {
-    flex: 1; // 자동 확장
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  /* 오른쪽 요약 카드 영역 */
+  /* 오른쪽 요약 카드 */
   .right {
-    width: 460px;
     position: sticky;
     top: 100px;
     align-self: flex-start;
+  }
+
+  /* ✅ 반응형 (태블릿 이하 → 세로 정렬) */
+  @media (max-width: 1024px) {
+    .container {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+
+    .right {
+      position: static;
+    }
   }
 }
 
@@ -267,7 +225,6 @@ $reserve-radius: 10px;
     border-top-right-radius: $reserve-radius;
   }
 
-  /* 카드 헤더 (타이틀 + 화살표) */
   .card_header {
     display: flex;
     justify-content: space-between;
@@ -290,14 +247,12 @@ $reserve-radius: 10px;
     }
   }
 
-  /* 카드 열림 상태 */
   &.open {
     border-color: $main;
     background: #f9fdfd;
     box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
   }
 
-  /* 카드 내부 컨텐츠 */
   .card_content {
     margin-top: 15px;
 
@@ -339,27 +294,35 @@ $reserve-radius: 10px;
 
 /* ========== ✨ 오른쪽 요약 카드 ========== */
 .summary_card {
+  width: 100%;
   background: #fff;
   border-radius: 8px;
-  border: 1px solid $line;
+  // border: 1px solid $line;
   box-shadow: none;
   padding: 40px 40px 30px;
   position: relative;
-  transition: 0.3s ease;
+  // transition: 0.3s ease;
+
+  // background: #fff;
+  // border-radius: $reserve-radius;
+  box-shadow: $shadow;
+  // padding: 30px 40px;
+  border: 1px solid transparent;
+  // position: relative;
+  transition: all 0.3s ease;
 
   &:hover {
     border-color: $main;
     background: #f9fdfd;
   }
 
-  /* 상단 바 */
   &::before {
     content: "";
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    height: 6px;
+    height: 8px;
     background: $main;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
@@ -372,7 +335,6 @@ $reserve-radius: 10px;
     margin: 12px 0 20px;
   }
 
-  /* 표 스타일 */
   table {
     width: 100%;
     border-collapse: collapse;
@@ -408,7 +370,6 @@ $reserve-radius: 10px;
     }
   }
 
-  /* 결제 버튼 */
   .submit_btn {
     width: 100%;
     padding: 14px 0;

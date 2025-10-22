@@ -1,9 +1,9 @@
 <template>
   <div class="reser_check">
     <Stepper :current-step="2" />
-
     <div class="cards">
       <section class="card">
+   
         <h3>예약 정보</h3>
         <table>
           <tbody>

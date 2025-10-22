@@ -1,4 +1,5 @@
 <template>
+       <h1>ReserveForm</h1>
   <section class="reserve inner">
     <Stepper :current-step="1" />
     <!-- 진행 단계 -->

@@ -1,0 +1,23 @@
+<template>
+  <!-- <router-view /> -->
+   <Reservation_ui/>
+   <br>
+   <hr>
+   <hr>
+   <hr>
+   <br>
+  <ReserveForm />
+     <br>
+   <hr>
+   <hr>
+   <hr>
+   <br>
+   <Zimm_ref/>
+</template>
+<script setup>
+// 앱은 라우터 뷰만 렌더링합니다.
+import ReserveForm from "./components/ReserveForm.vue";
+import Reservation_ui from "./views/Reservation_ui.vue";
+import Zimm_ref from "./views/Zimm_ref.vue";
+</script>
+<style lang="scss" scoped></style>

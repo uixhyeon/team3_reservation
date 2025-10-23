@@ -19,7 +19,7 @@
         </div>
 
         <!-- 오른쪽 요약 -->
-        <div class="summary_card">
+        <div class="summary_card ">
           <h2 class="card_title">선택 상품 요약</h2>
           <ul>
             <li v-for="tab in selectedTabs" :key="tab">
@@ -128,114 +128,112 @@ const paymentLabel = computed(() => {
 const saveAndPay = () =>
   alert(`✅ 결제가 완료되었습니다!\n결제수단: ${paymentLabel.value}\n결제금액: ${formatKrw(finalTotal.value)}`);
 </script>
-
 <style scoped lang="scss">
-$main: #53b4a1;
-$line: #e7e7e7;
-$bg: #f5f7f7;
-$shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-$form-radius: 10px;
-
-/* ✅ 전체 배경 */
+/* ========== 🎨 배경 영역 ========== */
 .checkout-area {
-  background: $bg;
+  background: #f5f7f7;
   padding: 80px 0;
-  border-bottom: 1px solid #e3e3e3;
 }
 
-/* ✅ 마지막 카드 뒤 배경 */
 .payment_bg {
-  background: $bg;
+  background: #f5f7f7;
   padding: 60px 0 120px;
 }
 
-/* 카드 정렬 */
+/* ========== 🧱 카드 정렬 ========== */
 .card-test {
   display: flex;
   justify-content: center;
   gap: 40px;
 }
 
-/* 공통 카드 스타일 */
+/* ========== 💳 공통 카드 스타일 ========== */
 .form_card,
 .summary_card {
   background: #fff;
-  border-radius: $form-radius;
-  box-shadow: $shadow;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 30px 40px;
   border: 1px solid transparent;
   position: relative;
   transition: all 0.3s ease;
   width: 360px;
-
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 8px;
-    background: $main;
-    border-top-left-radius: $form-radius;
-    border-top-right-radius: $form-radius;
-  }
-
-  &:hover {
-    border-color: $main;
-    background: #f9fdfd;
-    box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
-  }
-
-  .submit_btn {
-    width: 100%;
-    padding: 14px 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #fff;
-    background: $main;
-    border: none;
-    border-radius: 6px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: 0.3s ease;
-
-    &:hover {
-      background: darken($main, 8%);
-    }
-  }
 }
 
-/* ✅ 결제방법 카드 */
+.form_card::before,
+.summary_card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: #53b4a1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.form_card:hover,
+.summary_card:hover {
+  border-color: #53b4a1;
+  background: #f9fdfd;
+  box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
+}
+
+/* ========== 🟢 버튼 ========== */
+.form_card .submit_btn,
+.summary_card .submit_btn {
+  width: 100%;
+  padding: 14px 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+  background: #53b4a1;
+  border: none;
+  border-radius: 6px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.form_card .submit_btn:hover,
+.summary_card .submit_btn:hover {
+  background: #449b8a; /* #53b4a1의 8% 어두운 톤 */
+}
+
+/* ========== 💰 결제방법 카드 ========== */
 .payment_card {
   width: 900px;
   margin: 0 auto;
+}
 
-  .pay-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 12px;
-    margin-bottom: 20px;
-  }
+.payment_card .pay-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 20px;
+}
 
-  .pay-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 16px 0;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #fff;
-    cursor: pointer;
-    transition: 0.3s;
+.payment_card .pay-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 16px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    &:hover {
-      border-color: $main;
-    }
+.payment_card .pay-card:hover {
+  border-color: #53b4a1;
+}
 
-    &.selected {
-      border-color: $main;
-      background: #e9f8f8;
-      color: $main;
-    }
-  }
+.payment_card .pay-card.selected {
+  border-color: #53b4a1;
+  background: #e9f8f8;
+  color: #53b4a1;
 }
 </style>

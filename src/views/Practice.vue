@@ -49,18 +49,13 @@
     </div>
   </div>
 </template>
-
 <script setup>
 // 💬 별도의 스크립트 없음 (정적 UI 예제)
 </script>
 
 <style scoped lang="scss">
 /* ========== 💳 공통 토큰 ========== */
-$main: #53b4a1;
-$line: #e7e7e7;
 /* 💡 그림자 색이 hover 시 변해 보이지 않도록 대비를 낮춘 고정값 사용 */
-$shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-$form-radius: 10px;
 
 /* ✅ 페이지 배경 (고정) */
 .card-test {
@@ -74,8 +69,8 @@ $form-radius: 10px;
 /* ✅ 카드 기본 구조 (hover 완전 비활성화 + 이유 주석 포함) */
 .form_card {
   background: #fff;
-  border-radius: $form-radius;
-  box-shadow: $shadow;         // ✔ 항상 동일한 그림자(hover 시에도 절대 변화 없음)
+  border-radius: 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);         // ✔ 항상 동일한 그림자(hover 시에도 절대 변화 없음)
   padding: 30px 40px;
   border: 1px solid #fff;      // ✔ 'transparent' 대신 흰색 고정 → hover 시 재렌더링에 의한 색 흔들림 방지
   position: relative;
@@ -87,9 +82,9 @@ $form-radius: 10px;
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 8px;
-    background: $main;
-    border-top-left-radius: $form-radius;
-    border-top-right-radius: $form-radius;
+    background: #53b4a1;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
   }
 
   /* 🚫 hover 효과 완전 비활성화
@@ -103,7 +98,7 @@ $form-radius: 10px;
      - transition(전환)도 주석 처리하여 미세 애니메이션까지 차단
   */
   // &:hover {
-  //   border-color: $main;
+  //   border-color: #53b4a1;
   //   background: #f9fdfd;
   //   box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
   // }
@@ -127,14 +122,14 @@ $form-radius: 10px;
     font-size: 15px;
     font-weight: 600;
     color: #fff;
-    background: $main;
+    background: #53b4a1;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     transition: background 0.2s ease; /* 버튼만 부드럽게 */
 
     &:hover {
-      background: darken($main, 8%);
+      background: #449b8a;
     }
   }
 }
@@ -161,7 +156,7 @@ $form-radius: 10px;
     margin-bottom: 24px;
 
     tr {
-      border-bottom: 1px solid $line;
+      border-bottom: 1px solid #e7e7e7;
 
       td {
         padding: 10px 0;
@@ -179,7 +174,7 @@ $form-radius: 10px;
         color: #111;
 
         &:last-child {
-          color: $main;
+          color: #53b4a1;
           font-size: 16px;
         }
       }
@@ -190,7 +185,7 @@ $form-radius: 10px;
     text-align: left;
     font-size: 13px;
     color: #888;
-    border-top: 1px dashed $line;
+    border-top: 1px dashed #e7e7e7;
     padding-top: 10px;
     margin-bottom: 20px;
   }

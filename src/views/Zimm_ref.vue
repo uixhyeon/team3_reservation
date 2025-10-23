@@ -149,142 +149,145 @@ const toggleSection = (name) => {
 };
 </script>
 <style scoped lang="scss">
-/* ========== 🎨 기본 변수 ========== */
-$main: #53b4a1;
-$line: #e7e7e7;
-$bg: #f5f7f7;
-$shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-$reserve-radius: 10px;
-
-/* ========== 🧱 레이아웃 (Grid 기반 반 나눔) ========== */
+/* ========== 기본 스타일 ========== */
 .reservation_page {
-  background: $bg;
+  background: #f5f7f7;
   padding: 80px 0;
+}
 
-  .container {
-    display: grid;
-    grid-template-columns: 3fr 2fr; // 🔹 정확히 반 나눔
-    gap: 40px;
-    width: 90%;
-    max-width: 1400px;
-    margin: 0 auto;
-    align-items: flex-start;
+.reservation_page .container {
+  display: grid;
+  grid-template-columns: 3fr 2fr; /* 좌우 반 나눔 */
+  gap: 40px;
+  width: 90%;
+  max-width: 1400px;
+  margin: 0 auto;
+  align-items: flex-start;
+}
+
+/* 왼쪽 카드 묶음 */
+.reservation_page .left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 오른쪽 요약 카드 */
+.reservation_page .right {
+  position: sticky;
+  top: 100px;
+  align-self: flex-start;
+}
+
+/* ✅ 반응형 (1024px 이하) */
+@media (max-width: 1024px) {
+  .reservation_page .container {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
 
-  /* 왼쪽 카드 묶음 */
-  .left {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-  }
-
-  /* 오른쪽 요약 카드 */
-  .right {
-    position: sticky;
-    top: 100px;
-    align-self: flex-start;
-  }
-
-  /* ✅ 반응형 (태블릿 이하 → 세로 정렬) */
-  @media (max-width: 1024px) {
-    .container {
-      grid-template-columns: 1fr;
-      gap: 30px;
-    }
-
-    .right {
-      position: static;
-    }
+  .reservation_page .right {
+    position: static;
   }
 }
 
 /* ========== 🪄 카드 공통 스타일 ========== */
 .form_card {
   background: #fff;
-  border-radius: $reserve-radius;
-  box-shadow: $shadow;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 30px 40px;
   border: 1px solid transparent;
   position: relative;
   transition: all 0.3s ease;
+}
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: $main;
-    border-top-left-radius: $reserve-radius;
-    border-top-right-radius: $reserve-radius;
-  }
+.form_card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: #53b4a1;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
 
-  .card_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
+/* 카드 헤더 */
+.form_card .card_header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
 
-    h3 {
-      font-size: 18px;
-      font-weight: 600;
-      margin: 0;
-    }
+.form_card .card_header h3 {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+}
 
-    img {
-      width: 20px;
-      transition: transform 0.3s ease;
-    }
+.form_card .card_header img {
+  width: 20px;
+  transition: transform 0.3s ease;
+}
 
-    .rotate {
-      transform: rotate(180deg);
-    }
-  }
+.form_card .card_header .rotate {
+  transform: rotate(180deg);
+}
 
-  &.open {
-    border-color: $main;
-    background: #f9fdfd;
-    box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
-  }
+/* 카드 활성화 상태 */
+.form_card.open {
+  border-color: #53b4a1;
+  background: #f9fdfd;
+  box-shadow: 0 8px 25px rgba(83, 180, 161, 0.25);
+}
 
-  .card_content {
-    margin-top: 15px;
+/* 카드 내용 */
+.form_card .card_content {
+  margin-top: 15px;
+}
 
-    .form_group {
-      margin-bottom: 20px;
+/* 입력 그룹 */
+.form_card .form_group {
+  margin-bottom: 20px;
+}
 
-      label {
-        display: block;
-        font-size: 14px;
-        color: #555;
-        margin-bottom: 6px;
-      }
+.form_card .form_group label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
 
-      input,
-      select {
-        width: 100%;
-        border: none;
-        border-bottom: 1px solid $line;
-        background: transparent;
-        font-size: 14px;
-        padding: 10px 5px;
-        color: #333;
-        transition: border-color 0.2s ease;
+.form_card .form_group input,
+.form_card .form_group select {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e7e7e7;
+  background: transparent;
+  font-size: 14px;
+  padding: 10px 5px;
+  color: #333;
+  transition: border-color 0.2s ease;
+}
 
-        &:focus {
-          border-bottom: 1px solid $main;
-          outline: none;
-        }
-      }
+.form_card .form_group input:focus,
+.form_card .form_group select:focus {
+  border-bottom: 1px solid #53b4a1;
+  outline: none;
+}
 
-      .label {
-        font-size: 13px;
-        color: #888;
-        margin-top: 4px;
-      }
-    }
-  }
+.form_card .form_group input::placeholder {
+  color: #aaa;
+}
+
+.form_card .form_group .label {
+  font-size: 13px;
+  color: #888;
+  margin-top: 4px;
 }
 
 /* ========== ✨ 오른쪽 요약 카드 ========== */
@@ -292,95 +295,87 @@ $reserve-radius: 10px;
   width: 100%;
   background: #fff;
   border-radius: 8px;
-  // border: 1px solid $line;
-  box-shadow: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   padding: 40px 40px 30px;
-  position: relative;
-  // transition: 0.3s ease;
-
-  // background: #fff;
-  // border-radius: $reserve-radius;
-  box-shadow: $shadow;
-  // padding: 30px 40px;
   border: 1px solid transparent;
-  // position: relative;
+  position: relative;
   transition: all 0.3s ease;
+}
 
-  &:hover {
-    border-color: $main;
-    background: #f9fdfd;
-  }
+.summary_card:hover {
+  border-color: #53b4a1;
+  background: #f9fdfd;
+}
 
-  &::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 8px;
-    background: $main;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-  }
+.summary_card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 8px;
+  background: #53b4a1;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
 
-  .card_title {
-    font-size: 18px;
-    font-weight: 600;
-    color: #222;
-    margin: 12px 0 20px;
-  }
+.summary_card .card_title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #222;
+  margin: 12px 0 20px;
+}
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 24px;
+/* 요약 테이블 */
+.summary_card table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 24px;
+}
 
-    tr {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px solid $line;
+.summary_card table tr {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e7e7e7;
+}
 
-      &:last-child {
-        border-bottom: none;
-      }
+.summary_card table tr:last-child {
+  border-bottom: none;
+}
 
-      td:first-child {
-        color: #777;
-      }
+.summary_card table td:first-child {
+  color: #777;
+}
 
-      &.total {
-        td {
-          font-weight: 600;
-          color: #111;
-        }
+.summary_card table tr.total td {
+  font-weight: 600;
+  color: #111;
+}
 
-        td:last-child {
-          font-size: 16px;
-          color: $main;
-        }
-      }
-    }
-  }
+.summary_card table tr.total td:last-child {
+  font-size: 16px;
+  color: #53b4a1;
+}
 
-  .submit_btn {
-    width: 100%;
-    padding: 14px 0;
-    font-weight: 600;
-    font-size: 15px;
-    color: #fff;
-    background: $main;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s ease;
+/* 버튼 */
+.summary_card .submit_btn {
+  width: 100%;
+  padding: 14px 0;
+  font-weight: 600;
+  font-size: 15px;
+  color: #fff;
+  background: #53b4a1;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
 
-    &:hover {
-      background: darken($main, 8%);
-    }
-  }
+.summary_card .submit_btn:hover {
+  background: #449b8a;
 }
 
 /* ========== 🎞 토글 전환 애니메이션 ========== */
@@ -388,11 +383,13 @@ $reserve-radius: 10px;
 .fade-leave-active {
   transition: all 0.3s ease;
 }
+
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
   max-height: 0;
 }
+
 .fade-enter-to,
 .fade-leave-from {
   opacity: 1;

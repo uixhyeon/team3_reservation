@@ -50,12 +50,7 @@
 <script setup>
 // 💬 정적 UI 예시 (로직 없음)
 </script>
-
 <style scoped lang="scss">
-/* 🎨 컬러 및 스타일 변수 */
-$main: #53b4a1;
-$shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-
 /* ✅ 전체 페이지 구조 */
 .join-page {
   min-height: 100vh;
@@ -71,7 +66,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 .header {
   position: relative;
   width: 100%;
-  background: $main;
+  background: #53b4a1;
   color: #fff;
   text-align: center;
   padding: 50px 0;
@@ -113,7 +108,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 /* ✅ 회원가입 카드 (헤더 위로 올라옴) */
 .join-card {
   background: #fff;
-  box-shadow: $shadow;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   border-radius: 10px;
   padding: 50px 60px;
   width: 500px;
@@ -152,7 +147,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
       outline: none;
 
       &:focus {
-        border-bottom-color: $main;
+        border-bottom-color: #53b4a1;
       }
     }
   }
@@ -191,13 +186,13 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 
   input[type="checkbox"] {
     margin-right: 8px;
-    accent-color: $main;
+    accent-color: #53b4a1;
   }
 }
 
 /* ✅ 버튼 */
 .btn {
-  background: $main;
+  background: #53b4a1;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -217,7 +212,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   }
 
   &:hover {
-    background: darken($main, 8%);
+    background: #449b8a;
   }
 }
 

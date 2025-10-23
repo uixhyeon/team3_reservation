@@ -1,5 +1,23 @@
 
-.card {
-  padding: 30px;
-  border-radius: 25px;
+
+
+.form_card {
+  background: #fff;
+  border-radius: 10px; // 기본 둥근형
+  box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+  padding: 30px 40px;
+  transition: 0.3s;
+
+  &::before { // 상단 강조바
+    height: 8px;
+    background: #53b4a1;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+  }
+
+  &.open {
+    border-color: #53b4a1;
+    background: #f9fdfd;
+    box-shadow: 0 8px 25px rgba(83,180,161,0.25);
+  }
 }

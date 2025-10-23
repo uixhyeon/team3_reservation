@@ -1,6 +1,6 @@
 <template>
   <div class="res-inner">
-    <!-- ✅ 상단 스텝 표시 -->
+    <!-- 상단 스텝 표시 -->
     <div class="stepper">
       <div class="step active">
         <div class="circle"></div>
@@ -19,6 +19,7 @@
         <p>변경 완료</p>
       </div>
     </div>
+
 
     <!-- 사물함예약 입력 영역 -->
     <div class="reservation_page">
@@ -107,10 +108,7 @@
 </template>
 
 <script setup></script>
-
 <style scoped lang="scss">
-@use "/src/assets/styles/variables" as *;
-
 /* ✅ 기본 설정 */
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
 
@@ -136,7 +134,7 @@
   flex-direction: column;
   align-items: center;
   position: relative;
-  font-size: $text-md;
+  font-size: 16px;
   color: #bbb;
   font-weight: 400;
 
@@ -174,34 +172,22 @@
 }
 
 /* ✅ 예약 입력 카드 스타일 */
-$main: #53b4a1;
-$line: #e7e7e7;
-$bg: #f5f7f7;
-$shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-
-$reserve-left-width: 600px;
-$reserve-right-width: 500px;
-$reserve-gap: 40px;
-$reserve-padding-y: 30px;
-$reserve-padding-x: 50px;
-$reserve-radius: 8px;
-
 .reservation_page {
-  background: $bg;
+  background: #f5f7f7;
   padding: 80px 0;
 
   .container {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    gap: $reserve-gap;
-    width: calc($reserve-left-width + $reserve-right-width + $reserve-gap);
+    gap: 40px;
+    width: calc(600px + 500px + 40px);
     margin: 0 auto;
   }
 
   /* 왼쪽 입력 카드 */
   .left {
-    width: $reserve-left-width;
+    width: 600px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -209,9 +195,9 @@ $reserve-radius: 8px;
     .form_card {
       position: relative;
       background: #fff;
-      border-radius: $reserve-radius;
-      box-shadow: $shadow;
-      padding: $reserve-padding-y $reserve-padding-x;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 30px 50px;
 
       &::before {
         content: "";
@@ -220,9 +206,9 @@ $reserve-radius: 8px;
         left: 0;
         width: 100%;
         height: 8px;
-        background: $main;
-        border-top-left-radius: $reserve-radius;
-        border-top-right-radius: $reserve-radius;
+        background: #53b4a1;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
       }
 
       .card_title {
@@ -245,7 +231,7 @@ $reserve-radius: 8px;
         input,
         select {
           border: none;
-          border-bottom: 1px solid $line;
+          border-bottom: 1px solid #e7e7e7;
           font-size: 14px;
           color: #333;
           padding: 10px 4px;
@@ -254,7 +240,7 @@ $reserve-radius: 8px;
           transition: border 0.2s ease;
 
           &:focus {
-            border-color: $main;
+            border-color: #53b4a1;
           }
         }
 
@@ -272,27 +258,27 @@ $reserve-radius: 8px;
       .mini_card {
         flex: 1;
         background: #fff;
-        border-radius: $reserve-radius;
-        box-shadow: $shadow;
+        border-radius: 8px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
         text-align: center;
         font-size: 15px;
         color: #444;
         line-height: 1.5;
-        padding: $reserve-padding-y $reserve-padding-x;
+        padding: 30px 50px;
       }
     }
   }
 
   /* 오른쪽 요약 카드 */
   .right {
-    width: $reserve-right-width;
+    width: 500px;
 
     .summary_card {
       position: relative;
       background: #fff;
-      border-radius: $reserve-radius;
-      box-shadow: $shadow;
-      padding: $reserve-padding-y $reserve-padding-x;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      padding: 30px 50px;
 
       &::before {
         content: "";
@@ -301,9 +287,9 @@ $reserve-radius: 8px;
         left: 0;
         width: 100%;
         height: 8px;
-        background: $main;
-        border-top-left-radius: $reserve-radius;
-        border-top-right-radius: $reserve-radius;
+        background: #53b4a1;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
       }
 
       .card_title {
@@ -323,7 +309,7 @@ $reserve-radius: 8px;
           display: flex;
           justify-content: space-between;
           padding: 8px 0;
-          border-bottom: 1px solid $line;
+          border-bottom: 1px solid #e7e7e7;
 
           &:last-child {
             border-bottom: none;
@@ -338,7 +324,7 @@ $reserve-radius: 8px;
 
       .submit_btn {
         width: 100%;
-        background: $main;
+        background: #53b4a1;
         color: #fff;
         border: none;
         border-radius: 6px;
@@ -349,19 +335,19 @@ $reserve-radius: 8px;
         transition: 0.3s;
 
         &:hover {
-          background: darken($color_main_deep, 8%);
+          background: #449b8a;
         }
       }
     }
   }
-// ===========추가==================
-.label{
-  font-size: $caption ;
-  color: $color_sub;
-}
 
+  /* 추가 라벨 스타일 */
+  .label {
+    font-size: 12px;
+    color: #555;
+  }
 
-/* 반응형 */
+  /* 반응형 */
   @media (max-width: 1080px) {
     .container {
       flex-direction: column;

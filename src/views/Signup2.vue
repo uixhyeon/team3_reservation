@@ -46,6 +46,8 @@
             <input type="date" />
             <p class="label">날짜를 입력하세요</p>
           </div>
+
+             <button type="submit" class="btn primary full">이용동의</button>
         </div>
       </form>
     </div>
@@ -57,11 +59,6 @@
 </script>
 
 <style scoped lang="scss">
-/* 🎨 컬러 및 스타일 변수 */
-$main: #53b4a1;
-$line: #e7e7e7;
-$shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-
 /* ✅ 전체 페이지 구조 */
 .join-page {
   min-height: 100vh;
@@ -77,7 +74,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 .header {
   position: relative;
   width: 100%;
-  background: $main;
+  background: #53b4a1;
   color: #fff;
   text-align: center;
   padding: 50px 0;
@@ -116,7 +113,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 /* ✅ 회원가입 카드 */
 .join-card {
   background: #fff;
-  box-shadow: $shadow;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   border-radius: 10px;
   padding: 50px 60px;
   width: 500px;
@@ -146,7 +143,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   select {
     width: 100%;
     border: none;
-    border-bottom: 1px solid $line; // 💚 밑줄만 표시
+    border-bottom: 1px solid #e7e7e7; /* 💚 밑줄만 표시 */
     background: transparent;
     font-size: 14px;
     padding: 10px 4px;
@@ -155,7 +152,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
     transition: border-color 0.2s ease;
 
     &:focus {
-      border-bottom: 1px solid $main; // 💚 포커스 시 메인색
+      border-bottom: 1px solid #53b4a1; /* 💚 포커스 시 메인색 */
     }
   }
 
@@ -176,7 +173,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
 
 /* ✅ 버튼 (필요 시 추가) */
 .btn {
-  background: $main;
+  background: #53b4a1;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -185,7 +182,7 @@ $shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   padding: 12px 16px;
 
   &:hover {
-    background: darken($main, 8%);
+    background: #449b8a;
   }
 }
 

@@ -64,11 +64,6 @@
 
             <transition name="fade">
               <div v-show="openSection === 'arrival'" class="card_content" @click.stop>
-                <div class="form_group">
-                  <label>성함*</label>
-                  <input type="text" placeholder="성함을 입력해주세요" />
-                  <p class="label">문자만 입력하세요</p>
-                </div>
 
                 <div class="form_group">
                   <label>픽업 장소*</label>

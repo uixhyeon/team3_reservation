@@ -58,14 +58,20 @@
           </div>
         </div>
 
-        <button class="submit_btn">홈으로 이동</button>
+        <button class="submit_btn" @click="goToHome">홈으로 이동</button>
       </div>
     </div>
   </section>
 </template>
     <script setup>
-
+import { useRouter } from "vue-router";
 import Stepper from "@/components/reserv/Stepper.vue";
+const router = useRouter();
+const goToHome= () => {
+  router.push("/");
+};
+
+
 </script>
 
 <style scoped lang="scss">

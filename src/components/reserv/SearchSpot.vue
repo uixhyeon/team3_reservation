@@ -1,441 +1,196 @@
 <template>
-  <div class="search-main">
-    <section class="branch-search" role="search" aria-label="짐보따리 지점 찾기">
-      <div class="inner">
-        <!-- 이미지 표시 영역 -->
-        <figure class="illustration">
-          <img src="/images/search.png" alt="지점 찾기" />
-        </figure>
+  <!-- ✅ 모달 구조 통일 버전 -->
+<div
+  v-if="showModal"
+  class="addr-modal"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="branch-title"
+  @click="closeModal"
+>
+  <div class="dialog" @click.stop>
+    <!-- 헤더 -->
+    <div class="header">
+      <h3 id="branch-title">지점 선택</h3>
+      <button class="icon-btn" @click="closeModal" aria-label="닫기">✕</button>
+    </div>
 
-        <div class="content">
-          <h1 class="title">짐보따리 지점 찾기</h1>
-          <p class="subtitle">근처에 있는 짐보따리 보관소와 무인함 위치를 한눈에 확인할 수 있습니다.</p>
-
-          <form class="searchbar" @submit.prevent="openMapModal">
-            <label class="a11y" for="branchSelect">지점 선택</label>
-            <select
-              id="branchSelect"
-              v-model="selectedLocationId"
-              class="location-select"
-              @change="selectLocationFromDropdown">
-              <option value="">지점을 선택해주세요</option>
-              <option
-                v-for="location in locations"
-                :key="location.id"
-                :value="location.id"
-                :disabled="location.status === '점검중'">
-                {{ location.name }} - {{ location.address }} ({{ location.distance }})
-                <span v-if="location.status === '점검중'"> - 점검중</span>
-              </option>
-            </select>
-            <button class="cta" type="submit" :disabled="!selectedLocationId">지점 확인하기</button>
-          </form>
-
-          <!-- 지점 선택 모달 -->
-          <div v-if="showModal" class="search-modal" @click="closeModal">
-            <div class="modal-content" @click.stop>
-              <div class="modal-header">
-                <h3>지점 선택하기</h3>
-                <button class="close-btn" @click="closeModal">✕</button>
-              </div>
-
-              <div class="modal-body">
-                <!-- 지점 선택 섹션 (왼쪽) -->
-                <div class="location-selection-section">
-                  <div class="location-list">
-                    <div
-                      v-for="location in locations"
-                      :key="location.id"
-                      class="result-item"
-                      :class="{
-                        disabled: location.status === '점검중',
-                        selected: selectedLocation && selectedLocation.id === location.id,
-                      }"
-                      @click="selectLocationFromModal(location.id)">
-                      <div class="result-info">
-                        <h4>{{ location.name }}</h4>
-                        <p>{{ location.address }}</p>
-                        <p class="locker-info">{{ location.lockers }}</p>
-                        <div class="location-meta">
-                          <span class="distance">{{ location.distance }}</span>
-                          <span class="status" :class="location.status === '운영중' ? 'operating' : 'maintenance'">
-                            {{ location.status }}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="result-icon">📍</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 지도 섹션 (오른쪽) -->
-                <div class="map-section-large">
-                  <div ref="modalMapEl" class="modal-map-large">
-                    <!-- 기본 지도 내용 -->
-                    <div
-                      style="
-                        width: 100%;
-                        height: 100%;
-                        background: #e8f4f8;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        border: 2px solid #028587;
-                      ">
-                      <div
-                        style="
-                          position: absolute;
-                          top: 10px;
-                          left: 10px;
-                          background: white;
-                          padding: 8px;
-                          border-radius: 4px;
-                          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                          font-size: 12px;
-                        ">
-                        📍 지점을 선택해주세요
-                      </div>
-                      <div style="font-size: 48px; color: #028587">🗺️</div>
-                    </div>
-                  </div>
-                  <div v-if="selectedLocation" class="location-card">
-                    <h4>{{ selectedLocation.name }}</h4>
-                    <p>{{ selectedLocation.address }}</p>
-                    <p>{{ selectedLocation.lockers }}</p>
-                    <div class="location-meta">
-                      <span class="distance">{{ selectedLocation.distance }}</span>
-                      <span class="status" :class="selectedLocation.status === '운영중' ? 'operating' : 'maintenance'">
-                        {{ selectedLocation.status }}
-                      </span>
-                    </div>
-                    <button class="directions-btn">📍 길찾기</button>
-                  </div>
+    <!-- 콘텐츠 -->
+    <div class="content">
+      <div class="modal-body">
+        <!-- 왼쪽: 지점 리스트 -->
+        <div class="location-selection-section">
+          <div class="location-list">
+            <div
+              v-for="location in locations"
+              :key="location.id"
+              class="result-item"
+              :class="{
+                disabled: location.status === '점검중',
+                selected: selectedLocation && selectedLocation.id === location.id,
+              }"
+              @click="selectLocationFromModal(location.id)"
+            >
+              <div class="result-info">
+                <h4>{{ location.name }}</h4>
+                <p>{{ location.address }}</p>
+                <p class="locker-info">{{ location.lockers }}</p>
+                <div class="location-meta">
+                  <span class="distance">{{ location.distance }}</span>
+                  <span
+                    class="status"
+                    :class="location.status === '운영중' ? 'operating' : 'maintenance'"
+                  >
+                    {{ location.status }}
+                  </span>
                 </div>
               </div>
+              <div class="result-icon">📍</div>
             </div>
           </div>
         </div>
+
+        <!-- 오른쪽: 지도 -->
+        <div class="map-section-large">
+          <div ref="modalMapEl" class="modal-map-large"></div>
+
+          <div v-if="selectedLocation" class="location-card">
+            <h4>{{ selectedLocation.name }}</h4>
+            <p>{{ selectedLocation.address }}</p>
+            <p>{{ selectedLocation.lockers }}</p>
+            <div class="location-meta">
+              <span class="distance">{{ selectedLocation.distance }}</span>
+              <span
+                class="status"
+                :class="selectedLocation.status === '운영중' ? 'operating' : 'maintenance'"
+              >
+                {{ selectedLocation.status }}
+              </span>
+            </div>
+            <button class="directions-btn">📍 길찾기</button>
+          </div>
+        </div>
       </div>
-    </section>
+    </div>
+
+    <!-- 푸터 -->
+    <div class="footer">
+      <button class="btn" @click="closeModal" :disabled="!selectedLocation">
+        선택 완료
+      </button>
+    </div>
   </div>
+</div>
+
+
+
+  
 </template>
-
 <script setup>
-import { ref, onMounted, nextTick } from "vue";
+import { ref, watch, onMounted, nextTick } from "vue";
 
-// 반응형 데이터
 const selectedLocationId = ref("");
 const showModal = ref(false);
 const selectedLocation = ref(null);
 const modalMapEl = ref(null);
 
-// 지점 데이터 (실제로는 API에서 가져올 데이터)
-const locations = [
-  {
-    id: 1,
-    name: "칠성시장점",
-    address: "대구광역시 중구 동성로2가 189-1",
-    lockers: "잔여 사물함 S: 2개 XL: 2개",
-    lat: 35.8714,
-    lng: 128.6014,
-    status: "운영중",
-    distance: "0.2km",
-  },
-  {
-    id: 2,
-    name: "동성로점",
-    address: "대구광역시 중구 동성로 123",
-    lockers: "잔여 사물함 S: 5개 XL: 1개",
-    lat: 35.87,
-    lng: 128.6,
-    status: "운영중",
-    distance: "0.5km",
-  },
-  {
-    id: 3,
-    name: "중앙로점",
-    address: "대구광역시 중구 중앙대로 456",
-    lockers: "잔여 사물함 S: 3개 XL: 3개",
-    lat: 35.872,
-    lng: 128.602,
-    status: "운영중",
-    distance: "0.8km",
-  },
-  {
-    id: 4,
-    name: "서문시장점",
-    address: "대구광역시 중구 대신동 115-1",
-    lockers: "잔여 사물함 S: 4개 XL: 2개",
-    lat: 35.8698,
-    lng: 128.5856,
-    status: "운영중",
-    distance: "1.2km",
-  },
-  {
-    id: 5,
-    name: "반월당점",
-    address: "대구광역시 중구 동성로1가 88-1",
-    lockers: "잔여 사물함 S: 1개 XL: 4개",
-    lat: 35.8667,
-    lng: 128.5956,
-    status: "운영중",
-    distance: "1.5km",
-  },
-  {
-    id: 6,
-    name: "대구역점",
-    address: "대구광역시 동구 동부로 149",
-    lockers: "잔여 사물함 S: 6개 XL: 3개",
-    lat: 35.8759,
-    lng: 128.6285,
-    status: "운영중",
-    distance: "2.1km",
-  },
-  {
-    id: 7,
-    name: "수성못점",
-    address: "대구광역시 수성구 두산동 100",
-    lockers: "잔여 사물함 S: 3개 XL: 2개",
-    lat: 35.8251,
-    lng: 128.6304,
-    status: "운영중",
-    distance: "3.2km",
-  },
-  {
-    id: 8,
-    name: "동대구역점",
-    address: "대구광역시 동구 동부로 149",
-    lockers: "잔여 사물함 S: 2개 XL: 1개",
-    lat: 35.8779,
-    lng: 128.6285,
-    status: "점검중",
-    distance: "2.3km",
-  },
-];
+let map, marker, infoWindow, geocoder;
 
-// 지도 클릭시 모달 열기
-function openMapModal() {
-  showModal.value = true;
-  nextTick(() => {
-    if (modalMapEl.value) {
-      if (window.kakao && window.kakao.maps) {
-        createRealMap();
-      } else {
-        createDefaultMap();
-      }
-    }
-  });
-}
+/* ✅ Kakao Map API key 존재 여부 */
+const hasKakaoKey = Boolean(import.meta.env.VITE_KAKAO_MAP_APP_KEY);
 
-// 드롭다운에서 지점 선택
-function selectLocationFromDropdown() {
-  if (!selectedLocationId.value) {
-    // 지점이 선택되지 않았으면 모달 열기
-    openMapModal();
-    return;
-  }
-
-  const location = locations.find((loc) => loc.id === parseInt(selectedLocationId.value));
-  if (location) {
-    selectedLocation.value = location;
-  }
-}
-
-// 모달에서 지점 선택
-function selectLocationFromModal(locationId) {
-  if (!locationId) return;
-
-  const location = locations.find((loc) => loc.id === locationId);
-  if (location && location.status !== "점검중") {
-    selectedLocation.value = location;
-
-    // 모달 지도 업데이트
-    nextTick(() => {
-      if (modalMapEl.value) {
-        updateModalMap(location);
-      }
-    });
-  }
-}
-
-// 모달 내 검색
-function performSearch() {
-  const query = modalSearchQuery.value.toLowerCase();
-
-  if (query.trim() === "") {
-    // 검색어가 없으면 모든 결과 표시
-    searchResults.value = sampleLocations;
-  } else {
-    // 검색어가 있으면 필터링
-    searchResults.value = sampleLocations.filter(
-      (location) => location.name.toLowerCase().includes(query) || location.address.toLowerCase().includes(query)
-    );
-  }
-
-  // 검색 결과가 있으면 첫 번째 결과를 선택
-  if (searchResults.value.length > 0) {
-    selectLocation(searchResults.value[0]);
-  }
-}
-
-// 위치 선택
-function selectLocation(location) {
-  selectedLocation.value = location;
-  // 모달 지도 업데이트
-  nextTick(() => {
-    if (modalMapEl.value) {
-      updateModalMap(location);
-    }
-  });
-}
-
-// 모달 닫기
-function closeModal() {
-  showModal.value = false;
-  // 선택한 위치가 있으면 드롭다운 업데이트
-  if (selectedLocation.value) {
-    selectedLocationId.value = selectedLocation.value.id;
-  }
-}
-
-// 카카오맵 API 로드 및 초기화
-let kakaoMap = null;
-let kakaoMarker = null;
-let isKakaoMapLoading = false;
-let kakaoMapLoadAttempted = false;
-
-async function loadKakaoMapAPI() {
+/* ✅ Kakao Map 스크립트 로드 */
+function loadKakaoMapScript() {
   return new Promise((resolve, reject) => {
-    // 이미 로드되었으면 바로 resolve
-    if (window.kakao && window.kakao.maps) {
-      resolve();
-      return;
-    }
-
-    // 이미 로딩 중이면 대기
-    if (isKakaoMapLoading) {
-      const checkInterval = setInterval(() => {
-        if (window.kakao && window.kakao.maps) {
-          clearInterval(checkInterval);
-          resolve();
-        }
-      }, 100);
-      return;
-    }
-
-    // 이미 시도했고 실패했으면 바로 reject
-    if (kakaoMapLoadAttempted) {
-      reject(new Error("카카오맵 API 로드 실패"));
-      return;
-    }
-
-    isKakaoMapLoading = true;
-    kakaoMapLoadAttempted = true;
-
+    if (window.kakao && window.kakao.maps) return resolve();
+    const key = import.meta.env.VITE_KAKAO_MAP_APP_KEY;
     const script = document.createElement("script");
-    script.src = "//dapi.kakao.com/v2/maps/sdk.js?autoload=false";
+    script.src = `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}&libraries=services`;
     script.onload = () => {
-      window.kakao.maps.load(() => {
-        isKakaoMapLoading = false;
-        resolve();
-      });
+      window.kakao.maps.load(resolve);
     };
-    script.onerror = (error) => {
-      isKakaoMapLoading = false;
-      // 콘솔 경고 제거 - 정상적인 상황이므로 조용히 처리
-      reject(error);
-    };
+    script.onerror = reject;
     document.head.appendChild(script);
   });
 }
 
-// 실제 카카오맵 생성
-function createRealMap() {
-  if (!modalMapEl.value) return;
+/* ✅ 지도 mount (모달 열릴 때 실행) */
+async function mountMap() {
+  if (!modalMapEl.value || !hasKakaoKey) return;
 
-  // 카카오맵이 로드되었는지 확인
-  if (!window.kakao || !window.kakao.maps) {
-    createDefaultMap();
-    return;
-  }
+  await loadKakaoMapScript();
 
-  // 카카오맵 로드 완료 후 실행
-  window.kakao.maps.load(() => {
-    // 기본 위치 (대구 중구)
-    const defaultPosition = new window.kakao.maps.LatLng(35.8714, 128.6014);
+  geocoder = new window.kakao.maps.services.Geocoder();
 
-    // 지도 생성
-    const mapOption = {
-      center: defaultPosition,
-      level: 3,
-    };
+  // 기본 중심 위치 (대구 시청 근처)
+  const center = new window.kakao.maps.LatLng(35.8714, 128.6014);
 
-    kakaoMap = new window.kakao.maps.Map(modalMapEl.value, mapOption);
+  map = new window.kakao.maps.Map(modalMapEl.value, {
+    center,
+    level: 4,
+  });
 
-    // 마커 이미지 설정
-    const markerImageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png";
-    const markerImageSize = new window.kakao.maps.Size(40, 40);
-    const markerImage = new window.kakao.maps.MarkerImage(markerImageSrc, markerImageSize);
+  marker = new window.kakao.maps.Marker({ position: center });
+  marker.setMap(map);
 
-    // 마커 생성
-    kakaoMarker = new window.kakao.maps.Marker({
-      position: defaultPosition,
-      image: markerImage,
-    });
-    kakaoMarker.setMap(kakaoMap);
+  infoWindow = new window.kakao.maps.InfoWindow({ zIndex: 1 });
 
-    console.log("카카오맵 생성 완료");
+  // 드래그 후 중앙 마커 갱신
+  window.kakao.maps.event.addListener(map, "dragend", () => {
+    const pos = map.getCenter();
+    marker.setPosition(pos);
+  });
+
+  if (selectedLocation.value) moveMapTo(selectedLocation.value);
+}
+
+/* ✅ 특정 위치로 지도 이동 */
+function moveMapTo(location) {
+  if (!geocoder || !map || !location) return;
+
+  geocoder.addressSearch(location.address, (results, status) => {
+    if (status === window.kakao.maps.services.Status.OK) {
+      const { x, y } = results[0];
+      const latlng = new window.kakao.maps.LatLng(y, x);
+      map.setCenter(latlng);
+      marker.setPosition(latlng);
+
+      infoWindow.setContent(
+        `<div style="padding:8px 10px;font-weight:600;">${location.name}</div>`
+      );
+      infoWindow.open(map, marker);
+    }
   });
 }
 
-// 기본 지도 생성
-function createDefaultMap() {
-  if (!modalMapEl.value) return;
-
-  // 강제로 지도 내용 생성
-  modalMapEl.value.innerHTML = `
-    <div style="width: 100%; height: 100%; background: #e8f4f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; border: 2px solid #028587;">
-      <div style="position: absolute; top: 10px; left: 10px; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 12px;">
-        📍 지점을 선택해주세요
-      </div>
-      <div style="font-size: 48px; color: #028587;">🗺️</div>
-    </div>
-  `;
-}
-
-// 모달 지도 업데이트
-function updateModalMap(location) {
-  if (!modalMapEl.value) return;
-
-  // 카카오맵이 있으면 실제 지도 업데이트
-  if (kakaoMap && kakaoMarker && window.kakao && window.kakao.maps) {
-    const position = new window.kakao.maps.LatLng(location.lat, location.lng);
-    kakaoMap.setCenter(position);
-    kakaoMarker.setPosition(position);
-
-    // 인포윈도우 표시
-    const infowindow = new window.kakao.maps.InfoWindow({
-      content: `<div style="padding: 10px; font-weight: bold; font-size: 14px;">${location.name}</div>`,
-    });
-    infowindow.open(kakaoMap, kakaoMarker);
-  } else {
-    // 기본 지도 업데이트
-    modalMapEl.value.innerHTML = `
-      <div style="width: 100%; height: 100%; background: #e8f4f8; border-radius: 8px; display: flex; align-items: center; justify-content: center; position: relative; border: 2px solid #028587;">
-        <div style="position: absolute; top: 10px; left: 10px; background: white; padding: 8px; border-radius: 4px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-size: 12px;">
-          📍 ${location.name}
-        </div>
-        <div style="font-size: 48px; color: #028587;">🗺️</div>
-      </div>
-    `;
+/* ✅ 모달 열릴 때 지도 mount */
+watch(showModal, async (v) => {
+  if (v) {
+    await nextTick();
+    mountMap();
   }
+});
+
+/* ✅ 지점 선택 시 지도 갱신 */
+function selectLocationFromModal(locationId) {
+  const location = locations.find((loc) => loc.id === locationId);
+  if (!location || location.status === "점검중") return;
+
+  selectedLocation.value = location;
+  selectedLocationId.value = location.id;
+
+  if (map) moveMapTo(location);
 }
 
-onMounted(() => {
-  // 초기화
-});
+/* ✅ 모달 닫기 */
+function closeModal() {
+  showModal.value = false;
+}
+
+/* ✅ 모달 열기 */
+function openMapModal() {
+  showModal.value = true;
+}
 </script>
 
 <style scoped>

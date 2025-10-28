@@ -1,36 +1,35 @@
 <template>
   <div class="wrap">
     <Stepper :current-step="1" />
-    <div class="background inner ">
-      <div class="container ">
+    <div class="background inner">
+      <div class="container">
         <!-- 왼쪽 입력 카드 -->
         <div class="left">
           <!-- 사물함 예약 -->
-          <div class="form_card " :class="{ open: openSection === 'locker' }">
+          <div class="form_card" :class="{ open: openSection === 'locker' }">
             <div class="card_header" @click="toggleSection('locker')">
-              <h3>사물함 예약 *</h3>
-              <p class="label">(필수)</p>
-              <p class="label"><!-- Font Awesome 6 사용 시 -->
-<i class="fa-solid fa-check" style="color: #28a745;" :class="{ rotate: openSection === 'locker' }" ></i>
-</p>
-              <img src="https://placehold.co/24x24/aaa/fff?text=▼" :class="{ rotate: openSection === 'locker' }" />
+              <h3>사물함 예약</h3>
+            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
+
             </div>
 
             <transition name="fade">
               <div v-show="openSection === 'locker'" class="card_content" @click.stop>
+                <!-- 이름 -->
                 <div class="form_group">
-                  
                   <label>성함*</label>
                   <input type="text" placeholder="성함을 입력해주세요" v-model="form.name" />
                   <p class="label">문자만 입력하세요</p>
                 </div>
 
+                <!-- 전화번호 -->
                 <div class="form_group">
                   <label>휴대폰 번호*</label>
                   <input type="text" placeholder="01012345678 (- 제외)" v-model="form.phone" />
                   <p class="label">숫자만 입력해주세요</p>
                 </div>
 
+                <!-- 사이즈 -->
                 <div class="form_group">
                   <label>사물함 사이즈*</label>
                   <select v-model="form.size">
@@ -43,7 +42,7 @@
                   <p class="label">필수 입력 사항입니다.</p>
                 </div>
 
-                <!-- ✅ 주소 선택 (AddressPicker 연결) -->
+                <!-- ✅ 주소 선택 -->
                 <div class="form_group">
                   <label>대여 장소*</label>
                   <div class="addr-input">
@@ -52,35 +51,73 @@
                       placeholder="지번 및 주소를 입력해주세요"
                       v-model="form.address"
                       readonly
-                      @click="openAddr = true"
                     />
-                    <button type="button" class="mini-btn" @click="openAddr = true">주소 검색</button>
+                    <button type="button" class="mini-btn" @click="showModal = true">
+                      지점 선택
+                    </button>
                   </div>
                   <p class="label">대여장소를 선택해 주세요</p>
+
+                  <!-- ✅ 지점선택 모달 -->
+                  <BranchSelectModal
+                    :open="showModal"
+                    :locations="locations"
+                    @close="showModal = false"
+                    @selected="handleSelect"
+                  />
                 </div>
 
+                <!-- ✅ 예약 기간 -->
                 <div class="form_group">
-                  <label>예약 날짜*</label>
-                  <input type="date" v-model="form.date" />
-                  <p class="label">날짜를 입력하세요</p>
+                  <label>예약 기간*</label>
+                  <VueDatePicker
+                    v-model="form.dateRange"
+                    range
+                    locale="ko"
+                    placeholder="기간을 선택하세요"
+                    :enable-time-picker="false"
+                    format="yyyy-MM-dd"
+                  />
+                  <p class="label">시작일과 종료일을 한 번에 선택할 수 있습니다.</p>
                 </div>
               </div>
             </transition>
           </div>
 
           <!-- 짐 가져오기 -->
-          <div class="form_card " :class="{ open: openSection === 'arrival' }">
+          <div class="form_card" :class="{ open: openSection === 'arrival' }">
             <div class="card_header" @click="toggleSection('arrival')">
               <h3>짐 가져오기</h3>
-              <img src="https://placehold.co/24x24/aaa/fff?text=▼" :class="{ rotate: openSection === 'arrival' }" />
+            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
+
             </div>
 
             <transition name="fade">
               <div v-show="openSection === 'arrival'" class="card_content" @click.stop>
                 <div class="form_group">
-                  <label>픽업 장소*</label>
-                  <input type="text" placeholder="지번 및 주소를 입력해주세요" v-model="form.pickupAddress" />
-                  <p class="label">픽업받으실 주소를 입력해 주세요</p>
+                  <label>주소*</label>
+                  <div class="addr-input">
+                    <input
+                      type="text"
+                      placeholder="지번 및 주소를 입력해주세요"
+                      v-model="form.pickupAddress"
+                      readonly
+                      @click="openPickupAddr = true"
+                    />
+                    <button type="button" class="mini-btn" @click="openPickupAddr = true">
+                      주소 검색
+                    </button>
+                  </div>
+                  <p class="label">주소를 입력해 주세요</p>
+
+                  <div class="blank16">{{ form.pickupAddress || '주소를 선택해주세요' }}</div>
+
+                  <input
+                    type="text"
+                    placeholder="상세주소를 입력해주세요"
+                    v-model="form.pickupAddressDetail"
+                  />
+                  <p class="label">상세주소를 입력해 주세요</p>
                 </div>
 
                 <div class="form_group">
@@ -93,20 +130,36 @@
           </div>
 
           <!-- 집으로 보내기 -->
-          <div class="form_card " :class="{ open: openSection === 'luggage' }">
+          <div class="form_card" :class="{ open: openSection === 'luggage' }">
             <div class="card_header" @click="toggleSection('luggage')">
               <h3>집으로 보내기</h3>
-              <img src="https://placehold.co/24x24/aaa/fff?text=▼" :class="{ rotate: openSection === 'luggage' }" />
+            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
+
             </div>
 
             <transition name="fade">
               <div v-show="openSection === 'luggage'" class="card_content" @click.stop>
                 <div class="form_group">
                   <label>주소*</label>
-                  <input type="text" placeholder="지번 및 주소를 입력해주세요" v-model="form.homeAddress" />
+                  <div class="addr-input">
+                    <input
+                      type="text"
+                      placeholder="지번 및 주소를 입력해주세요"
+                      v-model="form.homeAddress"
+                      readonly
+                      @click="openHomeAddr = true"
+                    />
+                    <button type="button" class="mini-btn" @click="openHomeAddr = true">
+                      주소 검색
+                    </button>
+                  </div>
                   <p class="label">주소를 입력해 주세요</p>
-                  <div class="blank16">d</div>
-                  <input type="text" placeholder="상세주소를 입력해주세요" v-model="form.detailAddress" />
+                  <div class="blank16">{{ form.homeAddress || '주소를 선택해주세요' }}</div>
+                  <input
+                    type="text"
+                    placeholder="상세주소를 입력해주세요"
+                    v-model="form.homeAddressDetail"
+                  />
                   <p class="label">상세주소를 입력해 주세요</p>
                 </div>
 
@@ -125,66 +178,159 @@
           <div class="summary_card">
             <h2 class="card_title">선택 상품 요약</h2>
             <table>
-                                <colgroup>
-    <col style="width: 65%;" />   <!-- 왼쪽열 -->
-    <col style="width: 35%;" />   <!-- 오른쪽열 -->
-  </colgroup>
+              <colgroup>
+                <col style="width: 65%;" />
+                <col style="width: 35%;" />
+              </colgroup>
               <tbody>
+                <tr>
+                  <td>예약 기간</td>
+                  <td>
+                    {{
+                      form.dateRange
+                        ? `${form.dateRange[0]} ~ ${form.dateRange[1]}`
+                        : "선택 필요"
+                    }}
+                  </td>
+                </tr>
                 <tr>
                   <td>선택상품</td>
                   <td>{{ selectedService || "선택 필요" }}</td>
                 </tr>
-              <tr>
-                <td>도착지</td>
-                <td>{{ form.address || "입력 필요" }}</td>
-              </tr>
-              <tr>
-                <td>수하물</td>
-                <td>{{ form.size || "선택 필요" }}</td>
-              </tr>
-              <tr class="total">
-                <td>총 결제금액</td>
-                <td>
-                  <strong>{{ formatKrw(totalPrice) }}</strong>
-                </td>
-              </tr>
-            </tbody>
+                <tr>
+                  <td>도착지</td>
+                  <td>{{ form.address || "입력 필요" }}</td>
+                </tr>
+                <tr>
+                  <td>수하물</td>
+                  <td>{{ form.size || "선택 필요" }}</td>
+                </tr>
+                <tr class="total">
+                  <td>총 결제금액</td>
+                  <td><strong>{{ formatKrw(totalPrice) }}</strong></td>
+                </tr>
+              </tbody>
             </table>
           </div>
-          <button class="submit_btn" @click="handleSubmit">입력 완료</button>
+          <button class="submit_btn" @click="goTopayment">입력 완료</button>
         </div>
       </div>
     </div>
 
-    <!-- ✅ AddressPicker 모달 -->
-    <AddressPicker v-model="form.address" :open="openAddr" @close="openAddr = false" />
+    <!-- 모달들 -->
+    <HySearch
+      v-if="openHySearch"
+      :open="openHySearch"
+      :location="selectedLocation"
+      @close="openHySearch = false"
+      @select="(location) => {
+        form.address = location.address;
+        openHySearch = false;
+      }"
+    />
+
+    <!-- 짐 가져오기 주소 -->
+    <AddressPicker
+      v-model="form.pickupAddress"
+      :open="openPickupAddr"
+      @close="openPickupAddr = false"
+    />
+
+    <!-- 집으로 보내기 주소 -->
+    <AddressPicker
+      v-model="form.homeAddress"
+      :open="openHomeAddr"
+      @close="openHomeAddr = false"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
+import { ref, computed, watch, onMounted } from "vue";
 import Stepper from "@/components/reserv/Stepper.vue";
 import AddressPicker from "@/components/reserv/AddressPicker.vue";
+import BranchSelectModal from "@/components/reserv/BranchSelectModal.vue";
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
 
-const openSection = ref("locker");
-const toggleSection = (name) => {
-  openSection.value = openSection.value === name ? null : name;
-};
+const router = useRouter();
 
-const openAddr = ref(false);
-
+// ✅ 폼 상태 관리
 const form = ref({
   name: "",
   phone: "",
   size: "",
   address: "",
-  date: "",
-  pickupAddress: "",
+  dateRange: null,
   pickupDate: "",
+  pickupAddress: "",
+  pickupAddressDetail: "",
   homeAddress: "",
-  detailAddress: "",
+  homeAddressDetail: "",
   deliveryDate: "",
 });
+
+// ✅ localStorage 저장 및 복원
+watch(
+  form,
+  (newVal) => {
+    localStorage.setItem("reservationForm", JSON.stringify(newVal));
+  },
+  { deep: true }
+);
+
+onMounted(() => {
+  const saved = localStorage.getItem("reservationForm");
+  if (saved) Object.assign(form.value, JSON.parse(saved));
+});
+
+// ✅ 페이지 이동 시 값 유지
+const goTopayment = () => {
+  localStorage.setItem("reservationForm", JSON.stringify(form.value));
+  alert("입력 완료");
+  router.push("/reservation2");
+};
+
+// ✅ 토글 제어
+const openSection = ref("locker");
+const toggleSection = (name) => {
+  openSection.value = openSection.value === name ? null : name;
+};
+
+const showModal = ref(false);
+const openPickupAddr = ref(false);
+const openHomeAddr = ref(false);
+
+// ✅ 지점 데이터
+const locations = [
+  {
+    id: 1,
+    name: "칠성시장점",
+    address: "대구광역시 중구 동성로2가 189-1",
+    lockers: "잔여 사물함 S: 2개 XL: 2개",
+    lat: 35.8714,
+    lng: 128.6014,
+    status: "운영중",
+    distance: "0.2km",
+  },
+  {
+    id: 2,
+    name: "동성로점",
+    address: "대구광역시 중구 동성로 123",
+    lockers: "잔여 사물함 S: 5개 XL: 1개",
+    lat: 35.87,
+    lng: 128.6,
+    status: "운영중",
+    distance: "0.5km",
+  },
+  // ... 나머지 동일
+];
+
+function handleSelect(location) {
+  form.value.address = location.address;
+  showModal.value = false;
+}
 
 const selectedService = computed(() => {
   switch (openSection.value) {
@@ -204,13 +350,20 @@ const prices = {
   arrival: 15000,
   luggage: 20000,
 };
-const totalPrice = computed(() => prices[openSection.value] || 0);
 
-const formatKrw = (value) => new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(value);
+const totalPrice = computed(() => prices[openSection.value] || 0);
+const formatKrw = (value) =>
+  new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(value);
 
 const handleSubmit = () => {
   alert(`"${selectedService.value}" 예약 정보가 저장되었습니다.`);
 };
+
+defineProps({
+  open: Boolean,
+  locations: Array,
+});
+defineEmits(["close", "selected"]);
 </script>
 
 <style scoped lang="scss" >
@@ -233,7 +386,7 @@ const handleSubmit = () => {
     grid-template-columns: 3fr 2fr;
     gap: 2.5rem;
     width: 100%;
-    max-width: 1400px;
+    // max-width: 1400px;
     margin: 0 auto;
     align-items: flex-start;
   }
@@ -525,5 +678,88 @@ Responsive 반응형
 /* 3️⃣ Stepper 하단과 카드 상단 간격만 살짝 띄우기 */
 .Stepper {
   margin-bottom: 40px;
+}
+
+
+
+// 기간입력 ui
+/* =========================================================
+VueDatePicker 라인형 입력창 커스터마이징
+========================================================= */
+.form_group .dp__input_wrap {
+  width: 100%;
+}
+
+.form_group .dp__input {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #e7e7e7 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 10px 5px !important;
+  font-size: 14px !important;
+  color: #333 !important;
+  transition: border-color 0.25s ease;
+
+  &::placeholder {
+    color: #aaa !important;
+  }
+
+  &:focus {
+    border-bottom: 1px solid #53b4a1 !important; /* ✅ 메인 컬러 */
+    outline: none !important;
+  }
+}
+
+/* ✅ 불필요한 아이콘, 박스 제거 */
+.form_group .dp__input_icon {
+  display: none !important;
+}
+.form_group .dp__input_wrap {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+.form_group .dp__main {
+  border: none !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* ✅ 팝업 달력 스타일 약간 정돈 */
+.dp__outer_menu_wrap {
+  border-radius: 10px !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+:deep(.dp__input) {
+  width: 100%;
+  background: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid #e7e7e7 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important; /* ✅ 패딩 완전 제거 */
+  font-size: 14px !important;
+  color: #333 !important;
+  transition: border-color 0.25s ease;
+
+  &::placeholder {
+    color: #aaa !important;
+  }
+
+  &:focus {
+    border-bottom: 1px solid #53b4a1 !important; /* ✅ 메인컬러 */
+    outline: none !important;
+  }
+}
+
+:deep(.dp__input:focus) {
+  border-bottom: 1px solid #53b4a1 !important;
+  outline: none !important;
+}
+:deep(.dp__input_icon) {
+  display: none !important;
 }
 </style>

@@ -245,64 +245,42 @@
   </div>
 </template>
 
+
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, computed, watch, onMounted } from "vue";
+import { ref, computed } from "vue";
 import Stepper from "@/components/reserv/Stepper.vue";
 import AddressPicker from "@/components/reserv/AddressPicker.vue";
 import BranchSelectModal from "@/components/reserv/BranchSelectModal.vue";
-import VueDatePicker from "@vuepic/vue-datepicker";
-import "@vuepic/vue-datepicker/dist/main.css";
+import { watch, onMounted } from "vue";
+
 
 const router = useRouter();
-
-// ✅ 폼 상태 관리
-const form = ref({
-  name: "",
-  phone: "",
-  size: "",
-  address: "",
-  dateRange: null,
-  pickupDate: "",
-  pickupAddress: "",
-  pickupAddressDetail: "",
-  homeAddress: "",
-  homeAddressDetail: "",
-  deliveryDate: "",
-});
-
-// ✅ localStorage 저장 및 복원
-watch(
-  form,
-  (newVal) => {
-    localStorage.setItem("reservationForm", JSON.stringify(newVal));
-  },
-  { deep: true }
-);
-
-onMounted(() => {
-  const saved = localStorage.getItem("reservationForm");
-  if (saved) Object.assign(form.value, JSON.parse(saved));
-});
-
-// ✅ 페이지 이동 시 값 유지
 const goTopayment = () => {
-  localStorage.setItem("reservationForm", JSON.stringify(form.value));
-  alert("입력 완료");
+  alert("입력완료");
   router.push("/reservation2");
 };
 
-// ✅ 토글 제어
+
+//  DatePicker import
+import VueDatePicker from "@vuepic/vue-datepicker";
+import "@vuepic/vue-datepicker/dist/main.css";
+
+// //HySearch
+// import HySearch from "@/views/booking/HySearch.vue";
+
+//=======로컬================
+
+
+// ===============열닫토글=================
 const openSection = ref("locker");
 const toggleSection = (name) => {
   openSection.value = openSection.value === name ? null : name;
 };
 
 const showModal = ref(false);
-const openPickupAddr = ref(false);
-const openHomeAddr = ref(false);
 
-// ✅ 지점 데이터
+// 지점 데이터 (실제로는 API에서 가져올 데이터)
 const locations = [
   {
     id: 1,
@@ -324,14 +302,94 @@ const locations = [
     status: "운영중",
     distance: "0.5km",
   },
-  // ... 나머지 동일
+  {
+    id: 3,
+    name: "중앙로점",
+    address: "대구광역시 중구 중앙대로 456",
+    lockers: "잔여 사물함 S: 3개 XL: 3개",
+    lat: 35.872,
+    lng: 128.602,
+    status: "운영중",
+    distance: "0.8km",
+  },
+  {
+    id: 4,
+    name: "서문시장점",
+    address: "대구광역시 중구 대신동 115-1",
+    lockers: "잔여 사물함 S: 4개 XL: 2개",
+    lat: 35.8698,
+    lng: 128.5856,
+    status: "운영중",
+    distance: "1.2km",
+  },
+  {
+    id: 5,
+    name: "반월당점",
+    address: "대구광역시 중구 동성로1가 88-1",
+    lockers: "잔여 사물함 S: 1개 XL: 4개",
+    lat: 35.8667,
+    lng: 128.5956,
+    status: "운영중",
+    distance: "1.5km",
+  },
+  {
+    id: 6,
+    name: "대구역점",
+    address: "대구광역시 동구 동부로 149",
+    lockers: "잔여 사물함 S: 6개 XL: 3개",
+    lat: 35.8759,
+    lng: 128.6285,
+    status: "운영중",
+    distance: "2.1km",
+  },
+  {
+    id: 7,
+    name: "수성못점",
+    address: "대구광역시 수성구 두산동 100",
+    lockers: "잔여 사물함 S: 3개 XL: 2개",
+    lat: 35.8251,
+    lng: 128.6304,
+    status: "운영중",
+    distance: "3.2km",
+  },
+  {
+    id: 8,
+    name: "동대구역점",
+    address: "대구광역시 동구 동부로 149",
+    lockers: "잔여 사물함 S: 2개 XL: 1개",
+    lat: 35.8779,
+    lng: 128.6285,
+    status: "점검중",
+    distance: "2.3km",
+  },
 ];
 
 function handleSelect(location) {
-  form.value.address = location.address;
+  console.log("선택된 지점:", location);
   showModal.value = false;
 }
 
+const openAddr = ref(false);
+
+const openPickupAddr = ref(false); // 짐 가져오기용 모달
+const openHomeAddr = ref(false);   // 집으로 보내기용 모달
+
+const form = ref({
+  name: "",
+  phone: "",
+  size: "",
+  address: "",
+  dateRange: null, // ✅ 추가 — 기간 저장
+  pickupDate: "",
+  pickupAddress: "",
+  pickupAddressDetail: "",
+  pickupDate: "",
+  homeAddress: "",
+  homeAddressDetail: "",
+  deliveryDate: "",
+});
+
+// ================코드..==================
 const selectedService = computed(() => {
   switch (openSection.value) {
     case "locker":
@@ -350,20 +408,21 @@ const prices = {
   arrival: 15000,
   luggage: 20000,
 };
-
 const totalPrice = computed(() => prices[openSection.value] || 0);
-const formatKrw = (value) =>
-  new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(value);
+
+const formatKrw = (value) => new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(value);
 
 const handleSubmit = () => {
   alert(`"${selectedService.value}" 예약 정보가 저장되었습니다.`);
 };
 
+// ========================
 defineProps({
   open: Boolean,
-  locations: Array,
+  locations: Array
 });
 defineEmits(["close", "selected"]);
+
 </script>
 
 <style scoped lang="scss" >

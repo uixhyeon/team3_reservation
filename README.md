@@ -1,19 +1,10 @@
-# .
+# project_start
 
 This template should help get you started developing with Vue 3 in Vite.
 
 ## Recommended IDE Setup
 
-[VS Code](https://code.visualstudio.com/) + [Vue (Official)](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
-
-## Recommended Browser Setup
-
-- Chromium-based browsers (Chrome, Edge, Brave, etc.):
-  - [Vue.js devtools](https://chromewebstore.google.com/detail/vuejs-devtools/nhdogjmejiglipccpnnnanhbledajbpd) 
-  - [Turn on Custom Object Formatter in Chrome DevTools](http://bit.ly/object-formatters)
-- Firefox:
-  - [Vue.js devtools](https://addons.mozilla.org/en-US/firefox/addon/vue-js-devtools/)
-  - [Turn on Custom Object Formatter in Firefox DevTools](https://fxdx.dev/firefox-devtools-custom-object-formatters/)
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
 
 ## Customize configuration
 
@@ -36,5 +27,13 @@ npm run dev
 ```sh
 npm run build
 ```
-# purus
-# team3_reservation
+# vue_team2
+
+
+==============변경해야할 것(완료시 체크하기)========================
+10-14 index의 seo 변경 & public의 파비콘 이미지파일 바꾸기
+10-17 views>mains 안의 파일들을 components>main-com으로 옮기기. 옮긴 후 라우터 import 바꾸기
+
+
+===========상의해봐야 할것========================
+만들 서비스들을 구체화 > 질문 대비.

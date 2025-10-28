@@ -464,6 +464,9 @@ onMounted(() => {
   justify-content: center;
   gap: clamp(24px, 3vw, 40px);
   padding: 0 20px;
+  @media (max-width: 390px) {
+    gap: 0;
+  }
 }
 
 /* 일러스트 자리 */
@@ -472,7 +475,7 @@ onMounted(() => {
   justify-content: center;
   align-items: center;
   width: 250px;
-  height: 180px;
+  height: 250px;
   overflow: hidden;
   border-radius: 16px;
 }
@@ -501,6 +504,11 @@ onMounted(() => {
   font-size: clamp(14px, 1.3vw, 15px);
   color: var(--muted);
   margin-bottom: 20px;
+  @media (max-width: 390px){
+    font-size: 12px;
+
+  }
+
 }
 
 /* 검색 바 */
@@ -863,7 +871,7 @@ onMounted(() => {
 
   .search-main .illustration {
     width: 200px;
-    height: 150px;
+    height: 250px;
   }
 
   .search-main .illustration img {
@@ -889,6 +897,7 @@ onMounted(() => {
     width: 100%;
     min-width: 260px;
     font-size: 15px;
+    padding: 10px 0;
   }
 
   .search-main .cta {
@@ -909,7 +918,7 @@ onMounted(() => {
 
   .location-selection-section {
     width: 100%;
-    height: 45%;
+    /* height: 45%; */
     border-right: none;
     border-bottom: 1px solid #eee;
     padding: 12px;
@@ -948,7 +957,7 @@ onMounted(() => {
 @media (max-width: 480px) {
   .search-main .illustration {
     width: 180px;
-    height: 130px;
+    height: 250px;
   }
 
   .search-main .illustration img {
@@ -963,8 +972,9 @@ onMounted(() => {
   }
 
   .location-selection-section {
-    height: 40%;
-    padding: 8px;
+    /* height: 40%; */
+
+    padding: 20px 0;
   }
 
   .map-section-large {

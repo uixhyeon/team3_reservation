@@ -38,9 +38,9 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
 
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
-body{
-  // background-color: #f5f7f7;
-}
+// body{
+//   // background-color: #f5f7f7;
+// }
 
 /* ✅ 상단 스텝 표시 */
 .stepper {

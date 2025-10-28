@@ -188,7 +188,7 @@ watch(isOpen, (open) => {
   justify-content: space-between;
   align-items: center;
   gap: clamp(8px, 1vw, 20px);
-  padding: 10px 5vw;
+  padding: 10px min(5vw, 32px);
   border-bottom: 1px solid #e7e2e2;
   line-height: 60px;
   background: #fff;
@@ -246,7 +246,6 @@ watch(isOpen, (open) => {
   left: 50%;
   transform: translateX(-50%);
   margin-top: -2px;              /* ↑ 총 6px 위로 (이전보다 4px 추가로 위) */
-
   padding: 6px;
   border: 1px solid #ddd;
   border-radius: 10px;

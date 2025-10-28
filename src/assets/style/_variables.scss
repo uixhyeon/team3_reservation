@@ -1,63 +1,52 @@
 // ======= COLOR==============
 // Main
 $color_main_deep: #53b4a1; // 메인 진한 색
-
 $color_main_light: #d4efeb; // 메인 밝은 색
-
 // Sub
 $color_sub: #ff6584; // 서브 포인트 색
-
 // Danger / Error
 $color_dangr: #e53935; // 경고/위험 색상
-
 // 배경 & 라인
 $color_neutral: #ffffff; // 흰색 배경
 $color_line_light: #e7e7e7; // 밝은 라인
 $color_line: #c0c0c0; // 일반 라인
-
 //  Font Colors
 $font_black_color: #333; // 본문 검정
-
 $font_midium_color: #555555; // 서브 본문
-
 $font_light_color: #999999; // 비활성/보조 텍스트
 
 // ======= FONT ========
 // 기준: 360px ~ 1920px
 // 1rem = 16px
-
 // Title
 $title-xlg: clamp(2.5rem, 1.5rem + 3vw, 3.75rem); // 40px → 60px ✅
 $title-lg: clamp(2rem, 1.2rem + 2vw, 2.75rem); // 32px → 45px
 $title-md: clamp(1.75rem, 1.1rem + 1.5vw, 2.25rem); // 28px → 36px
 $title-sm: clamp(1.5rem, 1rem + 1vw, 1.75rem); // 24px → 28px
-
 // Text
 $text-lg: clamp(1.25rem, 0.9rem + 0.8vw, 1.5rem); // 20px → 24px
 $text-md: clamp(1rem, 0.8rem + 0.5vw, 1.25rem); // 16px → 20px
 // 제목이걸로함
 $text-sm: clamp(0.875rem, 0.75rem + 0.3vw, 1rem); // 14px → 16px
 // 작은텍스트
-
 // Label
 $label-lg: clamp(0.875rem, 0.75rem + 0.25vw, 0.9375rem); // 14px → 15px
 $label-md: clamp(0.8125rem, 0.7rem + 0.2vw, 0.875rem); // 13px → 14px
 // 작은라벨
 $label-sm: clamp(0.75rem, 0.65rem + 0.1vw, 0.8125rem); // 12px → 13px
 // 작은글자
-
 // Quote / Number / Button
 $quote: clamp(1rem, 0.8rem + 0.5vw, 1.25rem); // 16px → 20px
 $number: clamp(1.125rem, 0.9rem + 0.5vw, 1.375rem); // 18px → 22px
 $button: clamp(1rem, 0.8rem + 0.3vw, 1.125rem); // 16px → 18px
-
 //  Mono / Caption
 $mono: clamp(0.8125rem, 0.7rem + 0.2vw, 0.875rem); // 13px → 14px
 $caption: clamp(0.75rem, 0.65rem + 0.1vw, 0.8125rem); // 12px → 13px
+
+
 /* =======GAP ========= */
 // 기준: 360px ~ 1920px
 // 1rem = 16px
-
 $title-big-gap-large: clamp(4rem, 3rem + 2vw, 7rem); // 64px → 110px
 $title-big-gap-small: clamp(1.25rem, 1rem + 0.7vw, 2rem); // 20px → 32px
 $title-small-gap-small: clamp(1rem, 0.9rem + 0.5vw, 1.5rem); // 16px → 24px

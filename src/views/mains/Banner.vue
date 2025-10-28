@@ -117,6 +117,7 @@ import QuickR from "./QuickR.vue";
     line-height: 1.2;
   }
   .mb-txt1 {
+    text-align: left;
     font-size: clamp(16px, 1.05vw, 20px);
     color: #028587;
     font-weight: 600;
@@ -126,7 +127,7 @@ import QuickR from "./QuickR.vue";
     font-size: clamp(40px, 3.3vw, 64px);
     font-weight: 800;
     color: #000;
-    line-height: 1.15;
+     line-height: 0.7;
     margin: 0;
     letter-spacing: -0.02em;
   }
@@ -177,6 +178,7 @@ import QuickR from "./QuickR.vue";
     line-height: 1.2;
   }
   .mb-txt1 {
+    text-align: left;
     font-size: 16px;
     color: #028587;
     font-weight: 600;
@@ -186,14 +188,16 @@ import QuickR from "./QuickR.vue";
     font-size: 32px;
     font-weight: 800;
     color: #000;
-    line-height: 1.2;
+    line-height: 0.7;
     margin: 0;
   }
   .mb-txt3 {
     font-size: 14px;
     color: #000;
+    font-weight: 400;
     line-height: 1.25;
     margin: 0;
+        text-align: left;
   }
   .main-banner-img img {
     width: min(85vw, 360px);

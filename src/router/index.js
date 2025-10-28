@@ -7,8 +7,8 @@ import Reservation from "@/views/Reservation.vue";
 import ReserveForm from "@/components/reserv/ReserveForm.vue";
 import Reser_check from "@/views/booking/Reser_check.vue";
 import Complete from "@/views/booking/Complete.vue";
-import Reservation2 from "@/views/Reservation2.vue";
-import Reservation3 from "@/views/Reservation3.vue";
+import Reservation2 from "@/views/booking/Reservation2.vue";
+import Reservation3 from "@/views/booking/Reservation3.vue";
 
 import Promotion from "@/views/Promotion.vue";
 import Community from "@/views/Community.vue";
@@ -16,8 +16,10 @@ import Community2 from "@/views/Community2.vue";
 import Support from "@/views/Support.vue";
 import Support2 from "@/views/Support2.vue";
 import Support3 from "@/views/Support3.vue";
-import Signup from "@/views/Signup.vue";
-import Login from "@/views/Login.vue";
+import Signup from "@/views/sign/Signup.vue";
+import Login from "@/views/sign/Login.vue";
+import ConfirmReserv from "@/views/ConfirmReserv.vue";
+import Signup2 from "@/views/sign/Signup2.vue";
 const routes = [
   { path: "/", component: HomeView },
   { path: "/information", component: Information },
@@ -39,6 +41,11 @@ const routes = [
   { path: "/support", component: Support },
   { path: "/support2", component: Support2 },
   { path: "/support3", component: Support3 },
+  
+  { path: "/confirmreserv", component: ConfirmReserv },
+  { path: "/signup2", component: Signup2 },
+
+
 ];
 // 라우터 만들기 (길 안내 지도 같은 것)
 // createRouter() → "길을 만드는 도구"

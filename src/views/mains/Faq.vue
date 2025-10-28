@@ -188,7 +188,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 /* 가로 흔들림 방지 */
-:global(html){ scrollbar-gutter: stable both-edges; }
+/* :global(html){ scrollbar-gutter: stable both-edges; } */
 
 /* ===== 변수 ===== */
 .faq-main {

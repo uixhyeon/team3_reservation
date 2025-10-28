@@ -8,13 +8,18 @@
           <!-- 사물함 예약 -->
           <div class="form_card " :class="{ open: openSection === 'locker' }">
             <div class="card_header" @click="toggleSection('locker')">
-              <h3>사물함 예약</h3>
+              <h3>사물함 예약 *</h3>
+              <p class="label">(필수)</p>
+              <p class="label"><!-- Font Awesome 6 사용 시 -->
+<i class="fa-solid fa-check" style="color: #28a745;" :class="{ rotate: openSection === 'locker' }" ></i>
+</p>
               <img src="https://placehold.co/24x24/aaa/fff?text=▼" :class="{ rotate: openSection === 'locker' }" />
             </div>
 
             <transition name="fade">
               <div v-show="openSection === 'locker'" class="card_content" @click.stop>
                 <div class="form_group">
+                  
                   <label>성함*</label>
                   <input type="text" placeholder="성함을 입력해주세요" v-model="form.name" />
                   <p class="label">문자만 입력하세요</p>

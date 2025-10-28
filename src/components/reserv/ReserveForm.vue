@@ -9,8 +9,11 @@
           <div class="form_card" :class="{ open: openSection === 'locker' }">
             <div class="card_header" @click="toggleSection('locker')">
               <h3>사물함 예약</h3>
-            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
-
+           <i
+      v-if="isLockerComplete"
+      class="fa-solid fa-check"
+      style="color: #53b4a1;"
+    ></i>
             </div>
 
             <transition name="fade">
@@ -88,8 +91,11 @@
           <div class="form_card" :class="{ open: openSection === 'arrival' }">
             <div class="card_header" @click="toggleSection('arrival')">
               <h3>짐 가져오기</h3>
-            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
-
+           <i
+      v-if="isArrivalComplete"
+      class="fa-solid fa-check"
+      style="color: #53b4a1;"
+    ></i>
             </div>
 
             <transition name="fade">
@@ -133,8 +139,12 @@
           <div class="form_card" :class="{ open: openSection === 'luggage' }">
             <div class="card_header" @click="toggleSection('luggage')">
               <h3>집으로 보내기</h3>
-            <i class="fa-solid fa-check" style="color: #53b4a1;"></i>
-
+        <i
+      v-if="isLuggageComplete"
+      class="fa-solid fa-check"
+      style="color: #53b4a1;"
+    ></i>
+ 
             </div>
 
             <transition name="fade">
@@ -408,13 +418,51 @@ const prices = {
   arrival: 15000,
   luggage: 20000,
 };
-const totalPrice = computed(() => prices[openSection.value] || 0);
+const totalPrice = computed(() => {
+  let total = 0;
+  if (isLockerComplete.value) total += prices.locker;
+  if (isArrivalComplete.value) total += prices.arrival;
+  if (isLuggageComplete.value) total += prices.luggage;
+  return total;
+});
 
 const formatKrw = (value) => new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(value);
 
 const handleSubmit = () => {
   alert(`"${selectedService.value}" 예약 정보가 저장되었습니다.`);
 };
+//=======체크표시=========
+const isLockerComplete = computed(() => {
+  const f = form.value;
+  return (
+    f.name.trim() !== "" &&
+    f.phone.trim() !== "" &&
+    f.size.trim() !== "" &&
+    f.address.trim() !== "" &&
+    f.dateRange &&
+    f.dateRange[0] &&
+    f.dateRange[1]
+  );
+});
+
+const isArrivalComplete = computed(() => {
+  const f = form.value;
+  return (
+    f.pickupAddress.trim() !== "" &&
+    f.pickupAddressDetail.trim() !== "" &&
+    f.pickupDate.trim() !== ""
+  );
+});
+
+const isLuggageComplete = computed(() => {
+  const f = form.value;
+  return (
+    f.homeAddress.trim() !== "" &&
+    f.homeAddressDetail.trim() !== "" &&
+    f.deliveryDate.trim() !== ""
+  );
+});
+
 
 // ========================
 defineProps({

@@ -2,46 +2,18 @@
 <template>
   <nav class="jb-nav" :class="{ 'is-open': isOpen }">
     <!-- Left: Logo -->
-    <router-link to="/" class="logo" aria-label="홈으로 이동">마타주</router-link>
+    <router-link to="/" class="logo" aria-label="홈으로 이동">
+      <!-- ★ 변경: 텍스트 대신 이미지 -->
+      <img class="logo-img" src="/images/mains/header/logo-1.png" alt="마타주 로고" />
+    </router-link>
 
     <!-- Desktop Menu -->
     <div class="menu">
-      <router-link class="dropdown"
-        >이용안내
-        <ul class="submenu">
-          <li><router-link to="/information">이용방법</router-link></li>
-          <li><router-link to="/information2">요금안내</router-link></li>
-        </ul>
-      </router-link>
-
-      <router-link class="dropdown"
-        >예약하기
-        <ul class="submenu">
-          <li><router-link to="/reservation">예약하기</router-link></li>
-          <li><router-link to="/reservation2">예약2 결제창</router-link></li>
-          <li><router-link to="/reservation3">예약3 결과창</router-link></li>
-        </ul>
-      </router-link>
-
+      <router-link class="dropdown" to="/information">이용안내</router-link>
+      <router-link class="dropdown" to="/reservation">예약하기</router-link>
       <router-link to="/promotion">프로모션</router-link>
-
-      <router-link class="dropdown"
-        >커뮤니티
-        <ul class="submenu">
-          <li><router-link to="/community">자유게시판</router-link></li>
-          <li><router-link to="/community2">후기</router-link></li>
-        </ul>
-      </router-link>
-
-      <router-link class="dropdown"
-        >고객센터
-        <ul class="submenu">
-          <li><router-link to="/support">자주하는 질문</router-link></li>
-          <li><router-link to="/support2">공지사항</router-link></li>
-          <li><router-link to="/support3">문의하기</router-link></li>
-        </ul>
-      </router-link>
-
+      <router-link class="dropdown" to="/community">커뮤니티</router-link>
+      <router-link class="dropdown" to="/support">고객센터</router-link>
       <div class="login">
         <router-link to="/login">로그인</router-link>
         <router-link to="/signup">예약 확인</router-link>
@@ -69,6 +41,9 @@
     </div>
   </nav>
 
+  <!-- ✅ 헤더 고정 시 본문 가려짐 방지용 스페이서 -->
+  <div class="nav-spacer" aria-hidden="true"></div>
+
   <!-- Mobile Panel -->
   <transition name="slide">
     <aside
@@ -80,73 +55,29 @@
       <div class="panel-inner">
         <button class="panel-close" @click="close()" aria-label="메뉴 닫기">×</button>
 
+        <!-- (모바일 전용) 텍스트 퀵 메뉴 -->
+        <div class="quick-row">
+          <router-link to="/login" class="quick-link" @click="close()">로그인</router-link>
+          <span class="sep" aria-hidden="true">|</span>
+          <router-link to="/signup" class="quick-link" @click="close()">예약 확인</router-link>
+        </div>
+
+        <!-- ✅ 상위메뉴만 있는 단일 리스트 (하위메뉴/아코디언 제거) -->
         <ul class="mobile-list">
-          <!-- 이용안내 (아코디언) -->
           <li>
-            <button
-              class="m-title-btn"
-              :aria-expanded="section.guide"
-              @click="toggleSection('guide')"
-            >
-              이용안내
-              <span class="chev" :class="{ open: section.guide }" aria-hidden="true">⌄</span>
-            </button>
-
-            <transition name="acc">
-              <div class="sublist" v-show="section.guide">
-                <router-link to="/information" @click="close()">이용방법</router-link>
-                <router-link to="/information2" @click="close()">요금안내</router-link>
-              </div>
-            </transition>
+            <router-link to="/information" class="m-title link-title" @click="close()">이용안내</router-link>
           </li>
-
-          <!-- 예약하기 (아코디언: 예약/배송) -->
           <li>
-            <button
-              class="m-title-btn"
-              :aria-expanded="section.reserve"
-              @click="toggleSection('reserve')"
-            >
-              예약하기
-              <span class="chev" :class="{ open: section.reserve }" aria-hidden="true">⌄</span>
-            </button>
-
-            <transition name="acc">
-              <div class="sublist" v-show="section.reserve">
-                <router-link to="/reservation" @click="close()">예약</router-link>
-                <router-link to="/reservation" @click="close()">배송</router-link>
-              </div>
-            </transition>
+            <router-link to="/reservation" class="m-title link-title" @click="close()">예약하기</router-link>
           </li>
-
-          <!-- 프로모션 (서브 없음) -->
           <li>
             <router-link to="/promotion" class="m-title link-title" @click="close()">프로모션</router-link>
           </li>
-
-          <!-- 커뮤니티 (서브 없음) -->
           <li>
             <router-link to="/community" class="m-title link-title" @click="close()">커뮤니티</router-link>
           </li>
-
-          <!-- 고객센터 (아코디언) -->
           <li>
-            <button
-              class="m-title-btn"
-              :aria-expanded="section.support"
-              @click="toggleSection('support')"
-            >
-              고객센터
-              <span class="chev" :class="{ open: section.support }" aria-hidden="true">⌄</span>
-            </button>
-
-            <transition name="acc">
-              <div class="sublist" v-show="section.support">
-                <router-link to="/support" @click="close()">자주하는 질문</router-link>
-                <router-link to="/support2" @click="close()">공지사항</router-link>
-                <router-link to="/support3" @click="close()">문의하기</router-link>
-              </div>
-            </transition>
+            <router-link to="/support" class="m-title link-title" @click="close()">고객센터</router-link>
           </li>
         </ul>
       </div>
@@ -161,7 +92,7 @@ const isOpen = ref(false)
 const toggle = () => (isOpen.value = !isOpen.value)
 const close = () => (isOpen.value = false)
 
-/* 아코디언 상태 */
+/* 기존 상태/핸들러 유지(다른 곳에서 쓸 수 있으므로 남김) */
 const section = reactive({ guide: false, reserve: false, support: false })
 const toggleSection = (key) => (section[key] = !section[key])
 
@@ -180,20 +111,30 @@ watch(isOpen, (open) => {
 </script>
 
 <style scoped>
-/* ====== Base ====== */
+/* ====== 헤더 높이 변수 (필요시만 조정) ====== */
+:root { --nav-h: 76px; }
+@media (max-width: 768px){ :root { --nav-h: 64px; } }
+
+/* ====== Base (★ fixed 적용) ====== */
 .jb-nav {
-  position: relative;
+  position: fixed;
+  top: 0; left: 0; right: 0;
   z-index: 9999;
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: clamp(8px, 1vw, 20px);
-  padding: 10px min(5vw, 32px);
+  padding: 10px min(8vw, 100px);
   border-bottom: 1px solid #e7e2e2;
   line-height: 60px;
   background: #fff;
+  min-height: var(--nav-h);
 }
 
+/* ★ 본문 가려짐 방지 */
+.nav-spacer{ height: var(--nav-h); }
+
+/* ====== 기존 스타일 그대로 ====== */
 .logo {
   width: auto;
   font-size: clamp(30px, 3vw, 38px);
@@ -219,6 +160,7 @@ watch(isOpen, (open) => {
   text-decoration: none;
   padding: 5px 10px;
   position: relative;
+  font-size: clamp(15px, 2vw, 22px);
 }
 .menu > a:hover,
 .menu > .dropdown:hover { color: #028587; }
@@ -226,40 +168,23 @@ watch(isOpen, (open) => {
 .login { padding-left: 2vw; }
 .login a {
   color: #a0a0a0;
-  font-size: clamp(12px, 1vw, 15px);
+  font-size: clamp(12px, 1vw, 16px);
   text-decoration: none;
 }
 .login > a:hover { color: #028587; font-weight: 500; }
 
 /* ====== Desktop dropdown ====== */
-.dropdown {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-}
-
-/* 박스 위치: 한 번 더 위로(-2px) + 너비 축소 */
+.dropdown { position: relative; display: inline-flex; align-items: center; }
 .dropdown .submenu {
   display: none;
   position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: -2px;              /* ↑ 총 6px 위로 (이전보다 4px 추가로 위) */
-  padding: 6px;
-  border: 1px solid #ddd;
-  border-radius: 10px;
-  min-width: 160px;              /* 폭 줄임 */
-  width: auto;                   /* 내용에 맞게 */
-  background: #fff;
-  z-index: 10001;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  margin-top: -2px; padding: 6px; border: 1px solid #ddd; border-radius: 10px;
+  min-width: 160px; width: auto; background: #fff; z-index: 10001;
   box-shadow: 0 6px 18px rgba(0,0,0,.08);
   text-align: center;
 }
-
 .dropdown:hover .submenu { display: block; }
-
-/* 항목: 한 줄 유지 + 간격/패딩 */
 .submenu li { padding: 0; }
 .submenu li a {
   display: block;
@@ -268,7 +193,6 @@ watch(isOpen, (open) => {
   color: #000;
   text-decoration: none;
   font-weight: 400;
-
   white-space: nowrap;
   word-break: keep-all;
 }
@@ -277,7 +201,7 @@ watch(isOpen, (open) => {
 /* ====== Mobile Top Right ====== */
 .nav-right { display: none; align-items: center; gap: 14px; }
 .login-mini { display: flex; align-items: center; gap: 12px; }
-.login-mini a { color: #6f6f6f; font-size: 14px; text-decoration: none; }
+.login-mini a { color: #6f6f6f; font-size: 16px !important; text-decoration: none; }
 .login-mini a:hover { color: #028587; }
 
 /* Hamburger */
@@ -295,15 +219,17 @@ watch(isOpen, (open) => {
 .jb-nav.is-open .hamburger .bar:nth-child(2){ opacity: 0; }
 .jb-nav.is-open .hamburger .bar:nth-child(3){ transform: translateY(-9px) rotate(-45deg); }
 
-/* ====== Mobile Panel ====== */
+/* ====== Mobile Panel (★ 헤더 아래에서 시작) ====== */
 .mobile-panel {
   position: fixed; inset: 0;
   background: rgba(0,0,0,.35);
   z-index: 12000;
 }
 .panel-inner {
-  position: absolute; top: 0; right: 0;
-  width: min(78vw, 360px); height: 100%;
+  position: absolute; right: 0;
+  top: var(--nav-h);
+  width: min(78vw, 360px);
+  height: calc(100% - var(--nav-h));
   background: #fff;
   box-shadow: -6px 0 16px rgba(0,0,0,.08);
   padding: 28px 22px;
@@ -330,7 +256,7 @@ watch(isOpen, (open) => {
   font-size: 20px; font-weight: 700; color: #028587; text-decoration: none; padding: 6px 0; display: inline-block;
 }
 .sublist { overflow: hidden; display: grid; gap: 8px; margin-left: 8px; padding: 4px 0 8px; }
-.sublist a { font-size: 15px; color: #111; text-decoration: none; line-height: 1.7; }
+.sublist a { font-size: 17px; color: #111; text-decoration: none; line-height: 1.7; }
 .sublist a:hover { color: #028587; }
 
 /* 트랜지션 */
@@ -349,6 +275,7 @@ watch(isOpen, (open) => {
   .menu { display: none; }
   .nav-right { display: flex; }
   .logo { font-size: 28px; }
+  .login-mini { display: none; }
 }
 @media (max-width: 390px) {
   .login-mini { gap: 10px; }
@@ -362,13 +289,50 @@ watch(isOpen, (open) => {
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
 
-/* ≥768px: 데스크탑 정렬 유지 */
-@media (min-width: 768px) {
+/* ≥768px: 네 코드 유지 */
+@media (min-width: 767px) {
   .nav-right { display: flex; align-items: center; gap: 14px; }
   .hamburger { display: none; }
   .login { display: none; }
-
-  .menu { margin-left: auto; margin-right: 4vw; justify-content: flex-end; }
+  .menu { margin-left: auto; margin-right: 2vw; justify-content: flex-end; }
   .login-mini a { font-size: 14px; }
 }
+
+/* ✅ 텍스트만 가로 정렬 */
+.quick-row{
+  display:flex; align-items:center; gap:12px;
+  margin-top:8px; margin-bottom:18px;
+}
+.quick-link{
+  font-size:16px; font-weight:700; color:#1f1f1f;
+  text-decoration:none; padding:4px 2px;
+}
+.quick-link:hover{ text-decoration:underline; }
+.sep{ color:#d1d5db; }
+
+.jb-nav{
+  position: sticky;  /* ← fixed 대신 sticky */
+  top: 0;
+  left: 0; right: 0;
+  z-index: 9999;
+}
+.mobile-panel{ position: fixed; inset: 0; height: 100dvh; }
+.panel-inner{
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  overflow-y: auto;
+}
+/* 로고 이미지를 기존 텍스트 로고 크기와 동일하게 맞춤 */
+.logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
+.logo-img {
+  height: 2.2em;    /* 텍스트 기준 1em = 기존 폰트 크기와 동일한 높이 */
+  width: auto;    /* 비율 유지 */
+  display: block;
+  object-fit: contain;
+}
+
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <!-- ✅ 모달 구조 통일 버전 -->
+  <!-- 모달 구조 통일 버전 -->
 <div
   v-if="showModal"
   class="addr-modal"
@@ -96,10 +96,10 @@ const modalMapEl = ref(null);
 
 let map, marker, infoWindow, geocoder;
 
-/* ✅ Kakao Map API key 존재 여부 */
+/* Kakao Map API key 존재 여부 */
 const hasKakaoKey = Boolean(import.meta.env.VITE_KAKAO_MAP_APP_KEY);
 
-/* ✅ Kakao Map 스크립트 로드 */
+/* Kakao Map 스크립트 로드 */
 function loadKakaoMapScript() {
   return new Promise((resolve, reject) => {
     if (window.kakao && window.kakao.maps) return resolve();
@@ -114,7 +114,7 @@ function loadKakaoMapScript() {
   });
 }
 
-/* ✅ 지도 mount (모달 열릴 때 실행) */
+/* 지도 mount (모달 열릴 때 실행) */
 async function mountMap() {
   if (!modalMapEl.value || !hasKakaoKey) return;
 
@@ -144,7 +144,7 @@ async function mountMap() {
   if (selectedLocation.value) moveMapTo(selectedLocation.value);
 }
 
-/* ✅ 특정 위치로 지도 이동 */
+/* 특정 위치로 지도 이동 */
 function moveMapTo(location) {
   if (!geocoder || !map || !location) return;
 
@@ -163,7 +163,7 @@ function moveMapTo(location) {
   });
 }
 
-/* ✅ 모달 열릴 때 지도 mount */
+/* 모달 열릴 때 지도 mount */
 watch(showModal, async (v) => {
   if (v) {
     await nextTick();
@@ -171,7 +171,7 @@ watch(showModal, async (v) => {
   }
 });
 
-/* ✅ 지점 선택 시 지도 갱신 */
+/*  지점 선택 시 지도 갱신 */
 function selectLocationFromModal(locationId) {
   const location = locations.find((loc) => loc.id === locationId);
   if (!location || location.status === "점검중") return;
@@ -182,12 +182,12 @@ function selectLocationFromModal(locationId) {
   if (map) moveMapTo(location);
 }
 
-/* ✅ 모달 닫기 */
+/* 모달 닫기 */
 function closeModal() {
   showModal.value = false;
 }
 
-/* ✅ 모달 열기 */
+/* 모달 열기 */
 function openMapModal() {
   showModal.value = true;
 }

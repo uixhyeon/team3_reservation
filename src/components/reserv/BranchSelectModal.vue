@@ -130,7 +130,7 @@ const selectedLocation = ref(null);
 
 let map, marker, geocoder;
 
-/* ✅ 카카오맵 스크립트 로드 */
+/* 카카오맵 스크립트 로드 */
 async function loadKakaoMapScript() {
   if (window.kakao && window.kakao.maps) return;
   const key = import.meta.env.VITE_KAKAO_MAP_APP_KEY;
@@ -142,7 +142,7 @@ async function loadKakaoMapScript() {
   });
 }
 
-/* ✅ 지도 mount */
+/* 지도 mount */
 async function mountMap() {
   await loadKakaoMapScript();
   const center = new window.kakao.maps.LatLng(35.8714, 128.6014);
@@ -153,7 +153,7 @@ async function mountMap() {
   window.dispatchEvent(new Event("resize"));
 }
 
-/* ✅ 지도 이동 */
+/* 지도 이동 */
 function moveMapTo(location) {
   if (!geocoder) return;
   geocoder.addressSearch(location.address, (results, status) => {
@@ -166,14 +166,14 @@ function moveMapTo(location) {
   });
 }
 
-/* ✅ 지점 선택 */
+/* 지점 선택 */
 function selectLocation(location) {
   if (location.status === "점검중") return;
   selectedLocation.value = location;
   moveMapTo(location);
 }
 
-/* ✅ 길찾기 */
+/* 길찾기 */
 function openKakaoMapDirections(location) {
   const { name, lat, lng, address } = location;
   const encodedName = encodeURIComponent(name);
@@ -188,9 +188,9 @@ function openKakaoMapDirections(location) {
   }
 }
 
-/* ✅ 완료 버튼 */
+/* 완료 버튼 */
 function confirm() {
-  emit("selected", selectedLocation.value);
+  emit("selected", { name: selectedLocation.value.name });
   emit("close");
 }
 watch(
@@ -217,7 +217,8 @@ onMounted(async () => {
 
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
 .addr-modal {
   position: fixed;
   inset: 0;
@@ -307,7 +308,7 @@ onMounted(async () => {
 }
 .result-item.selected {
   background: #f0fdfa;
-  border-left: 4px solid #2ca39f;
+  border-left: 4px solid $color_main;
 }
 
 .result-info h4 {
@@ -388,7 +389,7 @@ onMounted(async () => {
 }
 .directions-btn {
   width: 100%;
-  background: #2ca39f;
+  background: $color_main ;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -406,7 +407,7 @@ onMounted(async () => {
 .footer .btn {
   width: 100%;
   padding: 12px;
-  background: #2ca39f;
+  background: $color_main ;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -416,7 +417,7 @@ onMounted(async () => {
   transition: 0.2s ease;
 }
 .footer .btn:hover {
-  background: #248c88;
+  background: $color_main_deep ;
 }
 .footer .btn:disabled {
   background: #ccc;

@@ -1,11 +1,15 @@
+<!-- 수정 필요한--
+ 490이하일때 스와이퍼의 중앙이 맞지 않음 
+ 
+ -->
 <template>
   <div class="review_wrap">
-    <div class="inner">
+    <div class="inner-review">
       <div class="title">
         <h1>사용자들의 이유 있는 선택</h1>
         <h2><span class="strong">4.83</span>/5</h2>
         <p class="star">★★★★★</p>
-        <p>*2025년 11월 기준</p>
+        <p>*2025년 9월 기준</p>
       </div>
       <!-- Swiper -->
       <div class="swiper reviewSwiper">
@@ -112,7 +116,7 @@ const reviews = ref([
 
 onMounted(() => {
   new Swiper(".reviewSwiper", {
-    slidesPerView: 1, //
+    slidesPerView: 3, //
     centeredSlides: true,
     loop: true,
     loopedSlides: reviews.value.length,
@@ -123,10 +127,11 @@ onMounted(() => {
       disableOnInteraction: false,
     },
     breakpoints: {
-      1400: { slidesPerView: 3, spaceBetween: 40 },
+      1400: { slidesPerView: 3.1, spaceBetween: 40 },
       1024: { slidesPerView: 2.3, spaceBetween: 30 },
       768: { slidesPerView: 1.4, spaceBetween: 25 },
       490: { slidesPerView: 1.3, spaceBetween: 15 },
+      0: { slidesPerView: 1, spaceBetween: 8 },
     },
   });
 });
@@ -143,54 +148,36 @@ onMounted(() => {
 .review_wrap {
   padding: $title-big-gap-large;
   overflow: hidden;
-  @media (max-width: 768px) {
-    padding: 0 20px;
-  }
-  @media (max-width: 390px) {
-    padding: 100px 0 0px;
-  }
+  padding-top: 0;
 }
 
-.inner {
+.inner-review {
   width: 100%;
   max-width: 1320px;
   margin: 0 auto;
   text-align: center;
-  overflow: hidden;
 }
 
-.title {
-  margin-bottom: $text-big-gap-large;
-  @media (max-width: 390px) {
-    margin: 0;
-  }
-}
-
-.title h1 {
+.inner-review > h1 {
   font-size: $title-md;
   color: #222;
-  margin-bottom: 1rem;
+  
+  
 }
 
-.title h2 {
-  font-size: $title-sm;
-  color: #333;
-  margin-bottom: 0.5rem;
+.title h1{
+  font-weight: 700;
+  font-size: clamp(26px, 2.8vw, 38px);
+  white-space: nowrap;
 }
 
-.title p {
-  font-size: $text-md;
-  color: #666;
+.title h2{
+  font-size: clamp(20px, 2.8vw, 34px);
 }
 
 .reviewSwiper {
-  padding: 1%;
-  overflow: hidden;
-  // background-color: red;
+  overflow: visible;
   margin-top: $text-big-gap-large;
-  @media (max-width: 390px) {
-    margin-top: 0;
-  }
 }
 
 /* 슬라이드 */
@@ -250,9 +237,10 @@ onMounted(() => {
 }
 
 .star {
-  font-size: 18px;
+  font-size: 26px;
   color: #facc15;
   margin-right: 5px;
+  margin-top: -5px;
 }
 
 .score {
@@ -291,6 +279,11 @@ onMounted(() => {
   .comment {
     font-size: $label-lg;
   }
+  .review_wrap {
+  padding: $title-big-gap-large;
+  overflow: hidden;
+  padding-top: 60px;
+}
 }
 @media (max-width: 490px) {
   .comment {
@@ -298,7 +291,15 @@ onMounted(() => {
   }
   .review_card {
     max-width: 90%;
-    // min-height: 300px;
+    min-height: 300px;
   }
+  .reviewSwiper {
+    margin-top: 80px;
+  }
+  .review_wrap {
+  padding: $title-big-gap-large;
+  overflow: hidden;
+  padding-top: 100px;
+}
 }
 </style>

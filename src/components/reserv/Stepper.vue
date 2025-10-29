@@ -78,7 +78,7 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
     width: 22px;
     height: 22px;
     border-radius: 50%;
-    border: 2px solid #bbb;
+    border: 3px solid #bbb;
     background-color: #e6e6e6;
     margin-bottom: 0.6rem;
     z-index: 2;
@@ -102,21 +102,21 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
 
   /* ✅ 활성화 상태 */
   &.active {
-    color: #028587;
+    color:$color_main ;
     font-weight: 600;
 
     .circle {
-      border-color: $color_main_light;
-      background-color: $color_main_deep;
+      border-color: $color_main ;
+      background-color:$color_main_background;
 
       &::after {
-        border-top-color: #74d0c8;
+        border-top-color: $color_main;
       }
     }
   }
 }
 
-/* ✅ 모바일(768px 이하) — 점선 & 비활성 단계 숨김 */
+// 반응형
 @media (max-width: 768px) {
   .stepper ol {
     flex-direction: column;

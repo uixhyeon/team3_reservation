@@ -5,8 +5,8 @@
     <div class="footer-inner">
       <!-- 좌측 -->
       <div class="footer-left">
-        <h2 class="brand">짐보따리</h2>
-        <p class="tagline">한 줄 슬로건</p>
+        <h2 class="brand">마타주</h2>
+        <!-- <p class="tagline">한 줄 슬로건</p> -->
 
         <address class="corp-info">
           <p>대표자: TEAM A | 주소: 서울 중랑구 3로 3길 재밌빌딩 5F</p>

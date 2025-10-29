@@ -137,7 +137,8 @@ onMounted(async () => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
 .addr-modal {
   position: fixed;
   inset: 0;
@@ -180,21 +181,21 @@ onMounted(async () => {
   position: relative;
 }
 
-/* ✅ 빈화면일 때 '선택 완료' 표시 */
+/* 선택완료 */
 .postcode-wrap::before {
-  content: "✅  선택 완료";
+  content: "😀 선택 완료";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  color: #53b4a1;
+  color: $color_main;
   font-weight: 600;
   font-size: 18px;
   opacity: 0.85;
   text-align: center;
   letter-spacing: 0.5px;
   pointer-events: none;
-  animation: fadeIn 0.4s ease;
+  animation: fadeIn 0.2s ease;
 }
 @keyframes fadeIn {
   from {
@@ -218,10 +219,44 @@ onMounted(async () => {
 .btn {
   width: 100%;
   padding: 12px;
-  background: #2ca39f;
+  background: $color_main;
   color: #fff;
   border: none;
   border-radius: 8px;
   font-size: 16px;
+}
+/* 비활성화 */
+.footer {
+  padding: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.btn {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.25s;
+}
+
+/* ✅ 비활성화 상태 (선택 전) */
+.btn:disabled {
+  background: #d1d1d1;
+  color: #fff;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+/* ✅ 활성화 상태 (주소 선택 후) */
+.btn:not(:disabled) {
+  background: $color_main;
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(44, 163, 159, 0.3);
+}
+
+.btn:not(:disabled):hover {
+  background: $color_main_deep;
 }
 </style>

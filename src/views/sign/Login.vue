@@ -29,14 +29,14 @@
     <div class="login-right">
       <div class="coupon-banner">
         <div class="banner-text">
-          <h2>마타주가 처음인 당신을 위한 쿠폰 혜택</h2>
+          <h2>마타주가 처음인 당신을 위해</h2>
           <p>
-            신규회원 모두에게 가입 즉시 사용할 수 있는 쿠폰을 발송드립니다.<br />
-            할인 혜택으로 여행을 가볍게 시작해보세요!
+            신규회원 가입 쿠폰을 발송드려요<br />
+            가벼운 여행을 시작해 보세요!
           </p>
         </div>
         <div class="coupon-card">
-          <img src="/public/images/sign/Login_cupon.png" alt="">
+          <img src="/public/images/sign/Login_cupon.png" alt="쿠폰" />
           <!-- <div class="side">#COUPON</div> -->
         </div>
       </div>
@@ -59,39 +59,52 @@ const handleLogin = () => {
 </script>
 
 <style scoped lang="scss">
-.coupon-card{
-  width: 100%;
-img{
-  width: 100%
-}
-}
-.login-page {
-  display: grid;
-  grid-template-columns: 1fr 1fr; 
-  min-height: 100vh;
+@use "/src/assets/style/variables" as *;
 
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr;
+.coupon-card {
+  width: 100%;
+  img {
+    width: 100%;
   }
 }
 
-/* ✅ 왼쪽 로그인 폼 */
+/* 메인 레이아웃: flex 기반 */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: stretch; /* 좌우 높이 동일하게 */
+  min-height: 100vh;
+  max-width: 1120px;
+  gap: 2.5rem;
+  margin: 0 auto;
+  gap: 0; /* 카드 사이 여백 조정 가능 */
+
+  /* ✅ 반응형 (900px 이하일 때 1열 전환) */
+  @media (max-width: 900px) {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+/* 왼쪽 로그인 폼 */
 .login-left {
+  // flex: 1;
+  width: 400px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 60px 40px;
+  // padding: 40px 20px;
 }
 
 .title {
   font-size: 28px;
-  color: #378172;
+  color: $color_main;
   font-weight: 700;
   margin-bottom: 30px;
 }
 
-/* ✅ 로그인 폼 */
+/* 로그인 폼 */
 .login-form {
   display: flex;
   flex-direction: column;
@@ -109,13 +122,13 @@ img{
     transition: border-color 0.2s ease;
 
     &:focus {
-      border-color: #53b4a1;
+      border-color: $color_main_light;
     }
   }
 
   .login-btn {
     width: 100%;
-    background: #53b4a1;
+    background: $color_main;
     color: #fff;
     border: none;
     border-radius: 6px;
@@ -125,7 +138,7 @@ img{
     transition: background 0.2s ease;
 
     &:hover {
-      background: #449b8a;
+      background: $color_main_deep;
     }
   }
 
@@ -144,13 +157,13 @@ img{
       transition: color 0.2s ease;
 
       &:hover {
-        color: #53b4a1;
+        color: $color_main_deep;
       }
     }
   }
 }
 
-/* ✅ SNS 로그인 */
+/* SNS 로그인 */
 .social-login {
   display: flex;
   justify-content: center;
@@ -187,24 +200,27 @@ img{
   }
 }
 
-/* ✅ 오른쪽 쿠폰 배너 */
+/* 오른쪽 쿠폰 배너 */
 .login-right {
-  // background: #f5f7f7;
+  // flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 60px;
+  // padding: 60px 20px;
+  // background: #f9fbfb;
 }
 
+/* 배너 내용 */
 .coupon-banner {
   width: 100%;
- background: linear-gradient(to bottom,#fff 65%, #53B4A1 35% );
+  background: url(/public/images/sign/2462865.png) no-repeat center center;
+ 
   padding: 40px;
   border-radius: 6px;
-  border: solid #e7e7e7 1px;
-  // box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e7e7e7;
   text-align: center;
-  max-width: 450px;
+  max-width: 400px;
+  background-color: #fff;
 
   .banner-text {
     h2 {
@@ -224,10 +240,8 @@ img{
   .coupon-card {
     width: 100%;
     position: relative;
-   background: #fff;
     color: #fff;
     border-radius: 6px;
-    // padding: 40px 20px;
     text-align: center;
 
     h1 {

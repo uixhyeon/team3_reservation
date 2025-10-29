@@ -1,9 +1,8 @@
 <template>
-  <!-- ✅ 결제완료 (고정형 카드 UI 단독) -->
+  <!-- 결제완료 -->
   <section class="reserve-page">
     <div class="inner">
       <Stepper :current-step="3" />
-
       <div class="card-test">
         <div class="form_card receipt_card">
           <div class="card_header">
@@ -13,24 +12,23 @@
           <div class="card_content">
             <table class="receipt_table">
                 <colgroup>
-    <col style="width: 65%;" />   <!-- 왼쪽열 -->
-    <col style="width: 35%;" />   <!-- 오른쪽열 -->
+    <col style="width: 65%;" />   <!-- 왼쪽 -->
+    <col style="width: 35%;" />   <!-- 오른쪽 -->
   </colgroup>
-              <tbody>
-                <tr><td>상품명</td><td>사물함 대여</td></tr>
-                <tr><td>결제 수단</td><td>신용카드 (💳)</td></tr>
-                <tr><td>쿠폰 할인</td><td>- 3,000원</td></tr>
-                <tr><td>포인트 사용</td><td>- 2,500원</td></tr>
+       <tbody>
+                <tr><td>결제 수단</td><td>{{ paymentLabel }}</td></tr>
+                <tr v-if="useCoupon"><td>쿠폰 할인</td><td>- {{ formatKrw(3000) }}</td></tr>
+                <tr v-if="usePoints"><td>포인트 사용</td><td>- {{ formatKrw(2500) }}</td></tr>
                 <tr class="total">
                   <td>최종 결제 금액</td>
-                  <td><strong>23,500원</strong></td>
+                  <td><strong>{{ formatKrw(finalTotal) }}</strong></td>
                 </tr>
               </tbody>
             </table>
 
             <div class="receipt_footer">
               <p>주문번호 : 2025-1023-001</p>
-              <p>결제일시 : 2025.10.23 14:32</p>
+            <p>결제일시 : {{ formattedNow }}</p>
             </div>
           </div>
 
@@ -41,18 +39,29 @@
           <div class="card_content">
             <table class="receipt_table">
                        <colgroup>
-    <col style="width: 65%;" />   <!-- 왼쪽열 -->
-    <col style="width: 35%;" />   <!-- 오른쪽열 -->
+    <col style="width: 65%;" />   <!-- 왼쪽 -->
+    <col style="width: 35%;" />   <!-- 오른쪽 -->
   </colgroup>
-              <tbody>
-                <tr><td>상품명</td><td>사물함 대여</td></tr>
-                <tr><td>결제 수단</td><td>신용카드 (💳)</td></tr>
-                <tr><td>쿠폰 할인</td><td>- 3,000원</td></tr>
-                <tr><td>포인트 사용</td><td>- 2,500원</td></tr>
-                <tr class="total">
-                  <td>최종 결제 금액</td>
-                  <td><strong>23,500원</strong></td>
+        <tbody>
+                <!-- 사물함 예약 -->
+                <tr v-if="form.name"><td>성함</td><td>{{ form.name }}</td></tr>
+                <tr v-if="form.phone"><td>휴대폰</td><td>{{ form.phone }}</td></tr>
+                <tr v-if="form.size"><td>사물함 사이즈</td><td>{{ form.size }}</td></tr>
+                <tr v-if="form.address"><td>대여 장소</td><td>{{ form.address }}</td></tr>
+                <tr v-if="form.dateRange && form.dateRange[0] && form.dateRange[1]">
+                  <td>예약 기간</td>
+                  <td>{{ form.dateRange[0] }} ~ {{ form.dateRange[1] }}</td>
                 </tr>
+
+                <!-- 짐 가져오기 -->
+                <tr v-if="form.pickupAddress"><td>픽업 주소</td><td>{{ form.pickupAddress }}</td></tr>
+                <tr v-if="form.pickupAddressDetail"><td>상세 주소</td><td>{{ form.pickupAddressDetail }}</td></tr>
+                <tr v-if="form.pickupDate"><td>픽업일</td><td>{{ form.pickupDate }}</td></tr>
+
+                <!-- 집으로 보내기 -->
+                <tr v-if="form.homeAddress"><td>배송 주소</td><td>{{ form.homeAddress }}</td></tr>
+                <tr v-if="form.homeAddressDetail"><td>상세 주소</td><td>{{ form.homeAddressDetail }}</td></tr>
+                <tr v-if="form.deliveryDate"><td>배송일</td><td>{{ form.deliveryDate }}</td></tr>
               </tbody>
             </table>
           </div>
@@ -63,23 +72,82 @@
     </div>
   </section>
 </template>
-    <script setup>
-import { useRouter } from "vue-router";
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+import { ref, computed } from "vue";
 import Stepper from "@/components/reserv/Stepper.vue";
+
+const route = useRoute();
 const router = useRouter();
-const goToHome= () => {
+
+// ✅ 전달된 데이터 받기
+const form = ref(
+  route.query.form
+    ? JSON.parse(route.query.form)
+    : {
+        name: "",
+        phone: "",
+        size: "",
+        address: "",
+        dateRange: [],
+        pickupAddress: "",
+        pickupAddressDetail: "",
+        pickupDate: "",
+        homeAddress: "",
+        homeAddressDetail: "",
+        deliveryDate: "",
+      }
+);
+
+const useCoupon = ref(route.query.useCoupon === "true");
+const usePoints = ref(route.query.usePoints === "true");
+const selectedPayment = ref(route.query.payment || "card");
+const total = Number(route.query.total) || 0;
+
+// 결제 수단명
+const paymentLabel = computed(() => {
+  switch (selectedPayment.value) {
+    case "card": return "💳 신용카드";
+    case "kakao": return "💬 카카오페이";
+    case "naver": return "N Pay";
+    case "bank": return "🏦 무통장입금";
+    default: return "-";
+  }
+});
+
+// 할인 계산
+const discount = computed(() => {
+  let d = 0;
+  if (useCoupon.value) d += 3000;
+  if (usePoints.value) d += 2500;
+  return d;
+});
+
+const finalTotal = computed(() => total);
+
+// 통화 포맷
+const formatKrw = (v) =>
+  new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(v);
+
+// 현재 시각
+const formattedNow = new Date().toLocaleString("ko-KR", {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+  hour: "2-digit",
+  minute: "2-digit",
+});
+
+// 홈으로 이동
+const goToHome = () => {
   router.push("/");
 };
-
-
 </script>
 
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
 
-/* =========================================================
-  페이지 배경 및 전체 레이아웃
-========================================================= */
+//====배경 레아웃================
 .reserve-page {
   background: #f5f7f7;
   // padding: 5rem 0;
@@ -96,9 +164,7 @@ const goToHome= () => {
   padding: 40px 0;
 }
 
-/* =========================================================
- 카드 공통 스타일
-========================================================= */
+//====공통================
 .form_card {
   background: #fff;
   border-radius: 10px;
@@ -113,8 +179,9 @@ const goToHome= () => {
     content: "";
     position: absolute;
     top: 0; left: 0;
-    width: 100%; height: 8px;
-    background: #53b4a1;
+    width: 100%; 
+    height: 12px;
+    background: $color_main;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
@@ -126,9 +193,7 @@ const goToHome= () => {
   }
 }
 
-/* =========================================================
-  결제완료 / 영수증 카드
-========================================================= */
+// 결제완료
 .receipt_card {
   text-align: center;
 
@@ -143,7 +208,7 @@ const goToHome= () => {
     margin-bottom: 20px;
   }
 
-  /*  표 스타일 */
+//표
   .receipt_table {
     width: 100%;
     font-size: $text-sm;
@@ -169,14 +234,14 @@ const goToHome= () => {
         color: #111;
 
         &:last-child {
-          color: #53b4a1;
+          color: $color_main;
           font-size:$text-md;
         }
       }
     }
   }
 
-  /* ✅ 하단 문구 */
+  // 하단 문구 
   .receipt_footer {
     text-align: left;
     font-size: $label-md;
@@ -187,9 +252,7 @@ const goToHome= () => {
   }
 }
 
-/* =========================================================
-    버튼 (카드 내부 공통)
-========================================================= */
+//=======버튼=============
 .submit_btn {
   width: 80%;
   margin-top: 20px;
@@ -198,20 +261,18 @@ const goToHome= () => {
   font-size: $button;
   font-weight: 600;
   color: #fff;
-  background: #53b4a1;
+  background: $color_main;
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.2s ease; /* 버튼만 부드럽게 */
 
   &:hover {
-    background: #449b8a;
+    background: $color_main_deep;
   }
 }
 
-/* =========================================================
-   임시 레이아웃
-========================================================= */
+//====================
 .card-test {
   display: flex;
   flex-direction: column;

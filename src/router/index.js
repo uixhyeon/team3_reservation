@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "@/views/HomeView.vue";
-import Information from "@/views/Information.vue";
-import Information2 from "@/views/Information2.vue";
+import Information from "@/views/information/Information.vue";
+
 import Reservation from "@/views/Reservation.vue";
 
 import ReserveForm from "@/components/reserv/ReserveForm.vue";
@@ -12,18 +12,17 @@ import Reservation3 from "@/views/booking/Reservation3.vue";
 
 import Promotion from "@/views/Promotion.vue";
 import Community from "@/views/Community.vue";
-import Community2 from "@/views/Community2.vue";
+
 import Support from "@/views/Support.vue";
-import Support2 from "@/views/Support2.vue";
-import Support3 from "@/views/Support3.vue";
+
 import Signup from "@/views/sign/Signup.vue";
 import Login from "@/views/sign/Login.vue";
-import ConfirmReserv from "@/views/ConfirmReserv.vue";
+
 import Signup2 from "@/views/sign/Signup2.vue";
 const routes = [
   { path: "/", component: HomeView },
   { path: "/information", component: Information },
-  { path: "/information2", component: Information2 },
+
   { path: "/promotion", component: Promotion },
 
   { path: "/reservation", component: Reservation },
@@ -35,14 +34,13 @@ const routes = [
   { path: "/reservation3", component: Reservation3 },
 
   { path: "/community", component: Community },
-  { path: "/community2", component: Community2 },
+
   { path: "/login", component: Login },
   { path: "/signup", component: Signup },
   { path: "/support", component: Support },
-  { path: "/support2", component: Support2 },
-  { path: "/support3", component: Support3 },
+
   
-  { path: "/confirmreserv", component: ConfirmReserv },
+ 
   { path: "/signup2", component: Signup2 },
 
 

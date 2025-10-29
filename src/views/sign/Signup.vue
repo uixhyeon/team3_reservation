@@ -46,10 +46,6 @@
     </div>
   </div>
 
-
-
-<!-- ==================================================== -->
-<Signup2/>
 <!-- ==================================================== -->
 </template>
 <script setup>
@@ -64,7 +60,7 @@ const goToLogin = () => {
 </script>
 
 <style scoped lang="scss">
-
+@use "/src/assets/style/variables" as *;
 
 /* ✅ 전체 페이지 구조 */
 .join-page {
@@ -82,7 +78,7 @@ const goToLogin = () => {
   height: 200px;
   position: relative;
   width: 100%;
-  background: #53b4a1;
+  background: $color_main;
   color: #fff;
   text-align: center;
   padding: 50px 0;
@@ -207,7 +203,7 @@ const goToLogin = () => {
       outline: none;
 
       &:focus {
-        border-bottom-color: #53b4a1;
+        border-bottom-color: $color_main_background;
       }
     }
   }
@@ -246,13 +242,13 @@ const goToLogin = () => {
 
   input[type="checkbox"] {
     margin-right: 8px;
-    accent-color: #53b4a1;
+    accent-color: $color_main_light;
   }
 }
 
 /* ✅ 버튼 */
 .btn {
-  background: #53b4a1;
+  background: $color_main;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -273,7 +269,7 @@ const goToLogin = () => {
   }
 
   &:hover {
-    background: #449b8a;
+    background: $color_main_deep ;
   }
 }
 

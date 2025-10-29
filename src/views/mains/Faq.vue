@@ -22,12 +22,12 @@
             <div class="phone-mock" aria-hidden="true">
               <div class="notch"></div>
               <div class="screen">
-                <span class="screen-brand">짐보따리</span>
+                <span class="screen-brand">마타주</span>
               </div>
             </div>
 
             <div class="copy">
-              <h2 class="title"><strong>짐보따리</strong> 앱 <span>다운받기</span></h2>
+              <h2 class="title"><strong>마타주</strong> 앱 <span>다운받기</span></h2>
               <p class="desc">
                 지금, 유니크 리무버블.<br />
                 심플하게, 가볍게 지금 경험해 보세요
@@ -57,7 +57,7 @@
         <aside class="faq" ref="faqRef" aria-label="자주 묻는 질문">
           <header class="faq-head">
             <h3 class="faq-title">자주 묻는 질문</h3>
-            <button type="button" class="inquiry-btn">문의하기</button>
+            <!-- <button type="button" class="inquiry-btn">문의하기</button> -->
           </header>
 
           <ul class="faq-list" ref="listRef">
@@ -252,7 +252,7 @@ onBeforeUnmount(() => {
   /* 높이는 JS로 lockHeights()에서 설정 */
 }
 .faq-main .faq-head{ display:flex; align-items:center; justify-content:space-between; padding:16px 14px 8px; }
-.faq-main .faq-title{ font-size:28px; font-weight:900; color:#111;}
+.faq-main .faq-title{ font-size:28px; font-weight:900; color:#111; margin-top: -3px;}
 .faq-main .inquiry-btn{ height:32px; padding:0 14px; border-radius:999px; border:1px solid #d8e2e2; background:#fff; color:#2b2b2b; font-size:13px; font-weight:600;}
 .faq-main .inquiry-btn:hover{ background:#f7fafa; }
 

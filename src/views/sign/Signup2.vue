@@ -66,6 +66,8 @@ const goToLogin = () => {
 </script>
 
 <style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
+
 .title-wrap{
 display: flex;
 
@@ -81,7 +83,7 @@ display: flex;
     transition: border-color 0.2s ease;
 
     &:focus {
-      border-bottom: 1px solid #53b4a1;
+      border-bottom: 1px solid $color_main_light;
     }
   
 
@@ -103,7 +105,7 @@ display: flex;
   height: 200px;
   position: relative;
   width: 100%;
-  background: #53b4a1;
+  background: $color_main;
   color: #fff;
   text-align: center;
   padding: 50px 0;
@@ -228,7 +230,7 @@ display: flex;
       outline: none;
 
       &:focus {
-        border-bottom-color: #53b4a1;
+        border-bottom-color: $color_main_light;
       }
     }
   }
@@ -267,13 +269,13 @@ display: flex;
 
   input[type="checkbox"] {
     margin-right: 8px;
-    accent-color: #53b4a1;
+    accent-color: $color_main_light;
   }
 }
 
 /* ✅ 버튼 */
 .btn {
-  background: #53b4a1;
+  background: $color_main;
   color: #fff;
   border: none;
   border-radius: 6px;
@@ -294,7 +296,7 @@ display: flex;
   }
 
   &:hover {
-    background: #449b8a;
+    background: $color_main_deep;
   }
 }
 .gapp{

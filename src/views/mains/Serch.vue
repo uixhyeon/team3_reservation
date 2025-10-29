@@ -1,6 +1,6 @@
 <template>
   <div class="search-main">
-    <section class="branch-search" role="search" aria-label="짐보따리 지점 찾기">
+    <section class="branch-search" role="search" aria-label="마타주 지점 찾기">
       <div class="inner">
         <!-- 이미지 표시 영역 -->
         <figure class="illustration">
@@ -8,8 +8,8 @@
         </figure>
 
         <div class="content">
-          <h1 class="title">짐보따리 지점 찾기</h1>
-          <p class="subtitle">근처에 있는 짐보따리 보관소와 무인함 위치를 한눈에 확인할 수 있습니다.</p>
+          <h1 class="title">마타주 지점 찾기</h1>
+          <p class="subtitle">근처에 있는 마타주 보관소와 무인함 위치를 한눈에 확인할 수 있습니다.</p>
 
           <form class="searchbar" @submit.prevent="openMapModal">
             <label class="a11y" for="branchSelect">지점 선택</label>
@@ -440,7 +440,7 @@ onMounted(() => {
 
 <style scoped>
 .search-main .branch-search {
-  --mint: #028587;
+  --mint: #3e9c9b;
   --mint-weak: #f4fbfb;
   --ink: #111111;
   --muted: #647074;
@@ -494,14 +494,14 @@ onMounted(() => {
 
 .search-main .title {
   font-weight: 800;
-  font-size: clamp(24px, 3.2vw, 32px);
+  font-size: clamp(24px, 3.2vw, 35px);
   letter-spacing: -0.02em;
   color: var(--ink);
   margin-bottom: 8px;
 }
 
 .search-main .subtitle {
-  font-size: clamp(14px, 1.3vw, 15px);
+  font-size: clamp(14px, 1.3vw, 17px);
   color: var(--muted);
   margin-bottom: 20px;
   @media (max-width: 390px){
@@ -1003,4 +1003,6 @@ onMounted(() => {
     gap: 2px;
   }
 }
+
+
 </style>

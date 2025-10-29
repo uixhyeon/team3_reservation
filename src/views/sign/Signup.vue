@@ -50,7 +50,7 @@
 </template>
 <script setup>
 import { useRouter } from "vue-router";
-import Signup2 from "./Signup2.vue";
+import Signup2 from "@/views/sign/Signup2.vue";
 // useRouter() 이동할때 사용하는 함수
 const router = useRouter();
 const goToLogin = () => {
@@ -71,6 +71,7 @@ const goToLogin = () => {
   align-items: center;
   position: relative;
   z-index: 0;
+  padding-bottom: 3rem;
 }
 
 /* ✅ 상단 헤더 */

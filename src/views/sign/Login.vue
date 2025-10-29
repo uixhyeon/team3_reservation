@@ -9,10 +9,12 @@
         <input type="password" placeholder="비밀번호" v-model="password" />
         <button type="submit" class="login-btn">로그인</button>
 
+
+        <!-- 찾기 -->
         <div class="link-row">
-          <a href="#">아이디 찾기</a>
+          <a href="#" @click.prevent="showFindId = true">아이디 찾기</a>
           <span>|</span>
-          <a href="#">비밀번호 찾기</a>
+           <a href="#" @click.prevent="showFindPw = true">비밀번호 찾기</a>
           <span>|</span>
           <a href="/signup">회원가입</a>
         </div>
@@ -29,11 +31,17 @@
     <div class="login-right">
       <div class="coupon-banner">
         <div class="banner-text">
-          <h2>마타주가 처음인 당신을 위해</h2>
-          <p>
-            신규회원 가입 쿠폰을 발송드려요<br />
-            가벼운 여행을 시작해 보세요!
-          </p>
+          <div class="title-bg">
+
+            <h2>마타주가 처음인 당신을 위해</h2>
+          </div>
+<div class="scr-bg">
+  <p>
+    신규회원 가입 쿠폰을 발송드려요<br />
+    가벼운 여행을 시작해 보세요!
+  </p>
+</div>
+<div>blank</div>
         </div>
         <div class="coupon-card">
           <img src="/public/images/sign/Login_cupon.png" alt="쿠폰" />
@@ -42,12 +50,27 @@
       </div>
     </div>
   </div>
+<FindResarv/>
+    <!-- ✅ 모달 삽입 -->
+    <FindIDModal v-if="showFindId" @close="showFindId = false" />
+    <FindPwModal v-if="showFindPw" @close="showFindPw = false" />
 </template>
 
 <script setup>
 import { ref } from "vue";
+import FindIDModal from "@/views/sign/FindID.vue";
+import FindPwModal from "@/views/sign/FindPw.vue";
+import FindResarv from "./FindResarv.vue";
+
+
 const userId = ref("");
 const password = ref("");
+
+// Find id pw
+
+const showFindId = ref(false);
+const showFindPw = ref(false);
+
 
 const handleLogin = () => {
   if (!userId.value || !password.value) {
@@ -56,6 +79,10 @@ const handleLogin = () => {
   }
   alert(`로그인 시도: ${userId.value}`);
 };
+
+
+
+
 </script>
 
 <style scoped lang="scss">
@@ -67,7 +94,14 @@ const handleLogin = () => {
     width: 100%;
   }
 }
+.title-bg{
+background-color: #2db400;
+}
+.scr-bg{
+  background-color: #ffe812;
+  display: inline-block;
 
+}
 /* 메인 레이아웃: flex 기반 */
 .login-page {
   display: flex;
@@ -208,6 +242,7 @@ const handleLogin = () => {
   justify-content: center;
   // padding: 60px 20px;
   // background: #f9fbfb;
+  margin-top: 40px;
 }
 
 /* 배너 내용 */

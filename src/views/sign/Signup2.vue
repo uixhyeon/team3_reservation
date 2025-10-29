@@ -74,7 +74,7 @@ display: flex;
   
     width: 100%;
     border: none;
-    border-bottom: 1px solid #e7e7e7;
+    border-bottom: 2px solid #999999;
     background: transparent;
     font-size: 14px;
     // padding: 10px 4px;

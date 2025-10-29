@@ -64,7 +64,7 @@
                 :class="{ selected: selectedPayment === method.id }"
                 @click="selectedPayment = method.id"
               >
-                <img :src="method.img" :alt="method.label" class="pay-img" />
+                <span class="icon">  <img :src="method.img" :alt="method.label" class="pay-img" /></span>
                 <span>{{ method.label }}</span>
               </button>
             </div>
@@ -76,14 +76,13 @@
     </div>
   </div>
 
-  <Reservation21/>
+ 
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Stepper from "@/components/reserv/Stepper.vue";
-import Reservation21 from "./Reservation2-1.vue";
 
 const route = useRoute();
 const router = useRouter();
@@ -105,8 +104,8 @@ const prices = {
 };
 
 /* ✅ 쿠폰·포인트 */
-const useCoupon = ref(true);
-const usePoints = ref(true);
+const useCoupon = ref(false);
+const usePoints = ref(false);
 
 const totalPrice = computed(() =>
   selectedTabs.value.reduce((sum, tab) => sum + prices[tab], 0)
@@ -157,7 +156,7 @@ const saveAndPay = () => {
 .reserve-page {
   background: #f5f7f7;
   min-height: 100vh;
-  padding: 60px 0;
+  padding: 40px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -167,13 +166,26 @@ const saveAndPay = () => {
   width: 100%;
   max-width: 1120px;
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 1fr;
   gap: 2.5rem;
   align-items: start;
-
-  @media (max-width: 1024px) {
+padding: 20px;
+@media (max-width: 1020px){
+  width: 90%;
+}
+  @media (max-width: 500px) {
     grid-template-columns: 1fr;
-    max-width: 720px;
+   width: 100%;
+  }
+}
+// ======왼오나뉨=====
+.left-section{
+ width: 100%;
+ display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 2.5rem;
+  @media (max-width: 500px){
+     grid-template-columns: 1fr;
   }
 }
 
@@ -195,8 +207,8 @@ const saveAndPay = () => {
     top: 0;
     left: 0;
     width: 100%;
-    height: 8px;
-    background: #53b4a1;
+    height: 12px;
+    background: $color_main;
     border-top-left-radius: 10px;
     border-top-right-radius: 10px;
   }
@@ -228,7 +240,7 @@ const saveAndPay = () => {
   tr.total {
     border-top: 1px solid #ddd;
     td:last-child {
-      color: #53b4a1;
+      color: $color_main;
       font-weight: 700;
     }
   }
@@ -284,7 +296,7 @@ const saveAndPay = () => {
     font-weight: 700;
     color: #222;
     strong {
-      color: #53b4a1;
+      color: #3e9c9b;
       font-size: 1.1rem;
     }
   }
@@ -329,14 +341,14 @@ const saveAndPay = () => {
     transition: 0.3s;
 
     &:hover {
-      border-color: #53b4a1;
+      border-color: $color_main ;
       background: #f5fcfc;
     }
 
     &.selected {
-      border-color: #53b4a1;
+      border-color: $color_main ;
       background: #e8f9f8;
-      color: #53b4a1;
+      color: $color_main ;
       font-weight: 600;
     }
 
@@ -355,17 +367,24 @@ const saveAndPay = () => {
       margin-top: 8px;
       font-size: $text-sm;
     }
+@media (max-width: 1024px) {
+    flex-direction: row;
+  }
+@media (max-width: 600px) {
+   gap: 3%
+  }
+
   }
 }
 
 /* ✅ 결제 버튼 */
 .submit_btn {
-  width: 70%;
+  width: 50%;
   padding: 14px 0;
   font-weight: 700;
   font-size: $button;
   color: #fff;
-  background: #53b4a1;
+  background: $color_main ;
   border: none;
   border-radius: 6px;
   cursor: pointer;
@@ -374,15 +393,15 @@ const saveAndPay = () => {
   transition: 0.3s;
 
   &:hover {
-    background: #449b8a;
+    background: #3A8C88;
   }
 
   @media (max-width: 1024px) {
-    width: 80%;
+    width: 75%;
   }
 
   @media (max-width: 600px) {
-    width: 90%;
+    width: 100%;
   }
 }
 

@@ -1,8 +1,11 @@
 <template>
   <ReserveForm />
+
+  <ChangeReserv/>
 </template>
 
 <script setup>
+import ChangeReserv from "@/components/reserv/ChangeReserv.vue";
 import ReserveForm from "@/components/reserv/ReserveForm.vue";
 </script>
 

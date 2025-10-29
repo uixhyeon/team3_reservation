@@ -8,7 +8,7 @@
           <!-- 사물함 예약 -->
           <div class="form_card" :class="{ open: openSection === 'locker' }">
             <div class="card_header" @click="toggleSection('locker')">
-              <h3>사물함 예약</h3>
+              <h3>사물함 예약*</h3>
          <i v-if="lockerComplete" class="fa-solid fa-check" style="color:#53b4a1"></i>
 
             </div>
@@ -19,14 +19,14 @@
                 <div class="form_group">
                   <label>성함*</label>
                   <input type="text" placeholder="성함을 입력해주세요" v-model="form.name" />
-                  <p class="label">문자만 입력하세요</p>
+                  <p class="label">문자를 입력하세요</p>
                 </div>
 
                 <!-- 전화번호 -->
                 <div class="form_group">
                   <label>휴대폰 번호*</label>
-                  <input type="text" placeholder="01012345678 (- 제외)" v-model="form.phone" />
-                  <p class="label">숫자만 입력해주세요</p>
+                  <input type="text" placeholder="01012345678 " v-model="form.phone" />
+                  <p class="label">숫자를 입력해주세요 (- 제외)</p>
                 </div>
 
                 <!-- 사이즈 -->
@@ -40,7 +40,7 @@
                     <option>XL</option>
                     <option>XXL</option>
                   </select>
-                  <p class="label">필수 입력 사항입니다.</p>
+                  <p class="label">상세길이는 이용안내를 확인해주세요</p>
                 </div>
 
                 <!--주소 선택 -->
@@ -72,7 +72,7 @@
                     :enable-time-picker="false"
                     format="yyyy-MM-dd"
                   />
-                  <p class="label">시작일과 종료일을 한 번에 선택할 수 있습니다.</p>
+                  <p class="label">시작일과 종료일을 모두 선택하세요</p>
                 </div>
               </div>
             </transition>
@@ -94,14 +94,14 @@
                   <div class="addr-input">
                     <input
                       type="text"
-                      placeholder="지번 및 주소를 입력해주세요"
+                      placeholder="지번 및 주소를 검색해주세요"
                       v-model="form.pickupAddress"
                       readonly
                       @click="openPickupAddr = true"
                     />
                     <button type="button" class="mini-btn" @click="openPickupAddr = true">주소 검색</button>
                   </div>
-                  <p class="label">주소를 입력해 주세요</p>
+                  <p class="label">보내실 주소를 선택해 주세요</p>
 
                   <div class="blank16">{{ form.pickupAddress || "주소를 선택해주세요" }}</div>
 
@@ -118,7 +118,7 @@
     format="yyyy-MM-dd"
     placeholder="날짜를 선택하세요"
   />
-  <p class="label">날짜를 입력하세요</p>
+  <p class="label">보내실 날짜를 선택하세요</p>
                 </div>
               </div>
             </transition>
@@ -146,7 +146,7 @@
                     />
                     <button type="button" class="mini-btn" @click="openHomeAddr = true">주소 검색</button>
                   </div>
-                  <p class="label">주소를 입력해 주세요</p>
+                  <p class="label">받으실 주소를 선택해 주세요</p>
                   <div class="blank16">{{ form.homeAddress || "주소를 선택해주세요" }}</div>
                   <input type="text" placeholder="상세주소를 입력해주세요" v-model="form.homeAddressDetail" />
                   <p class="label">상세주소를 입력해 주세요</p>
@@ -190,7 +190,7 @@
 >
 
                   <tr class="section-title">
-                    <td colspan="2">사물함 예약</td>
+                    <td colspan="2" class="s-title">사물함 예약</td>
                   </tr>
                   <tr v-if="form.name">
                     <td>성함</td>
@@ -217,7 +217,7 @@
                 <!--짐 가져오기 -->
                 <template v-if="form.pickupAddress || form.pickupAddressDetail || form.pickupDate">
                   <tr class="section-title">
-                    <td colspan="2">짐 가져오기</td>
+                    <td colspan="2" class="s-title">짐 가져오기</td>
                   </tr>
                   <tr v-if="form.pickupAddress">
                     <td>픽업 주소</td>
@@ -236,7 +236,7 @@
                 <!-- 집으로 보내기 -->
                 <template v-if="form.homeAddress || form.homeAddressDetail || form.deliveryDate">
                   <tr class="section-title">
-                    <td colspan="2">집으로 보내기</td>
+                    <td colspan="2" class="s-title">집으로 보내기</td>
                   </tr>
                   <tr v-if="form.homeAddress">
                     <td>배송 주소</td>
@@ -254,7 +254,7 @@
 
                 <!-- 총 결제금액 -->
                 <tr v-if="totalPrice > 0" class="total">
-                  <td>총 결제금액</td>
+                  <td class="s-title">총 결제금액</td>
                   <td>
                     <strong>{{ formatKrw(totalPrice) }}</strong>
                   </td>
@@ -682,6 +682,7 @@ defineEmits(["close", "selected"]);
     margin-bottom: 20px;
 
     label {
+      padding-left: 3px;
       display: block;
       font-size: $label-md;
       color: #555;
@@ -689,7 +690,9 @@ defineEmits(["close", "selected"]);
       margin-bottom: 6px;
       font-weight: 500;
     }
-
+select {
+  color: #333 !important ; /* 원하는 글자색 */
+}
     input,
     select {
       width: 100%;
@@ -697,7 +700,7 @@ defineEmits(["close", "selected"]);
       border-bottom: 1px solid #e7e7e7;
       background: transparent;
       font-size: $label-md;
-      padding: 10px 5px;
+      padding: 10px 10px;
       color: #333;
       transition: border-color 0.2s ease;
 
@@ -715,6 +718,7 @@ defineEmits(["close", "selected"]);
       font-size: $label-sm;
       color: #888;
       margin-top: 4px;
+      padding-left: 3px;
     }
   }
 
@@ -791,6 +795,11 @@ defineEmits(["close", "selected"]);
       width: 40%;
     }
   }
+}
+.s-title{
+  color: #333 !important;
+  font-size: $text-sm  !important;
+  margin-top: 12px !important;
 }
 
 .summary-guide {
@@ -871,8 +880,8 @@ defineEmits(["close", "selected"]);
   border-bottom: 1px solid #e7e7e7 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  padding: 10px 5px !important;
-  font-size: 14px !important;
+  padding: 10px 10px !important;
+  font-size: $label-md !important;
   color: #333 !important;
   transition: border-color 0.25s ease;
 
@@ -885,7 +894,7 @@ defineEmits(["close", "selected"]);
     outline: none !important;
   }
 }
-
+// ===============왜 폰트색이 연할까===============
 :deep(.dp__input) {
   width: 100%;
   background: transparent !important;
@@ -893,8 +902,8 @@ defineEmits(["close", "selected"]);
   border-bottom: 1px solid #e7e7e7 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
-  padding: 0 !important;
-  font-size: 14px !important;
+  padding: 5px 10px !important;
+  font-size: $label-md !important;
   color: #333 !important;
   transition: border-color 0.25s ease;
 
@@ -966,9 +975,10 @@ defineEmits(["close", "selected"]);
 @media (max-width: 1024px) {
   .inner {
     .container {
-      width: 80%;
+      width: 100%;
       grid-template-columns: 1fr;
       gap: 20px;
+      padding: 0;
     }
     .left {
       gap: 20px;
@@ -983,7 +993,7 @@ defineEmits(["close", "selected"]);
 @media (max-width: 450px) {
   .inner {
     .container {
-      width: 90%;
+      width: 100%;
       grid-template-columns: 1fr;
       gap: 10px;
     }

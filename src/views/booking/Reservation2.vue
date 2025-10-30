@@ -156,7 +156,7 @@ const saveAndPay = () => {
 .reserve-page {
   background: #f5f7f7;
   min-height: 100vh;
-  padding: 40px 0;
+padding: 40px 0 80px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -222,11 +222,16 @@ gap: 2.5rem;
     padding: 24px 20px;
   }
 }
-
+.form_card{
+  h2{
+    font-size: $text-md;
+  }
+}
 /* ✅ 테이블 */
 .form_card table {
   width: 100%;
   border-collapse: collapse;
+  
   td {
     padding: 6px 0;
     font-size: $text-sm;
@@ -248,6 +253,12 @@ gap: 2.5rem;
 
 /* ✅ 요약 카드 */
 .summary_card {
+  h2{
+    font-size: $text-md;
+  }
+ .total-row{
+    font-size: $text-md;
+  }
   .card_title {
     font-size: $text-md;
     font-weight: 700;
@@ -297,20 +308,24 @@ gap: 2.5rem;
     color: #222;
     strong {
       color: #3e9c9b;
-      font-size: 1.1rem;
+   
     }
   }
 }
 
 /* ✅ 결제 카드 */
 .payment_card {
+  button{
+    font-size: $text-md;
+color: #444444;
+  }
   .card_header {
     margin-bottom: 1rem;
-    h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      color: #222;
-    }
+  }
+  h3 {
+    font-size: $text-md;
+    font-weight: 700;
+    color: #222;
   }
 
   .pay-grid {

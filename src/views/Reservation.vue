@@ -1,7 +1,6 @@
 <template>
   <ReserveForm />
 
-  <ChangeReserv/>
 </template>
 
 <script setup>

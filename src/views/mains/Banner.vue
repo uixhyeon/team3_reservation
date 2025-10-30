@@ -17,7 +17,7 @@
               <h3 class="mb-txt3">이용은 간단하게, 보안은 확실하게 보장합니다.</h3>
             </div>
             <div class="main-banner-img">
-              <img src="/public/images/mains/banner/bannerimg2.png" alt="mainbannerimg" />
+              <img src="/public/images/mains/banner/bannerimg1.png" alt="mainbannerimg" />
             </div>
           </div>
         </swiper-slide>
@@ -29,6 +29,20 @@
               <h1 class="mb-txt1">안전한 보관</h1>
               <h2 class="mb-txt2">전문가의 안심 관리</h2>
               <h3 class="mb-txt3">전문가의 손길로 짐을 꼼꼼하게 관리합니다.</h3>
+            </div>
+            <div class="main-banner-img">
+              <img src="/public/images/mains/banner/bannerimg2.png" alt="mainbannerimg" />
+            </div>
+          </div>
+        </swiper-slide>
+
+        <!-- side 3 -->
+<swiper-slide>
+          <div class="banner-grid">
+            <div class="main-banner-txt">
+              <h1 class="mb-txt1">가벼운 여행</h1>
+              <h2 class="mb-txt2">답답한 짐 없이, 편리하게</h2>
+              <h3 class="mb-txt3">당일 접수/보관도 가능합니다.</h3>
             </div>
             <div class="main-banner-img">
               <img src="/public/images/mains/banner/bannerimg3.png" alt="mainbannerimg" />
@@ -87,7 +101,7 @@ import QuickR from "./QuickR.vue";
   }
   .main-banner-txt > *{ width:100%; margin-left:0; padding-left:0; text-indent:0; }
 
-  .mb-txt1{ font-size:clamp(16px, 3vw, 26px); color:#028587; font-weight:600; margin:0; }
+  .mb-txt1{ font-size:clamp(16px, 3vw, 26px); color:#3e9c9b; font-weight:600; margin:0; }
   .mb-txt2{ font-size:clamp(40px, 3.3vw, 64px); font-weight:800; color:#000; line-height:.7; margin:0; letter-spacing:-.02em; }
   .mb-txt3{ font-size:clamp(14px, 3vw, 20px); color:#000; font-weight:400; line-height:2; margin:0; }
 
@@ -113,7 +127,7 @@ import QuickR from "./QuickR.vue";
   }
   .main-banner-txt > *{ margin:0; padding:0; text-indent:0; }
 
-  .mb-txt1{ font-size:18px; color:#028587; font-weight:600; }
+  .mb-txt1{ font-size:18px; color:#3e9c9b; font-weight:600; }
   .mb-txt2{ font-size:34px; font-weight:800; color:#000; line-height:.7; }
   .mb-txt3{ font-size:16px; color:#000; font-weight:400; line-height:1.25; }
 

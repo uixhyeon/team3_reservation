@@ -68,7 +68,7 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
   align-items: center;
   position: relative;
   text-align: center;
-  font-size: 16px;
+  font-size: 18px;
   color: #bbb;
   font-weight: 400;
 
@@ -88,10 +88,10 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
   content: "";
   position: absolute;
   top: calc(50% - 1px);
-  left: 100%;
+  left: 2rem;
   transform: translateY(-50%);
-  width: calc(clamp(2rem, 5vw, 5rem) +  50px); // ✅ +8px 정도 여유
-  border-top: 2px dotted #bbb;
+  width: calc(clamp(2rem, 5vw, 5rem) +  20px); // ✅ +8px 정도 여유
+  border-top: 1px solid #bbb;
   z-index: 1;
 }
   }

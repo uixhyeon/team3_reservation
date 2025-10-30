@@ -169,7 +169,7 @@ function toggleFees(){ showFees.value = !showFees.value }
 }
 .locker-sizes.v2{ width:min(1100px,92vw); margin:0 auto; }
 .ls-head h3{ margin:0; font-size:clamp(26px,2vw,32px); font-weight:800; color: #000;}
-.ls-head .sub{ margin:6px 0 14px; color:#555353; font-size: clamp(15px,2vw,18px);}
+.ls-head .sub{ margin:6px 0 14px; color:#555353; font-size: clamp(16px,2vw,18px); white-space: nowrap;}
 
 /* ====== 탭 ====== */
 .size-strip{
@@ -183,9 +183,9 @@ function toggleFees(){ showFees.value = !showFees.value }
   padding:10px 16px; cursor:pointer; transition:border-color .2s, background .2s;
   text-align:center; white-space:nowrap;
 }
-.pill .tt{ font-weight:800; font-size:clamp(13px,1.4vw,14px); line-height:1.3; }
+.pill .tt{ color:#000; font-weight: 800; font-size:clamp(13px,1.4vw,14px); line-height:1.3; }
 .pill .dim{ color:#6b7280; font-size:12px; line-height:1.2; }
-.pill.active{ border-color:#12b3b6; background:#f0fdfd; }
+.pill.active{ border-color:#3A8C88; background:#f0fdfd; }
 @media (max-width:640px){ .size-strip{ grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); } }
 
 /* ====== 상세 카드(글자 +3px 업) ====== */
@@ -219,7 +219,7 @@ function toggleFees(){ showFees.value = !showFees.value }
 .rows dd{ margin:0; font-size:17px; color:#0f172a; }
 
 /* 가격 강조 */
-.row-price .price{ font-weight:600; color:##0f172a; }
+.row-price .price{ font-weight:600; color:#0f172a; }
 .row-price dd{ display:flex; align-items:center; }
 
 /* 추천 용도 */
@@ -236,7 +236,7 @@ function toggleFees(){ showFees.value = !showFees.value }
   appearance:none; -webkit-appearance:none; -moz-appearance:none;
   border:0;
   background:#e6f9fb;
-  color:#0ea5b6;
+  color:#3e9c9b;
   font-weight:600;
   padding:10px 16px;
   line-height:1;
@@ -308,12 +308,12 @@ function toggleFees(){ showFees.value = !showFees.value }
 }
 .notes::before{
   content:"참고"; position:absolute; top:-10px; left:12px;
-  background:#0ea5b6; color:#fff; font-weight:800; font-size:11px;
+  background:#3e9c9b; color:#fff; font-weight:800; font-size:11px;
   padding:2px 8px; border-radius:999px; box-shadow:0 1px 0 rgba(0,0,0,.04);
 }
 .notes li+li{ margin-top:4px; }
 .notes li{ position:relative; padding-left:14px; }
-.notes li::before{ content:"•"; position:absolute; left:0; top:0; color:#0ea5b6; font-weight:700; }
+.notes li::before{ content:"•"; position:absolute; left:0; top:0; color:#3e9c9b; font-weight:700; }
 
 /* 아코디언 */
 .accordion-enter-from, .accordion-leave-to{ max-height:0; opacity:0; }

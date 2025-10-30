@@ -116,35 +116,42 @@ const reviews = ref([
 
 onMounted(() => {
   new Swiper(".reviewSwiper", {
-    slidesPerView: 3, //
-    centeredSlides: true,
+    centeredSlides: true, // ✅ 항상 중앙 기준 유지
     loop: true,
     loopedSlides: reviews.value.length,
-    spaceBetween: 40,
     speed: 1000,
+    spaceBetween: 40,
     autoplay: {
       delay: 2500,
       disableOnInteraction: false,
     },
-    breakpoints: {
-      1400: { slidesPerView: 3.1, spaceBetween: 40 },
-      1024: { slidesPerView: 2.3, spaceBetween: 30 },
-      768: { slidesPerView: 1.4, spaceBetween: 25 },
-      490: { slidesPerView: 1.3, spaceBetween: 15 },
-      0: { slidesPerView: 1, spaceBetween: 8 },
-    },
+breakpoints: {
+  1600: { slidesPerView: 3.5, spaceBetween: 45 },
+  1400: { slidesPerView: 3, spaceBetween: 40 },
+  1200: { slidesPerView: 2.7, spaceBetween: 35 },
+  1025: { slidesPerView: 2.3, spaceBetween: 30 },
+  768: { slidesPerView: 1.5, spaceBetween: 25 },
+  520: { slidesPerView: 1.2, spaceBetween: 10 },  // ✅ 살짝 올림
+  0: { slidesPerView: 1, spaceBetween: 10 },       // ✅ 완전 중앙
+},
+
   });
 });
 </script>
-
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
+
+/* =========================================================
+   기본 스타일
+========================================================= */
 .strong {
   color: $color_dangr;
 }
+
 .star {
   color: yellow;
 }
+
 .review_wrap {
   padding: $title-big-gap-large;
   overflow: hidden;
@@ -161,17 +168,14 @@ onMounted(() => {
 .inner-review > h1 {
   font-size: $title-md;
   color: #222;
-  
-  
 }
 
-.title h1{
+.title h1 {
   font-weight: 700;
-  font-size: clamp(26px, 2.8vw, 38px);
-  white-space: nowrap;
+  font-size: clamp(25px, 2.8vw, 38px);
 }
 
-.title h2{
+.title h2 {
   font-size: clamp(20px, 2.8vw, 34px);
 }
 
@@ -180,7 +184,9 @@ onMounted(() => {
   margin-top: $text-big-gap-large;
 }
 
-/* 슬라이드 */
+/* =========================================================
+   슬라이드 공통
+========================================================= */
 .swiper-slide {
   aspect-ratio: 1.4 / 1;
   display: flex;
@@ -203,31 +209,41 @@ onMounted(() => {
   transform: scale(0.95);
 }
 
-/* 카드 */
+/* =========================================================
+   카드
+========================================================= */
 .review_card {
   width: 100%;
+  max-width: 420px; /* ✅ 카드 폭 제한 → 중앙정렬 안정화 */
+  margin: 0 auto;
   height: 100%;
   background: #fff;
   border-radius: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  padding: $text-small-gap-small;
-  padding-left: 2rem;
+  padding: 1.5rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: left;
+  overflow: hidden; /* ✅ 글자 넘침 방지 */
 }
 
-/* 텍스트 */
+/* =========================================================
+   텍스트
+========================================================= */
 .text_wrap {
   flex: 1;
+  min-width: 0; /* ✅ flex 내부 텍스트 줄바꿈 정상화 */
+  word-break: keep-all;
   text-align: left;
 }
 
 .comment {
-  font-size: $text-md;
+  font-size: clamp(0.9rem, 1.5vw, 1.1rem);
   color: #333;
   line-height: 1.5;
   margin-bottom: $label-small-gap-small;
+  overflow-wrap: anywhere; /* ✅ 긴 문장 줄바꿈 */
 }
 
 .rating {
@@ -259,47 +275,164 @@ onMounted(() => {
   font-weight: 500;
 }
 
-/* 이미지 */
+/* =========================================================
+   이미지
+========================================================= */
 .img_wrap {
   flex-shrink: 0;
   margin-left: 20px;
   text-align: center;
+
+  img {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 6px;
+  }
 }
 
-.img_wrap img {
-  width: 90px;
-  height: 90px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-bottom: 6px;
-}
+/* =========================================================
+   반응형 (노트북 / 태블릿 / 모바일)
+========================================================= */
 
-// ========반응형======490px 이하===============
-@media (max-width: 768px) {
-  .comment {
-    font-size: $label-lg;
-  }
-  .review_wrap {
-  padding: $title-big-gap-large;
-  overflow: hidden;
-  padding-top: 60px;
-}
-}
-@media (max-width: 490px) {
-  .comment {
-    font-size: $label-sm;
-  }
+/* ✅ 1200px 이하: 살짝 축소 */
+@media (max-width: 1200px) {
   .review_card {
+    max-width: 380px;
+    padding: 1.5rem;
+  }
+
+  .img_wrap img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* ✅ 1024px 이하 (태블릿): 폰트 약간 축소 */
+@media (max-width: 1024px) {
+  .comment {
+    font-size: 1rem;
+  }
+
+  .img_wrap img {
+    width: 75px;
+    height: 75px;
+  }
+
+  .review_wrap {
+    padding-top: 60px;
+  }
+}
+
+/* ✅ 768px 이하 (세로 태블릿/모바일 가로) */
+@media (max-width: 768px) {
+  .review_card {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
     max-width: 90%;
+  }
+
+  .text_wrap {
+    text-align: center;
+  }
+
+  .img_wrap {
+    margin-left: 0;
+    margin-bottom: 1rem;
+
+    img {
+      width: 90px;
+      height: 90px;
+    }
+  }
+
+  .comment {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 600px){
+
+  .img_wrap {
+    margin-left: 0;
+    margin-bottom: 1rem;
+
+    img {
+      width: 70px;
+      height: 70px;
+    }
+  }
+.review_card {
+    flex-direction: row;        /* ✅ 가로 정렬 유지 */
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    padding: 1.2rem;
+    max-width: 92%;             /* ✅ 카드 폭 살짝 축소 */
+  }
+
+  .text_wrap {
+    flex: 1;
+    text-align: left;
+  }
+
+  .img_wrap {
+    margin-left: 16px;          /* ✅ 글자와 이미지 간격 확보 */
+    margin-bottom: 0;
+
+    img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+  }
+  .comment {
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+}
+
+/* ✅ 480px 이하 (모바일) */
+@media (max-width: 480px) {
+  .review_card {
+    max-width: 85%;
+    padding: 1rem;
     min-height: 300px;
   }
+
   .reviewSwiper {
     margin-top: 80px;
   }
+
+  .comment {
+    font-size: 0.9rem;
+  }
+
+  .img_wrap img {
+    width: 60px;
+    height: 60px;
+  }
+
   .review_wrap {
-  padding: $title-big-gap-large;
-  overflow: hidden;
-  padding-top: 100px;
+    padding-top: 100px;
+  }
 }
+@media (max-width: 395px) {
+ 
+  .img_wrap {
+   margin: 0;
+
+    img {
+     margin: 0;
+    }
+  } 
+  .review_card{
+    margin: 0;
+    width: 370px;
+  }
 }
 </style>

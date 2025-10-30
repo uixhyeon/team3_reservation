@@ -22,17 +22,18 @@
             <div class="phone-mock" aria-hidden="true">
               <div class="notch"></div>
               <div class="screen">
-                <span class="screen-brand">마타주</span>
+                
+                <img
+                  class="screen-logo"
+                  src="/images/mains/header/logo-1.png"
+                  alt="마타주 로고"
+                />
               </div>
             </div>
 
             <div class="copy">
               <h2 class="title"><strong>마타주</strong> 앱 <span>다운받기</span></h2>
-              <p class="desc">
-                지금, 유니크 리무버블.<br />
-                심플하게, 가볍게 지금 경험해 보세요
-              </p>
-
+              <p class="desc">심플하게, 가볍게 지금 경험해 보세요</p>
               <div class="store-btns">
                 <a class="store-btn store-btn--white" href="#">
                   <span class="store-left">
@@ -229,10 +230,9 @@ onBeforeUnmount(() => {
 
 /* 폰 */
 .faq-main .phone-mock{ width:160px; height:320px; border-radius:26px; background:#fff; position:relative; border:2px solid #0f585a;}
-.faq-main .phone-mock .notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:80px; height:18px; border-bottom-left-radius:10px; border-bottom-right-radius:10px; background:#0f585a;}
+.faq-main .phone-mock .notch{ position:absolute; top:12px; left:50%; transform:translateX(-50%); width:80px; height:18px; border-bottom-left-radius:10px; border-bottom-right-radius:10px; background:#3A8C88 ;}
 .faq-main .phone-mock .screen{ position:absolute; inset:18px; border-radius:20px; background:#ffffff; display:flex; align-items:center; justify-content:center;}
-.faq-main .screen-brand{ color:#25a7a5; font-weight:800; font-size:20px; background:#ffffff; padding:6px 12px; border-radius:999px; box-shadow:0 1px 6px rgba(0,0,0,.08);}
-
+.faq-main .screen-brand{ color:#3A8C88; font-weight:800; font-size:20px; background:#ffffff; padding:6px 12px; border-radius:999px; box-shadow:0 1px 6px rgba(0,0,0,.08);}
 /* 텍스트 */
 .faq-main .copy .title{ color:#ffffff; font-size:28px; font-weight:900; line-height:1.2; margin:0 0 10px;}
 .faq-main .copy .desc{ color:#eaf6f6; font-size:14px; line-height:1.6; margin:0 0 18px;}
@@ -243,7 +243,7 @@ onBeforeUnmount(() => {
 .faq-main .store-btn--white{ background:#fff; color:#1b1b1b; border:1px solid #dfe9e9; box-shadow:0 1px 0 rgba(0,0,0,.04), 0 6px 18px rgba(0,0,0,.05);}
 .faq-main .store-left{ display:flex; align-items:center; gap:8px;}
 .faq-main .store-text{ font-weight:700; font-size:14px;}
-.faq-main .store-badge{ font-size:12px; font-weight:800; background:#eef6f6; color:#0f5f61; padding:6px 12px; border-radius:999px; border:1px solid #d2e8e8;}
+.faq-main .store-badge{ font-size:12px; font-weight:800; background:#eef6f6; color:#3A8C88; padding:6px 12px; border-radius:999px; border:1px solid #d2e8e8;}
 
 /* ===== 오른쪽 FAQ (고정 높이 + 내부 스크롤) ===== */
 .faq-main .faq{

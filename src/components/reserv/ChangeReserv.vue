@@ -1,13 +1,14 @@
-
 <template>
   <!-- ✅ 새로 추가된 프레임 -->
   <div class="page-frame">
     <div class="change-wrap">
       <!-- ✅ 상단 영역 -->
       <header class="header">
-        <img :src="logo" alt="마타주 로고" class="logo" />
-        <h1>예약 변경</h1>
-        <p class="sub">변경할 예약번호를 입력해주세요.</p>
+        <img src="/images/reservation/Asset2.png" alt="마타주 로고" class="logo" />
+        <div class="scr">
+          <h1>예약 변경</h1>
+          <p class="sub">변경할 예약번호를 입력해주세요.</p>
+        </div>
       </header>
 
       <!-- ✅ 본문 -->
@@ -48,10 +49,8 @@
   </div>
 </template>
 
-
 <script setup>
 import { ref } from "vue";
-// import logo from "";
 import FindReservationModal from "@/views/sign/FindResarv.vue";
 
 const reservationCode = ref("");
@@ -90,18 +89,15 @@ const openFindModal = () => {
    전체 구조
 ========================================================= */
 .page-frame {
-  /* ✅ 전체 프레임 */
-  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
-
   border: 1px solid $color_main;
   border-radius: 24px;
-  margin: 40px; /* 화면 끝과 프레임 사이 여백 */
-  box-sizing: border-box;
+  margin: 40px;
   background: #f6f8f8;
-  padding: 40px 0; /* 내부 내용 여백 */
+  padding: 40px 0;
+  box-sizing: border-box;
 }
 
 /* =========================================================
@@ -115,26 +111,32 @@ const openFindModal = () => {
   padding: 60px 20px;
   width: 100%;
   max-width: 640px;
-
-  /* ✅ 높이 제한 + 자동 정렬 */
-  height: auto;
-  max-height: 600px;
-  overflow-y: auto;
 }
 
 /* =========================================================
-   상단 영역
+   상단 영역 (깨짐 방지 완전 수정)
 ========================================================= */
 .header {
-  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap; /* ✅ 줄바꿈 허용 */
+  gap: 20px; /* ✅ 로고-텍스트 간격 */
   width: 100%;
   max-width: 640px;
   margin-bottom: 40px;
+  text-align: left;
 
   .logo {
-    width: 120px;
-    display: block;
-    margin-bottom: 20px;
+    width: 220px;
+    max-width: 45%;
+    height: auto;
+    flex-shrink: 0;
+  }
+
+  .scr {
+    flex: 1 1 200px;
+    word-break: keep-all;
   }
 
   h1 {
@@ -290,20 +292,33 @@ const openFindModal = () => {
 
   .change-wrap {
     padding: 40px 16px;
-    max-height: 520px;
+  }
+
+  /* ✅ header 부분 완전 보완 */
+  .header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 12px;
+
+    .logo {
+      width: 160px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 22px;
+      line-height: 1.3;
+    }
+
+    .sub {
+      font-size: 14px;
+      line-height: 1.4;
+    }
   }
 
   .content {
     padding: 30px 24px;
   }
-
-  .header h1 {
-    font-size: 22px;
-  }
-
-  .header .sub {
-    font-size: 14px;
-  }
 }
-
 </style>

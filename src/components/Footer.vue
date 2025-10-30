@@ -2,69 +2,59 @@
 <template>
   <div class="footer">
     <footer class="jb-footer">
-    <div class="footer-inner">
-      <!-- 좌측 -->
-      <div class="footer-left">
-        <h2 class="brand">마타주</h2>
-        <!-- <p class="tagline">한 줄 슬로건</p> -->
+      <div class="footer-inner">
+        <!-- 좌측 -->
+        <div class="footer-left">
+          <h2 class="brand">마타주</h2>
+          <!-- <p class="tagline">한 줄 슬로건</p> -->
 
-        <address class="corp-info">
-          <p>대표자: TEAM A | 주소: 서울 중랑구 3로 3길 재밌빌딩 5F</p>
-          <p>사업자등록번호: 123-45-12345 | 통신판매업신고번호: 2호</p>
-          <p>Copyright © JIMGBAG Corp. All Rights Reserved.</p>
-        </address>
+          <address class="corp-info">
+            <p>대표자: TEAM A | 주소: 서울 중랑구 3로 3길 재밌빌딩 5F</p>
+            <p>사업자등록번호: 123-45-12345 | 통신판매업신고번호: 2호</p>
+            <p>Copyright © JIMGBAG Corp. All Rights Reserved.</p>
+          </address>
 
-        <div class="social">
-          <a href="#" aria-label="Instagram" class="icon">
-            <!-- SVG 인스타그램 여기 -->
-          </a>
-          <a href="#" aria-label="Blog" class="icon">
-            <!-- SVG 블로그/유튜브 여기 -->
-          </a>
+          <nav class="legal">
+            <a href="#">이용약관</a>
+            <span class="divider">·</span>
+            <a href="#">개인정보처리방침</a>
+            <span class="divider">·</span>
+            <a href="#">사이트맵</a>
+          </nav>
         </div>
 
-        <nav class="legal">
-          <a href="#">이용약관</a>
-          <span class="divider">·</span>
-          <a href="#">개인정보처리방침</a>
-          <span class="divider">·</span>
-          <a href="#">사이트맵</a>
-        </nav>
-      </div>
+        <!-- 우측 -->
+        <div class="footer-right">
+          <h3 class="cs-title">고객센터 운영시간</h3>
+          <p class="cs-hours">
+            10시 - 18시 (주말 및 공휴일 휴무)<br />
+            12시 - 13시 (점심시간)
+          </p>
 
-      <!-- 우측 -->
-      <div class="footer-right">
-        <h3 class="cs-title">고객센터 운영시간</h3>
-        <p class="cs-hours">
-          10시 - 18시 (주말 및 공휴일 휴무)<br />
-          12시 - 13시 (점심시간)
-        </p>
-
-        <ul class="cs-contact">
-          <li>
-            <span class="cs-icon">
-              <!-- SVG 전화 아이콘 여기 -->
-            </span>
-            <a href="tel:02-691-9999">02-691-9999</a>
-          </li>
-          <li>
-            <span class="cs-icon">
-              <!-- SVG 인스타 아이콘 여기 -->
-            </span>
-            <a href="#" rel="nofollow">@jimbottari</a>
-          </li>
-          <li>
-            <span class="cs-icon">
-              <!-- SVG 메일 아이콘 여기 -->
-            </span>
-            <a href="mailto:team@abc.kr">team@abc.kr</a>
-          </li>
-        </ul>
+          <ul class="cs-contact">
+            <li>
+              <span class="cs-icon">
+                <!-- SVG 전화 아이콘 여기 -->
+              </span>
+              <a href="tel:02-691-9999">02-691-9999</a>
+            </li>
+            <li>
+              <span class="cs-icon">
+                <!-- SVG 인스타 아이콘 여기 -->
+              </span>
+              <a href="#" rel="nofollow">@mataju</a>
+            </li>
+            <li>
+              <span class="cs-icon">
+                <!-- SVG 메일 아이콘 여기 -->
+              </span>
+              <a href="mailto:team@abc.kr">mataju@abc.kr</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
-  </footer>
+    </footer>
   </div>
-  
 </template>
 
 <style scoped>
@@ -76,19 +66,19 @@
   color: #111111;
 
   /* 타이포/스페이싱 토큰 */
-  --fs-brand:          clamp(22px, 2.2vw, 30px);
-  --fs-tagline:        clamp(12px, 1.1vw, 14px);
-  --fs-body:           clamp(12px, 1vw, 13px);
-  --fs-legal:          clamp(12px, 1vw, 13px);
-  --fs-contact:        clamp(13px, 1.3vw, 14px);
-  --fs-small-title:    clamp(12px, 1vw, 13px);
+  --fs-brand: clamp(22px, 2.2vw, 30px);
+  --fs-tagline: clamp(12px, 1.1vw, 14px);
+  --fs-body: clamp(12px, 1vw, 13px);
+  --fs-legal: clamp(12px, 1vw, 13px);
+  --fs-contact: clamp(13px, 1.3vw, 14px);
+  --fs-small-title: clamp(12px, 1vw, 13px);
 
-  --space-pad-y:       clamp(20px, 3.5vw, 40px);
-  --space-pad-x:       clamp(12px, 3vw, 16px);
-  --space-gap-col:     clamp(20px, 5vw, 48px);
+  --space-pad-y: clamp(20px, 3.5vw, 40px);
+  --space-pad-x: clamp(12px, 3vw, 16px);
+  --space-gap-col: clamp(20px, 5vw, 48px);
 
-  --icon-box:          clamp(26px, 3vw, 28px);
-  --icon-size:         clamp(14px, 1.6vw, 16px);
+  --icon-box: clamp(26px, 3vw, 28px);
+  --icon-size: clamp(14px, 1.6vw, 16px);
 }
 
 .footer .footer-inner {
@@ -112,7 +102,7 @@
   font-size: var(--fs-brand);
   font-weight: 800;
   letter-spacing: -0.2px;
-  color: #008871;
+  color: #3e9c9b;
 }
 
 .footer .tagline {
@@ -249,7 +239,12 @@
     text-align: center;
     min-width: 100%;
   }
-
+  .footer .cs-title {
+    text-align: center;
+  }
+  .footer .cs-hours {
+    text-align: center;
+  }
   .footer .corp-info p {
     word-break: keep-all;
   }

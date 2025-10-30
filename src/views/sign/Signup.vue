@@ -2,9 +2,9 @@
   <div class="join-page">
     <!-- ✅ 상단 영역 -->
     <header class="header">
-      <div class="logo left">로고</div>
+      <div class="logo left"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
       <h1>회원가입</h1>
-      <div class="logo right">로고</div>
+      <div class="logo right"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
     </header>
 
     <!-- ✅ 메인 카드 -->
@@ -58,14 +58,13 @@ const goToLogin = () => {
   router.push("/signup2");
 };
 </script>
-
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
 
-/* ✅ 전체 페이지 구조 */
+/*  전체 페이지 구조 */
 .join-page {
   min-height: 100vh;
-  background: #f5f7f7;
+  background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,55 +73,32 @@ const goToLogin = () => {
   padding-bottom: 3rem;
 }
 
-/* ✅ 상단 헤더 */
+/* 상단 헤더 */
 .header {
-  height: 200px;
   position: relative;
+  height: 200px;
   width: 100%;
   background: $color_main;
-  color: #fff;
+  overflow: hidden; // 기울어진 패턴이 튀어나오지 않게
   text-align: center;
   padding: 50px 0;
-  z-index: 1;
+  // z-index: 1;
 
   h1 {
+    position: relative;
+    z-index: 999;
+    color: #333;
     font-size: 26px;
     font-weight: 700;
-    margin: 0;
-    position: relative;
-    z-index: 2;
   }
 
-  .logo {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%) rotate(45deg);
-    background: rgba(255, 255, 255, 0.4);
-    color: #333;
-    width: 70px;
-    height: 70px;
-    line-height: 70px;
-    font-weight: 600;
-    text-align: center;
-    border-radius: 4px;
-    z-index: 2;
-
-    &.left {
-      left: 80px;
-    }
-
-    &.right {
-      right: 80px;
-      background: rgba(255, 255, 255, 0.6);
-    }
-  }
+ 
 }
 
-/* ✅ 회원가입 카드 */
+/* 회원가입 카드 */
 .join-card {
   background: #fff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  // border-radius: 4px;
   padding: 50px 60px;
   width: 500px;
   position: relative;
@@ -135,7 +111,7 @@ const goToLogin = () => {
   }
 }
 
-/* ✅ 라인형 입력 폼 */
+/* 라인형 입력 폼 */
 .form_group {
   margin-bottom: 25px;
 
@@ -166,7 +142,7 @@ const goToLogin = () => {
 
   select {
     appearance: none;
-    background: url("data:image/svg+xml;utf8,<svg fill='%2355b4a1' height='10' viewBox='0 0 20 20' width='10'><path d='M5 7l5 5 5-5H5z'/></svg>")
+    background: url("data:image/svg+xml;utf8,<svg fill='%2355b4a1' height='10' viewBox='0 0 20 20' width='10'><path d='M5 7l5 5 5-5H5z'/></svg>") 
       no-repeat right 10px center;
     background-size: 12px;
     padding-right: 28px;
@@ -179,7 +155,7 @@ const goToLogin = () => {
   }
 }
 
-/* ✅ 새로운 입력 구조 (.form-group: 복수행 대응) */
+/* 새로운 입력 구조 (.form-group: 복수행 대응) */
 .form-group {
   margin-bottom: 25px;
 
@@ -216,7 +192,7 @@ const goToLogin = () => {
   }
 }
 
-/* ✅ 약관 영역 */
+/* 약관 영역 */
 .terms {
   border-top: 1px solid #e7e7e7;
   padding-top: 15px;
@@ -247,7 +223,7 @@ const goToLogin = () => {
   }
 }
 
-/* ✅ 버튼 */
+/* 버튼 */
 .btn {
   background: $color_main;
   color: #fff;
@@ -270,7 +246,7 @@ const goToLogin = () => {
   }
 
   &:hover {
-    background: $color_main_deep ;
+    background: $color_main_deep;
   }
 }
 

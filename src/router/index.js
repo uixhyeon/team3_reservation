@@ -19,6 +19,8 @@ import Signup from "@/views/sign/Signup.vue";
 import Login from "@/views/sign/Login.vue";
 
 import Signup2 from "@/views/sign/Signup2.vue";
+import ChangeReserv from "@/components/reserv/ChangeReserv.vue";
+import FindResarv from "@/views/sign/FindResarv.vue";
 const routes = [
   { path: "/", component: HomeView },
   { path: "/information", component: Information },
@@ -32,6 +34,8 @@ const routes = [
   {path: "/complete", component: Complete},
   { path: "/reservation2", component: Reservation2 },
   { path: "/reservation3", component: Reservation3 },
+  { path: "/changereserv", component: ChangeReserv },
+  { path: "/findreserv", component: FindResarv },
 
   { path: "/community", component: Community },
 

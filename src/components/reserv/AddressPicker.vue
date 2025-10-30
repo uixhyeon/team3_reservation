@@ -1,11 +1,5 @@
 <template>
-  <div
-    v-if="open"
-    class="addr-modal"
-    role="dialog"
-    aria-modal="true"
-    aria-labelledby="addr-title"
-  >
+  <div v-if="open" class="addr-modal" role="dialog" aria-modal="true" aria-labelledby="addr-title">
     <div class="dialog">
       <div class="header">
         <h3 id="addr-title">주소 선택</h3>
@@ -24,9 +18,7 @@
       </div>
 
       <div class="footer">
-        <button class="btn" @click="confirm" :disabled="!localAddress">
-          확인
-        </button>
+        <button class="btn" @click="confirm" :disabled="!localAddress">확인</button>
       </div>
     </div>
   </div>
@@ -98,9 +90,7 @@ async function mountPostcode() {
   // ✅ Kakao 지도 선택적으로 표시
   if (hasKakaoKey) {
     const key = import.meta.env.VITE_KAKAO_MAP_APP_KEY;
-    await loadScript(
-      `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}&libraries=services`
-    );
+    await loadScript(`https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}&libraries=services`);
     window.kakao.maps.load(() => {
       geocoder = new window.kakao.maps.services.Geocoder();
       map = new window.kakao.maps.Map(mapEl.value, {
@@ -147,14 +137,32 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding-top: 5%;
 }
 .dialog {
-  width: min(720px, 92vw);
+  width: min(720px, 80vw);
   background: #fff;
+
   border-radius: 12px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  // ====================================
+  @media (max-width: 768px) {
+    min-width: 330px;
+  }
+}
+//================카카오안의 글자조정============================= 
+.post_search .placeholder {
+    color: #969696;
+    position: absolute;
+    top: 13px;
+    left: 20px;
+    font-size: 13px;
+    cursor: text;
+    display: none;
+    font-family: dotum, "돋움", sans-serif;
+    line-height: 22px;
 }
 .header {
   display: flex;
@@ -171,14 +179,21 @@ onMounted(async () => {
 }
 .content {
   padding: 12px;
+  @media (max-width: 480px) {
+    height: 300px;
+  }
 }
 .postcode-wrap {
   width: 100%;
-  min-height: 420px;
+
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
   position: relative;
+  background-color: red;
+  @media (max-width: 480px) {
+    height: 100%;
+  }
 }
 
 /* 선택완료 */
@@ -258,5 +273,10 @@ onMounted(async () => {
 
 .btn:not(:disabled):hover {
   background: $color_main_deep;
+}
+@media (max-width: 480px) {
+  .daum_popup {
+    height: 200px !important;
+  }
 }
 </style>

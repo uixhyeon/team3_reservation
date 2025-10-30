@@ -156,23 +156,25 @@ const goToHome = () => {
 
 .inner {
   width: 100%;
-  max-width: 1120px; /* ✅ reservation2와 동일 폭 */
+  max-width: 1120px; 
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center; /* Stepper + 카드 중앙 정렬 */
-  padding: 40px 0;
+ padding: 40px 0 80px 0;
 }
 
 //====공통================
 .form_card {
   background: #fff;
   border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06); // ✔ hover 시에도 변하지 않는 그림자
-  padding: 30px 40px;
-  border: 1px solid #fff; // ✔ hover 시 재렌더링 흔들림 방지
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06); 
+  border: 1px solid #fff; 
   position: relative;
-  width: 600px;
+  width: 100%;           
+  max-width: 600px;      
+  padding: 30px 5vw;    
+  box-sizing: border-box; 
 
   /* 상단 색상바 (브랜드 컬러) */
   &::before {
@@ -188,9 +190,24 @@ const goToHome = () => {
   .card_header h3 {
     font-size:$text-md;
     font-weight: 600;
-    color: #222;
+    color: #333;
     margin: 0 0 15px;
   }
+  @media (max-width: 768px) {
+  .form_card {
+    max-width: 90%;      
+    padding: 24px 20px;  
+  }
+
+  .receipt_table td {
+    font-size: $label-sm; 
+  }
+
+  .submit_btn {
+    width: 100%;         
+    max-width: none;
+  }
+}
 }
 
 // 결제완료
@@ -230,7 +247,7 @@ const goToHome = () => {
       }
 
       &.total td {
-        font-weight: 700;
+        font-weight: 500;
         color: #111;
 
         &:last-child {
@@ -265,7 +282,7 @@ const goToHome = () => {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s ease; /* 버튼만 부드럽게 */
+  transition: background 0.2s ease; 
 
   &:hover {
     background: $color_main_deep;

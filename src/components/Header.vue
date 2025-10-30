@@ -2,7 +2,12 @@
 <template>
   <nav class="jb-nav" :class="{ 'is-open': isOpen }">
     <!-- Left: Logo -->
-    <router-link to="/" class="logo" aria-label="홈으로 이동">
+    <router-link
+      to="/"
+      class="logo"
+      aria-label="홈으로 이동"
+      @click.native="scrollToTop"
+    >
       <!-- ★ 변경: 텍스트 대신 이미지 -->
       <img class="logo-img" src="/images/mains/header/logo-1.png" alt="마타주 로고" />
     </router-link>
@@ -10,7 +15,9 @@
     <!-- Desktop Menu -->
     <div class="menu">
       <router-link class="dropdown" to="/information">이용안내</router-link>
-      <router-link class="dropdown" to="/reservation">예약하기</router-link>
+      <router-link class="dropdown" to="/login">예약하기
+    
+      </router-link>
       <router-link to="/promotion">프로모션</router-link>
       <router-link class="dropdown" to="/community">커뮤니티</router-link>
       <router-link class="dropdown" to="/support">고객센터</router-link>
@@ -24,7 +31,7 @@
     <div class="nav-right">
       <div class="login-mini">
         <router-link to="/login">로그인</router-link>
-        <router-link to="/signup">예약 확인</router-link>
+        <router-link to="/findreserv">예약 확인</router-link>
       </div>
 
       <button
@@ -87,10 +94,24 @@
 
 <script setup>
 import { ref, onMounted, onBeforeUnmount, watch, reactive } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
 
 const isOpen = ref(false)
 const toggle = () => (isOpen.value = !isOpen.value)
 const close = () => (isOpen.value = false)
+
+/* ✅ 로고 클릭 시 메인화면이면 맨 위로 스크롤 */
+const scrollToTop = async (e) => {
+  if (route.path === '/') {
+    e.preventDefault()
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  } else {
+    await router.push('/')
+  }
+}
 
 /* 기존 상태/핸들러 유지(다른 곳에서 쓸 수 있으므로 남김) */
 const section = reactive({ guide: false, reserve: false, support: false })
@@ -110,7 +131,8 @@ watch(isOpen, (open) => {
 })
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
 /* ====== 헤더 높이 변수 (필요시만 조정) ====== */
 :root { --nav-h: 76px; }
 @media (max-width: 768px){ :root { --nav-h: 64px; } }
@@ -139,7 +161,7 @@ watch(isOpen, (open) => {
   width: auto;
   font-size: clamp(30px, 3vw, 38px);
   font-weight: 600;
-  color: #028587;
+  color: $color_main;
   white-space: nowrap;
   text-decoration: none;
 }
@@ -155,15 +177,15 @@ watch(isOpen, (open) => {
 /* 타이틀 메뉴: 600 */
 .menu > a,
 .menu > .dropdown {
-  color: #000;
-  font-weight: 600;
+  color: #333;
+  font-weight: 700;
   text-decoration: none;
   padding: 5px 10px;
   position: relative;
   font-size: clamp(15px, 2vw, 22px);
 }
 .menu > a:hover,
-.menu > .dropdown:hover { color: #028587; }
+.menu > .dropdown:hover { color: $color_main_deep; }
 
 .login { padding-left: 2vw; }
 .login a {
@@ -171,38 +193,66 @@ watch(isOpen, (open) => {
   font-size: clamp(12px, 1vw, 16px);
   text-decoration: none;
 }
-.login > a:hover { color: #028587; font-weight: 500; }
+.login > a:hover { color: $color_main; font-weight: 500; }
 
 /* ====== Desktop dropdown ====== */
-.dropdown { position: relative; display: inline-flex; align-items: center; }
+.dropdown { 
+  position: relative; 
+  display: inline-flex; 
+  align-items: center; }
+
+  /* ====== 서브메뉴 (Dropdown + Submenu) ====== */
+.dropdown { 
+  position: relative; 
+  display: inline-flex; 
+  align-items: center;
+}
+
 .dropdown .submenu {
   display: none;
   position: absolute;
-  top: 100%; left: 50%; transform: translateX(-50%);
-  margin-top: -2px; padding: 6px; border: 1px solid #ddd; border-radius: 10px;
-  min-width: 160px; width: auto; background: #fff; z-index: 10001;
-  box-shadow: 0 6px 18px rgba(0,0,0,.08);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: -2px;
+  padding: 8px 0;
+  border-radius: 10px;
+  min-width: 160px;
+  background: rgba(255, 255, 255, 0.9); 
+  z-index: 10001;
   text-align: center;
+  transition: all 0.2s ease;
 }
-.dropdown:hover .submenu { display: block; }
-.submenu li { padding: 0; }
+
+.dropdown:hover .submenu {
+  display: block;
+}
+
+.submenu li {
+  padding: 0;
+}
+
 .submenu li a {
   display: block;
   padding: 12px 24px;
   line-height: 1.4;
-  color: #000;
+  color: #333;
   text-decoration: none;
+  font-size: 16px;
   font-weight: 400;
   white-space: nowrap;
   word-break: keep-all;
 }
-.submenu li a:hover { color: #028587; }
+
+.submenu li a:hover {
+  color: $color_main_deep;
+}
 
 /* ====== Mobile Top Right ====== */
 .nav-right { display: none; align-items: center; gap: 14px; }
 .login-mini { display: flex; align-items: center; gap: 12px; }
 .login-mini a { color: #6f6f6f; font-size: 16px !important; text-decoration: none; }
-.login-mini a:hover { color: #028587; }
+.login-mini a:hover { color: $color_main; }
 
 /* Hamburger */
 .hamburger {
@@ -247,31 +297,29 @@ watch(isOpen, (open) => {
 .m-title-btn {
   width: 100%;
   display: flex; align-items: center; justify-content: space-between;
-  font-size: 20px; font-weight: 700; color: #028587;
+  font-size: 20px; font-weight: 700; color: $color_main;
   background: transparent; border: 0; padding: 6px 0; cursor: pointer; text-align: left;
 }
 .chev { transition: transform .2s ease; display: inline-block; }
 .chev.open { transform: rotate(180deg); }
 .m-title.link-title {
-  font-size: 20px; font-weight: 700; color: #028587; text-decoration: none; padding: 6px 0; display: inline-block;
+  font-size: 20px; font-weight: 700; color: $color_main; text-decoration: none; padding: 6px 0; display: inline-block;
 }
 .sublist { overflow: hidden; display: grid; gap: 8px; margin-left: 8px; padding: 4px 0 8px; }
-.sublist a { font-size: 17px; color: #111; text-decoration: none; line-height: 1.7; }
-.sublist a:hover { color: #028587; }
+.sublist a { font-size: 17px; color: #333; text-decoration: none; line-height: 1.7; }
+.sublist a:hover { color: $color_main_deep; }
 
-/* 트랜지션 */
 .acc-enter-from, .acc-leave-to { max-height: 0; opacity: 0; }
 .acc-enter-to,   .acc-leave-from { max-height: 300px; opacity: 1; }
 .acc-enter-active, .acc-leave-active { transition: max-height .22s ease, opacity .22s ease; }
 .slide-enter-from, .slide-leave-to { opacity: 0; }
 .slide-enter-active, .slide-leave-active { transition: opacity .2s ease; }
 
-/* ====== Responsive ====== */
 @media (max-width: 1000px) {
   .menu { gap: 10px; }
   .login { padding-left: 0; }
 }
-@media (max-width: 767px) {
+@media (max-width: 768px) {
   .menu { display: none; }
   .nav-right { display: flex; }
   .logo { font-size: 28px; }
@@ -282,15 +330,13 @@ watch(isOpen, (open) => {
   .login-mini a { font-size: 13px; }
 }
 
-/* a11y: 시각적 숨김 */
 .sr-only {
   position: absolute !important;
   width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0;
 }
 
-/* ≥768px: 네 코드 유지 */
-@media (min-width: 767px) {
+@media (min-width: 769px) {
   .nav-right { display: flex; align-items: center; gap: 14px; }
   .hamburger { display: none; }
   .login { display: none; }
@@ -298,7 +344,6 @@ watch(isOpen, (open) => {
   .login-mini a { font-size: 14px; }
 }
 
-/* ✅ 텍스트만 가로 정렬 */
 .quick-row{
   display:flex; align-items:center; gap:12px;
   margin-top:8px; margin-bottom:18px;
@@ -311,7 +356,7 @@ watch(isOpen, (open) => {
 .sep{ color:#d1d5db; }
 
 .jb-nav{
-  position: sticky;  /* ← fixed 대신 sticky */
+  position: sticky;
   top: 0;
   left: 0; right: 0;
   z-index: 9999;
@@ -322,17 +367,15 @@ watch(isOpen, (open) => {
   top: 0; right: 0; bottom: 0;
   overflow-y: auto;
 }
-/* 로고 이미지를 기존 텍스트 로고 크기와 동일하게 맞춤 */
 .logo {
   display: inline-flex;
   align-items: center;
   line-height: 1;
 }
 .logo-img {
-  height: 2.2em;    /* 텍스트 기준 1em = 기존 폰트 크기와 동일한 높이 */
-  width: auto;    /* 비율 유지 */
+  height: 1.7em;
+  width: auto;
   display: block;
   object-fit: contain;
 }
-
 </style>

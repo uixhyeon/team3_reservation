@@ -3,10 +3,10 @@
 <!-- ==================================================== -->
  <div class="join-page">
     <!-- ✅ 상단 영역 -->
-    <header class="header">
-      <div class="logo left">로고</div>
+     <header class="header">
+      <div class="logo left"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
       <h1>회원가입</h1>
-      <div class="logo right">로고</div>
+      <div class="logo right"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
     </header>
 
     <!-- ✅ 메인 카드 -->
@@ -89,7 +89,7 @@ display: flex;
 
 }
 
-/* ✅ 전체 페이지 구조 */
+/* 전체 페이지 구조 */
 .join-page {
   min-height: 100vh;
   background: #f5f7f7;
@@ -99,39 +99,42 @@ display: flex;
   position: relative;
   z-index: 0;
 }
-
-/* ✅ 상단 헤더 */
+//*  상단 헤더 */
 .header {
-  height: 200px;
   position: relative;
+  height: 200px;
   width: 100%;
-  background: $color_main;
-  color: #fff;
+  background: #59B5B3; /* 단색 배경 */
+  overflow: hidden;
   text-align: center;
-  padding: 50px 0;
+  padding: 70px 0;
   z-index: 1;
 
+  /* 회원가입 텍스트 복구 + 명확한 색상 */
   h1 {
-    font-size: 26px;
+    position: relative;
+    z-index: 3;             /* 로고보다 위로 */
+    color: #fff;            
+    font-size: 28px;
     font-weight: 700;
     margin: 0;
-    position: relative;
-    z-index: 2;
   }
 
+ 
   .logo {
     position: absolute;
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
-    background: rgba(255, 255, 255, 0.4);
-    color: #333;
     width: 70px;
     height: 70px;
-    line-height: 70px;
-    font-weight: 600;
-    text-align: center;
-    border-radius: 4px;
     z-index: 2;
+
+    img {
+      width: 100%;
+      height: 100%;
+      opacity: 0.12; /* ✅ 아주 은은하게 (너무 눈에 띄지 않게) */
+      object-fit: contain;
+    }
 
     &.left {
       left: 80px;
@@ -139,12 +142,11 @@ display: flex;
 
     &.right {
       right: 80px;
-      background: rgba(255, 255, 255, 0.6);
     }
   }
 }
 
-/* ✅ 회원가입 카드 */
+/*  회원가입 카드 */
 .join-card {
   background: #fff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
@@ -161,7 +163,7 @@ display: flex;
   }
 }
 
-/* ✅ 라인형 입력 폼 */
+/*  라인형 입력 폼 */
 .form_group {
   margin-bottom: 25px;
 

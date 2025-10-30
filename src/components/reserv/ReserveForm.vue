@@ -579,7 +579,7 @@ defineEmits(["close", "selected"]);
 ========================================================= */
 .wrap {
   background: #f5f7f7;
-  padding: 40px 0;
+  padding: 40px 0 110px 0;
 }
 
 .inner {
@@ -691,7 +691,8 @@ defineEmits(["close", "selected"]);
       font-weight: 500;
     }
 select {
-  color: #333 !important ; /* 원하는 글자색 */
+  color: #aaa !important ; /* 원하는 글자색 */
+
 }
     input,
     select {
@@ -894,7 +895,6 @@ select {
     outline: none !important;
   }
 }
-// ===============왜 폰트색이 연할까===============
 :deep(.dp__input) {
   width: 100%;
   background: transparent !important;
@@ -904,11 +904,12 @@ select {
   box-shadow: none !important;
   padding: 5px 10px !important;
   font-size: $label-md !important;
-  color: #333 !important;
+  color:rgb(51, 51, 51) !important;
   transition: border-color 0.25s ease;
-
+  
+  // ===============왜 폰트색이 연할까===============
   &::placeholder {
-    color: #aaa !important;
+    color:#777 !important;
   }
 
   &:focus {

@@ -5,8 +5,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="branch-title"
-    @click="$emit('close')"
-  >
+    @click="$emit('close')">
     <div class="dialog" @click.stop>
       <!-- 헤더 -->
       <div class="header">
@@ -28,18 +27,14 @@
                   disabled: location.status === '점검중',
                   selected: selectedLocation && selectedLocation.id === location.id,
                 }"
-                @click="selectLocation(location)"
-              >
+                @click="selectLocation(location)">
                 <div class="result-info">
                   <h4>{{ location.name }}</h4>
                   <p>{{ location.address }}</p>
                   <p class="locker-info">{{ location.lockers }}</p>
                   <div class="location-meta">
                     <span class="distance">{{ location.distance }}</span>
-                    <span
-                      class="status"
-                      :class="location.status === '운영중' ? 'operating' : 'maintenance'"
-                    >
+                    <span class="status" :class="location.status === '운영중' ? 'operating' : 'maintenance'">
                       {{ location.status }}
                     </span>
                   </div>
@@ -52,55 +47,47 @@
           <!-- 오른쪽: 지도 -->
           <div class="map-section-large">
             <div ref="modalMapEl" class="modal-map-large">
-  <!-- 기본 지도 내용 -->
-                    <div
-                      style="
-                        width: 100%;
-                        height: 100%;
-                        background: #e8f4f8;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        border: 2px solid #028587;
-                      ">
-                      <div
-                        style="
-                          position: absolute;
-                          top: 10px;
-                          left: 10px;
-                          background: white;
-                          padding: 8px;
-                          border-radius: 4px;
-                          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                          font-size: 12px;
-                        ">
-                        📍 지점을 선택해주세요
-                      </div>
-                      <div style="font-size: 48px; color: #028587">🗺️</div>
-                    </div>
-
-
+              <!-- 기본 지도 내용 -->
+              <div
+                style="
+                  width: 100%;
+                  height: 100%;
+                  background: #e8f4f8;
+                  border-radius: 8px;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  position: relative;
+                  border: 2px solid #028587;
+                ">
+                <div
+                  style="
+                    position: absolute;
+                    top: 10px;
+                    left: 10px;
+                    background: white;
+                    padding: 8px;
+                    border-radius: 4px;
+                    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                    font-size: 12px;
+                  ">
+                  📍 지점을 선택해주세요
+                </div>
+                <div style="font-size: 48px; color: #028587">🗺️</div>
+              </div>
             </div>
 
-            
             <div v-if="selectedLocation" class="location-card">
               <h4>{{ selectedLocation.name }}</h4>
               <p>{{ selectedLocation.address }}</p>
               <p>{{ selectedLocation.lockers }}</p>
               <div class="location-meta">
                 <span class="distance">{{ selectedLocation.distance }}</span>
-                <span
-                  class="status"
-                  :class="selectedLocation.status === '운영중' ? 'operating' : 'maintenance'"
-                >
+                <span class="status" :class="selectedLocation.status === '운영중' ? 'operating' : 'maintenance'">
                   {{ selectedLocation.status }}
                 </span>
               </div>
-              <button class="directions-btn" @click="openKakaoMapDirections(selectedLocation)">
-                📍 길찾기
-              </button>
+              <button class="directions-btn" @click="openKakaoMapDirections(selectedLocation)">📍 길찾기</button>
             </div>
           </div>
         </div>
@@ -108,9 +95,7 @@
 
       <!-- 푸터 -->
       <div class="footer">
-        <button class="btn" @click="confirm" :disabled="!selectedLocation">
-          선택 완료
-        </button>
+        <button class="btn" @click="confirm" :disabled="!selectedLocation">선택 완료</button>
       </div>
     </div>
   </div>
@@ -198,9 +183,9 @@ watch(
   async (v) => {
     if (v) {
       console.log("🗺 지도 오픈됨, 스크립트 로드 시작");
-      await loadKakaoMapScript();  // ✅ SDK 로드
-      await nextTick();            // ✅ DOM 렌더 대기
-      await mountMap();            // ✅ 지도 생성
+      await loadKakaoMapScript(); // ✅ SDK 로드
+      await nextTick(); // ✅ DOM 렌더 대기
+      await mountMap(); // ✅ 지도 생성
       console.log("✅ 지도 생성 완료");
     }
   }
@@ -209,12 +194,9 @@ watch(
 onMounted(async () => {
   if (props.open) {
     await nextTick();
-       mountMap();
+    mountMap();
   }
 });
-
-
-
 </script>
 
 <style scoped lang="scss">
@@ -227,11 +209,12 @@ onMounted(async () => {
   align-items: center;
   justify-content: center;
   z-index: 1000;
+  padding-top: 5%;
 }
 
 .dialog {
-  width: min(1200px, 90vw);
-  height: min(85vh, 900px);
+  width: min(900px, 90vw);
+  height: min(60vh, 900px);
   background: #fff;
   border-radius: 12px;
   display: flex;
@@ -389,7 +372,7 @@ onMounted(async () => {
 }
 .directions-btn {
   width: 100%;
-  background: $color_main ;
+  background: $color_main;
   color: #fff;
   border: none;
   padding: 6px 12px;
@@ -407,7 +390,7 @@ onMounted(async () => {
 .footer .btn {
   width: 100%;
   padding: 12px;
-  background: $color_main ;
+  background: $color_main;
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -417,7 +400,7 @@ onMounted(async () => {
   transition: 0.2s ease;
 }
 .footer .btn:hover {
-  background: $color_main_deep ;
+  background: $color_main_deep;
 }
 .footer .btn:disabled {
   background: #ccc;

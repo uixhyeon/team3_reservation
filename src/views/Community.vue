@@ -244,7 +244,7 @@ const tabs = [
   { key: 'qna',     label: '질문과 답변' },
   { key: 'photos',  label: '포토 리뷰' }
 ]
-const activeTab = ref('qna')
+const activeTab = ref('reviews')
 
 const inkStyle = computed(() => {
   const idx = tabs.findIndex(t => t.key === activeTab.value)

@@ -15,7 +15,7 @@
     <!-- Desktop Menu -->
     <div class="menu">
       <router-link class="dropdown" to="/information">이용안내</router-link>
-      <router-link class="dropdown" to="/login">예약하기
+      <router-link class="dropdown" to="/reservation">예약하기
     
       </router-link>
       <router-link to="/promotion">프로모션</router-link>

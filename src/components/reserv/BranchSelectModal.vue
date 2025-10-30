@@ -18,30 +18,42 @@
         <div class="modal-body">
           <!-- 왼쪽: 지점 리스트 -->
           <div class="location-selection-section">
-            <div class="location-list">
-              <div
-                v-for="location in locations"
-                :key="location.id"
-                class="result-item"
-                :class="{
-                  disabled: location.status === '점검중',
-                  selected: selectedLocation && selectedLocation.id === location.id,
-                }"
-                @click="selectLocation(location)">
-                <div class="result-info">
-                  <h4>{{ location.name }}</h4>
-                  <p>{{ location.address }}</p>
-                  <p class="locker-info">{{ location.lockers }}</p>
-                  <div class="location-meta">
-                    <span class="distance">{{ location.distance }}</span>
-                    <span class="status" :class="location.status === '운영중' ? 'operating' : 'maintenance'">
-                      {{ location.status }}
-                    </span>
-                  </div>
-                </div>
-                <div class="result-icon">📍</div>
-              </div>
-            </div>
+      
+      
+<div class="location-list">
+  <!-- 지역 그룹 -->
+  <div v-for="group in locations" :key="group.region" class="region-block">
+    <h4 class="region-title">{{ group.region }}</h4>
+
+    <!-- 그룹 내 지점들 -->
+    <div
+      v-for="location in group.branches"
+      :key="location.id"
+      class="result-item"
+      :class="{
+        disabled: location.status === '점검중',
+        selected: selectedLocation && selectedLocation.id === location.id,
+      }"
+      @click="selectLocation(location)"
+    >
+      <div class="result-info">
+        <h5>{{ location.name }}</h5>
+        <p>{{ location.address }}</p>
+        <p class="locker-info">{{ location.lockers }}</p>
+        <div class="location-meta">
+          <span class="status" :class="location.status === '운영중' ? 'operating' : 'maintenance'">
+            {{ location.status }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
           </div>
 
           <!-- 오른쪽: 지도 -->
@@ -112,6 +124,7 @@ const emit = defineEmits(["close", "selected"]);
 
 const modalMapEl = ref(null);
 const selectedLocation = ref(null);
+const mapReady = ref(false)
 
 let map, marker, geocoder;
 
@@ -136,27 +149,90 @@ async function mountMap() {
   marker.setMap(map);
   geocoder = new window.kakao.maps.services.Geocoder();
   window.dispatchEvent(new Event("resize"));
+  
+  window.kakao.maps.event.trigger(map, "resize"); // ✅ 지도 강제 리렌더링
+  console.log("✅ 지도 준비 완료:", map);
+    mapReady.value = true;
 }
 
 /* 지도 이동 */
 function moveMapTo(location) {
-  if (!geocoder) return;
-  geocoder.addressSearch(location.address, (results, status) => {
-    if (status === window.kakao.maps.services.Status.OK) {
+  if (!geocoder || !location?.address) return;
+
+  let searchAddress = location.address;
+
+  // ✅ 주소 자동 보정
+if (!/광역시|특별자치도|도/.test(searchAddress)) {
+  if (location.region?.includes("부산")) searchAddress = "부산광역시 " + searchAddress;
+  else if (location.region?.includes("강릉") || location.region?.includes("속초"))
+    searchAddress = "강원특별자치도 " + searchAddress;
+  else if (location.region?.includes("전주"))
+    searchAddress = "전라북도 " + searchAddress;
+  else if (location.region?.includes("제주"))
+    searchAddress = "제주특별자치도 " + searchAddress;
+}
+
+
+  // ✅ 오사카 예외
+  if (location.region === "오사카") {
+    const latlng = new window.kakao.maps.LatLng(34.6695, 135.5008);
+    map.setCenter(latlng);
+    marker.setPosition(latlng);
+    console.log("🌏 오사카 좌표 이동 완료");
+    return;
+  }
+
+  // ✅ 주소 검색
+  geocoder.addressSearch(searchAddress, (results, status) => {
+    if (status === window.kakao.maps.services.Status.OK && results.length > 0) {
       const { x, y } = results[0];
       const latlng = new window.kakao.maps.LatLng(y, x);
       map.setCenter(latlng);
       marker.setPosition(latlng);
+      marker.setMap(map);
+      console.log("✅ 지도 이동 완료:", searchAddress);
+    } else {
+      console.warn("❌ 주소 검색 실패:", searchAddress, status);
     }
   });
 }
 
+
+
 /* 지점 선택 */
-function selectLocation(location) {
+async function selectLocation(location) {
   if (location.status === "점검중") return;
-  selectedLocation.value = location;
-  moveMapTo(location);
+
+  const regionGroup = props.locations.find((g) =>
+    g.branches.some((b) => b.id === location.id)
+  );
+
+  // ✅ region을 확실히 포함
+  const locWithRegion = { ...location, region: regionGroup?.region || "" };
+  
+  if (!locWithRegion.region && location.region) {
+  locWithRegion.region = location.region; // region 누락 대비
 }
+
+  selectedLocation.value = locWithRegion;
+
+  console.log("📍 선택된 지점:", locWithRegion.address);
+
+  // 지도 준비될 때까지 대기
+  let tries = 0;
+  while (!mapReady.value && tries < 10) {
+    console.log("⏳ 지도 준비 대기중...");
+    await new Promise((r) => setTimeout(r, 200));
+    tries++;
+  }
+
+  if (mapReady.value && locWithRegion.address) {
+    moveMapTo(locWithRegion); // ✅ region 포함된 객체로 이동
+  } else {
+    console.warn("⚠️ 지도 미완성 상태, 이동 실패");
+  }
+}
+
 
 /* 길찾기 */
 function openKakaoMapDirections(location) {
@@ -182,14 +258,23 @@ watch(
   () => props.open,
   async (v) => {
     if (v) {
-      console.log("🗺 지도 오픈됨, 스크립트 로드 시작");
-      await loadKakaoMapScript(); // ✅ SDK 로드
-      await nextTick(); // ✅ DOM 렌더 대기
-      await mountMap(); // ✅ 지도 생성
-      console.log("✅ 지도 생성 완료");
+      await loadKakaoMapScript();
+      await nextTick();
+      if (!map) await mountMap();
+
+setTimeout(() => {
+  window.kakao.maps.event.trigger(map, "resize");
+  window.dispatchEvent(new Event("resize")); // ✅ Safari 보완
+  if (selectedLocation.value?.address) {
+    moveMapTo(selectedLocation.value);
+  }
+}, 400);
+
+
     }
   }
 );
+
 
 onMounted(async () => {
   if (props.open) {
@@ -464,4 +549,19 @@ onMounted(async () => {
     font-size: 11px;
   }
 }
+
+// 추가
+.region-block {
+  margin-bottom: 1.2rem;
+}
+
+.region-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: $color_sub ;
+  margin-bottom: 0.5rem;
+  border-left: 4px solid $color_sub_deep ;
+  padding-left: 8px;
+}
+
 </style>

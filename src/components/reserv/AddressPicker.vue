@@ -1,9 +1,17 @@
 <template>
-  <div v-if="open" class="addr-modal" role="dialog" aria-modal="true" aria-labelledby="addr-title">
+  <div
+    v-if="open"
+    class="addr-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="addr-title"
+  >
     <div class="dialog">
       <div class="header">
         <h3 id="addr-title">주소 선택</h3>
-        <button class="icon-btn" @click="$emit('close')" aria-label="닫기">✕</button>
+        <button class="icon-btn" @click="$emit('close')" aria-label="닫기">
+          ✕
+        </button>
       </div>
 
       <!-- ✅ 지도/주소 검색만 남김 -->
@@ -18,7 +26,9 @@
       </div>
 
       <div class="footer">
-        <button class="btn" @click="confirm" :disabled="!localAddress">확인</button>
+        <button class="btn" @click="confirm" :disabled="!localAddress">
+          확인
+        </button>
       </div>
     </div>
   </div>
@@ -72,7 +82,9 @@ function loadScript(src) {
 }
 
 async function mountPostcode() {
-  await loadScript("//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js");
+  await loadScript(
+    "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"
+  );
   const Postcode = new window.daum.Postcode({
     oncomplete: (data) => {
       const addr = data.roadAddress || data.address;
@@ -90,7 +102,9 @@ async function mountPostcode() {
   // ✅ Kakao 지도 선택적으로 표시
   if (hasKakaoKey) {
     const key = import.meta.env.VITE_KAKAO_MAP_APP_KEY;
-    await loadScript(`https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}&libraries=services`);
+    await loadScript(
+      `https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${key}&libraries=services`
+    );
     window.kakao.maps.load(() => {
       geocoder = new window.kakao.maps.services.Geocoder();
       map = new window.kakao.maps.Map(mapEl.value, {
@@ -152,17 +166,17 @@ onMounted(async () => {
     min-width: 330px;
   }
 }
-//================카카오안의 글자조정============================= 
+//================카카오안의 글자조정=============================
 .post_search .placeholder {
-    color: #969696;
-    position: absolute;
-    top: 13px;
-    left: 20px;
-    font-size: 13px;
-    cursor: text;
-    display: none;
-    font-family: dotum, "돋움", sans-serif;
-    line-height: 22px;
+  color: #969696;
+  position: absolute;
+  top: 13px;
+  left: 20px;
+  font-size: 13px;
+  cursor: text;
+  display: none;
+  font-family: dotum, "돋움", sans-serif;
+  line-height: 22px;
 }
 .header {
   display: flex;

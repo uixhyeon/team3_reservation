@@ -87,7 +87,7 @@
 import { ref, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 
-const router = useRouter(); // ✅ 반드시 선언
+//const router = useRouter(); // ✅ 반드시 선언
 
 
 
@@ -213,7 +213,7 @@ const validateForm = () => {
   // 1) 사물함 예약 필수
   if (!f.name || !f.name.trim()) err.name = "이름을 입력해주세요";
   if (!f.phone || !/^(010|011|016|017|018|019)\d{7,8}$/.test(f.phone))
-    err.phone = "휴대폰 번호 형식이 올바르지 않습니다";
+    err.phone = "휴대폰 번호를 입력해주세요 (-제외)";
   if (!f.size) err.size = "사물함 사이즈를 선택해주세요";
   if (!f.address) err.address = "대여 장소를 선택해주세요";
   if (!f.dateRange || f.dateRange.length < 2)
@@ -474,32 +474,36 @@ const totalPrice = computed(() => {
 const router = useRouter(); // ✅ 라우터 객체 선언 (스크립트 상단쪽)
 
 // 스크립트 제일 아랫쪽
+// ✅ Reservation.vue - handleSubmit 수정
 const handleSubmit = () => {
   if (!validateForm()) {
     alert("입력값을 다시 확인해주세요.");
-    // 에러난 섹션 열어주기 (이거 넣으면 UX 업)
-    if (errors.value.name || errors.value.phone || errors.value.size || errors.value.address || errors.value.dateRange) {
+    if (
+      errors.value.name || errors.value.phone || errors.value.size ||
+      errors.value.address || errors.value.dateRange
+    ) {
       openSection.value = "locker";
-    } else if (errors.value.pickupAddress || errors.value.pickupAddressDetail || errors.value.pickupDate) {
+    } else if (
+      errors.value.pickupAddress || errors.value.pickupAddressDetail || errors.value.pickupDate
+    ) {
       openSection.value = "arrival";
-    } else if (errors.value.homeAddress || errors.value.homeAddressDetail || errors.value.deliveryDate) {
+    } else if (
+      errors.value.homeAddress || errors.value.homeAddressDetail || errors.value.deliveryDate
+    ) {
       openSection.value = "luggage";
     }
     return;
   }
 
-  // 여기서 원래 하던 라우터 이동 넣으면 됨
-  // router.push({ path: "/reservation2", query: {...} })
-  alert("입력 완료!");
-
-  // ✅ 유효성 검사 통과 → Reservation2.vue로 이동
-  router.push({
-    path: "/reservation2",
-    query: { form: JSON.stringify(form.value) }, // 폼 내용도 넘김
-  });
-};
-
-
+  // ✅ 유효성 통과 시 폼 + 총 요금 함께 전달
+router.push({
+  path: "/reservation2",
+  query: {
+    form: JSON.stringify(form.value),
+    totalPrice: totalPrice.value, // ✅ 총 금액 추가
+  },
+});
+}; // ✅ ← 이 한 줄이 반드시 필요함
 
 </script>
 

@@ -13,109 +13,36 @@
 
           <form class="searchbar" @submit.prevent="openMapModal">
             <label class="a11y" for="branchSelect">지점 선택</label>
+
             <select
               id="branchSelect"
               v-model="selectedLocationId"
               class="location-select"
-              @change="selectLocationFromDropdown">
+              @change="selectLocationFromDropdown"
+            >
               <option value="">지점을 선택해주세요</option>
-              <option
-                v-for="location in locations"
-                :key="location.id"
-                :value="location.id"
-                :disabled="location.status === '점검중'">
-                {{ location.name }} - {{ location.address }} ({{ location.distance }})
-                <span v-if="location.status === '점검중'"> - 점검중</span>
-              </option>
+              <!-- region 안의 branch 반복 -->
+              <optgroup v-for="region in locations" :key="region.region" :label="region.region">
+                <option
+                  v-for="branch in region.branches"
+                  :key="branch.id"
+                  :value="branch.id"
+                  :disabled="branch.status === '점검중'"
+                >
+                  {{ region.region }} - {{ branch.name }}
+                  {{ branch.status === "점검중" ? " (점검중)" : "" }}
+                </option>
+              </optgroup>
             </select>
+
             <button class="cta" type="submit" :disabled="!selectedLocationId">지점 확인하기</button>
           </form>
-
-          <!-- 지점 선택 모달 -->
-          <div v-if="showModal" class="search-modal" @click="closeModal">
-            <div class="modal-content" @click.stop>
-              <div class="modal-header">
-                <h3>지점 선택하기</h3>
-                <button class="close-btn" @click="closeModal">✕</button>
-              </div>
-
-              <div class="modal-body">
-                <!-- 지점 선택 섹션 (왼쪽) -->
-                <div class="location-selection-section">
-                  <div class="location-list">
-                    <div
-                      v-for="location in locations"
-                      :key="location.id"
-                      class="result-item"
-                      :class="{
-                        disabled: location.status === '점검중',
-                        selected: selectedLocation && selectedLocation.id === location.id,
-                      }"
-                      @click="selectLocationFromModal(location.id)">
-                      <div class="result-info">
-                        <h4>{{ location.name }}</h4>
-                        <p>{{ location.address }}</p>
-                        <p class="locker-info">{{ location.lockers }}</p>
-                        <div class="location-meta">
-                          <span class="distance">{{ location.distance }}</span>
-                          <span class="status" :class="location.status === '운영중' ? 'operating' : 'maintenance'">
-                            {{ location.status }}
-                          </span>
-                        </div>
-                      </div>
-                      <div class="result-icon">📍</div>
-                    </div>
-                  </div>
-                </div>
-
-                <!-- 지도 섹션 (오른쪽) -->
-                <div class="map-section-large">
-                  <div ref="modalMapEl" class="modal-map-large">
-                    <!-- 기본 지도 내용 -->
-                    <div
-                      style="
-                        width: 100%;
-                        height: 100%;
-                        background: #e8f4f8;
-                        border-radius: 8px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        position: relative;
-                        border: 2px solid #028587;
-                      ">
-                      <div
-                        style="
-                          position: absolute;
-                          top: 10px;
-                          left: 10px;
-                          background: white;
-                          padding: 8px;
-                          border-radius: 4px;
-                          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                          font-size: 12px;
-                        ">
-                        📍 지점을 선택해주세요
-                      </div>
-                      <div style="font-size: 48px; color: #028587">🗺️</div>
-                    </div>
-                  </div>
-                  <div v-if="selectedLocation" class="location-card">
-                    <h4>{{ selectedLocation.name }}</h4>
-                    <p>{{ selectedLocation.address }}</p>
-                    <p>{{ selectedLocation.lockers }}</p>
-                    <div class="location-meta">
-                      <span class="distance">{{ selectedLocation.distance }}</span>
-                      <span class="status" :class="selectedLocation.status === '운영중' ? 'operating' : 'maintenance'">
-                        {{ selectedLocation.status }}
-                      </span>
-                    </div>
-                    <button class="directions-btn">📍 길찾기</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <BranchSelectModal
+            :open="showModal"
+            :locations="locations"
+            @close="closeModal"
+            @selected="handleBranchSelect"
+          />
         </div>
       </div>
     </section>
@@ -123,6 +50,7 @@
 </template>
 
 <script setup>
+import BranchSelectModal from "@/components/reserv/BranchSelectModal.vue";
 import { ref, onMounted, nextTick } from "vue";
 
 // 반응형 데이터
@@ -130,90 +58,150 @@ const selectedLocationId = ref("");
 const showModal = ref(false);
 const selectedLocation = ref(null);
 const modalMapEl = ref(null);
-
-// 지점 데이터 (실제로는 API에서 가져올 데이터)
+// ===== 지점 선택 핸들러 =====
+function handleBranchSelect(location) {
+  form.value.address = location.name; // BranchSelectModal에서 전달한 값
+  showModal.value = false;
+}
+// 📍 지역별 지점 리스트
 const locations = [
   {
-    id: 1,
-    name: "칠성시장점",
-    address: "대구광역시 중구 동성로2가 189-1",
-    lockers: "잔여 사물함 S: 2개 XL: 2개",
-    lat: 35.8714,
-    lng: 128.6014,
-    status: "운영중",
-    distance: "0.2km",
+    region: "부산 광안리",
+    branches: [
+      {
+        id: 1,
+        name: "광안리 해변점",
+        address: "부산광역시 수영구 광안해변로 203",
+        lockers: "S~XL 보유",
+        status: "운영중",
+      },
+      {
+        id: 2,
+        name: "광안시장점",
+        address: "부산광역시 수영구 남천동로 12-1", // 📍 실제 존재 주소
+        lockers: "S~L 보유",
+        status: "운영중",
+      },
+      {
+        id: 3,
+        name: "광안역점",
+        address: "부산광역시 수영구 광안로 45",
+        lockers: "M~XXL 보유",
+        status: "점검중",
+      },
+    ],
   },
   {
-    id: 2,
-    name: "동성로점",
-    address: "대구광역시 중구 동성로 123",
-    lockers: "잔여 사물함 S: 5개 XL: 1개",
-    lat: 35.87,
-    lng: 128.6,
-    status: "운영중",
-    distance: "0.5km",
+    region: "강릉시",
+    branches: [
+      {
+        id: 4,
+        name: "강릉역점",
+        address: "강원특별자치도 강릉시 용지로 123", // 📍 '강원특별자치도'로 변경됨
+        lockers: "S~L 보유",
+        status: "운영중",
+      },
+      {
+        id: 5,
+        name: "경포해변점",
+        address: "강원특별자치도 강릉시 창해로 240-3", // 📍 경포해수욕장 인근 실제 도로명
+        lockers: "S~XL 보유",
+        status: "운영중",
+      },
+    ],
   },
   {
-    id: 3,
-    name: "중앙로점",
-    address: "대구광역시 중구 중앙대로 456",
-    lockers: "잔여 사물함 S: 3개 XL: 3개",
-    lat: 35.872,
-    lng: 128.602,
-    status: "운영중",
-    distance: "0.8km",
+    region: "속초",
+    branches: [
+      {
+        id: 6,
+        name: "속초중앙시장점",
+        address: "강원특별자치도 속초시 중앙로 147", // 📍 중앙시장 중심 좌표
+        lockers: "S~L 보유",
+        status: "운영중",
+      },
+      {
+        id: 7,
+        name: "속초해수욕장점",
+        address: "강원특별자치도 속초시 해오름로 190", // 📍 실제 해수욕장 중심 위치
+        lockers: "M~XL 보유",
+        status: "점검중",
+      },
+    ],
   },
   {
-    id: 4,
-    name: "서문시장점",
-    address: "대구광역시 중구 대신동 115-1",
-    lockers: "잔여 사물함 S: 4개 XL: 2개",
-    lat: 35.8698,
-    lng: 128.5856,
-    status: "운영중",
-    distance: "1.2km",
+    region: "전주",
+    branches: [
+      {
+        id: 8,
+        name: "전주한옥마을점",
+        address: "전라북도 전주시 완산구 기린대로 99", // 📍 실제 한옥마을 입구 인근
+        lockers: "S~XL 보유",
+        status: "운영중",
+      },
+    ],
   },
   {
-    id: 5,
-    name: "반월당점",
-    address: "대구광역시 중구 동성로1가 88-1",
-    lockers: "잔여 사물함 S: 1개 XL: 4개",
-    lat: 35.8667,
-    lng: 128.5956,
-    status: "운영중",
-    distance: "1.5km",
+    region: "제주도",
+    branches: [
+      {
+        id: 9,
+        name: "제주시청점",
+        address: "제주특별자치도 제주시 관덕로 9", // 📍 제주시청 맞은편
+        lockers: "S~XL 보유",
+        status: "운영중",
+      },
+      {
+        id: 10,
+        name: "서귀포점",
+        address: "제주특별자치도 서귀포시 중문관광로 72", // 📍 중문관광단지 내 위치
+        lockers: "M~XXL 보유",
+        status: "운영중",
+      },
+    ],
   },
   {
-    id: 6,
-    name: "대구역점",
-    address: "대구광역시 동구 동부로 149",
-    lockers: "잔여 사물함 S: 6개 XL: 3개",
-    lat: 35.8759,
-    lng: 128.6285,
-    status: "운영중",
-    distance: "2.1km",
-  },
-  {
-    id: 7,
-    name: "수성못점",
-    address: "대구광역시 수성구 두산동 100",
-    lockers: "잔여 사물함 S: 3개 XL: 2개",
-    lat: 35.8251,
-    lng: 128.6304,
-    status: "운영중",
-    distance: "3.2km",
-  },
-  {
-    id: 8,
-    name: "동대구역점",
-    address: "대구광역시 동구 동부로 149",
-    lockers: "잔여 사물함 S: 2개 XL: 1개",
-    lat: 35.8779,
-    lng: 128.6285,
-    status: "점검중",
-    distance: "2.3km",
+    region: "오사카",
+    branches: [
+      {
+        id: 11,
+        name: "난바역점",
+        address: "Namba Station, Osaka, Japan",
+        lockers: "S~L 보유",
+        status: "운영중",
+      },
+      {
+        id: 12,
+        name: "우메다점",
+        address: "2-14-7 Sonezaki, Kita Ward, Osaka, Japan",
+        lockers: "M~XXL 보유",
+        status: "운영중",
+      },
+    ],
   },
 ];
+
+// 모달에 전달할 지역 그룹 형태로 변환
+const locationGroups = [
+  {
+    region: "대구",
+    branches: locations,
+  },
+  {
+    region: "속초",
+    branches: locations,
+  },
+];
+
+// 모달에서 지점 선택 완료 처리
+function handleLocationSelected(locationData) {
+  const location = locations.find((loc) => loc.name === locationData.name);
+  if (location) {
+    selectedLocation.value = location;
+    selectedLocationId.value = location.id.toString();
+  }
+  showModal.value = false;
+}
 
 // 지도 클릭시 모달 열기
 function openMapModal() {
@@ -231,17 +219,24 @@ function openMapModal() {
 
 // 드롭다운에서 지점 선택
 function selectLocationFromDropdown() {
-  if (!selectedLocationId.value) {
-    // 지점이 선택되지 않았으면 모달 열기
-    openMapModal();
-    return;
+  if (!selectedLocationId.value) return;
+
+  let found = null;
+  for (const region of locations) {
+    const branch = region.branches.find(
+      (b) => b.id === parseInt(selectedLocationId.value)
+    );
+    if (branch) {
+      found = { region: region.region, ...branch };
+      break;
+    }
   }
 
-  const location = locations.find((loc) => loc.id === parseInt(selectedLocationId.value));
-  if (location) {
-    selectedLocation.value = location;
+  if (found) {
+    selectedLocation.value = found;
   }
 }
+
 
 // 모달에서 지점 선택
 function selectLocationFromModal(locationId) {
@@ -504,11 +499,9 @@ onMounted(() => {
   font-size: clamp(14px, 1.3vw, 17px);
   color: var(--muted);
   margin-bottom: 20px;
-  @media (max-width: 390px){
+  @media (max-width: 390px) {
     font-size: 12px;
-
   }
-
 }
 
 /* 검색 바 */
@@ -908,7 +901,6 @@ onMounted(() => {
     margin-top: 8px;
   }
 
-
   .modal-body {
     flex-direction: column;
   }
@@ -1000,6 +992,4 @@ onMounted(() => {
     gap: 2px;
   }
 }
-
-
 </style>

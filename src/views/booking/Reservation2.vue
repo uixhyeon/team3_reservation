@@ -9,22 +9,34 @@
         <div class="form_card">
           <div class="card_header"><h2>정보</h2></div>
           <div class="card_content">
-            <table>
-              <tbody>
-                <tr v-if="form.name"><td>이름</td><td>{{ form.name }}</td></tr>
-                <tr v-if="form.phone"><td>휴대폰</td><td>{{ form.phone }}</td></tr>
-                <tr v-if="form.size"><td>사물함</td><td>{{ form.size }}</td></tr>
-                <tr v-if="form.address"><td>주소</td><td>{{ form.address }}</td></tr>
-                <tr v-if="form.dateRange && form.dateRange[0] && form.dateRange[1]">
-                  <td>기간</td><td>{{ form.dateRange[0] }} ~ {{ form.dateRange[1] }}</td>
-                </tr>
-                <tr v-if="form.pickupAddress"><td>픽업 주소</td><td>{{ form.pickupAddress }}</td></tr>
-                <tr v-if="form.homeAddress"><td>배송 주소</td><td>{{ form.homeAddress }}</td></tr>
-                <tr class="total" v-if="totalPrice > 0">
-                  <td>결제금액</td><td><strong>{{ formatKrw(totalPrice) }}</strong></td>
-                </tr>
-              </tbody>
-            </table>
+     <table>
+  <tbody>
+    <tr v-if="form.name"><td>이름</td><td>{{ form.name }}</td></tr>
+    <tr v-if="form.phone"><td>휴대폰</td><td>{{ form.phone }}</td></tr>
+    <tr v-if="form.size"><td>사물함</td><td>{{ form.size }}</td></tr>
+    <tr v-if="form.address"><td>주소</td><td>{{ form.address }}</td></tr>
+  <tr v-if="form.dateRange && form.dateRange[0] && form.dateRange[1]">
+  <td>기간</td><td>{{ formatDate(form.dateRange[0]) }} ~ {{ formatDate(form.dateRange[1]) }}</td>
+</tr>
+
+
+    <!-- ✅ 짐 가져오기 -->
+    <tr v-if="form.pickupAddress"><td>픽업 주소</td><td>{{ form.pickupAddress }}</td></tr>
+    <tr v-if="form.pickupAddressDetail"><td>픽업 상세주소</td><td>{{ form.pickupAddressDetail }}</td></tr>
+    <tr v-if="form.pickupDate"><td>픽업일</td><td>{{ formatDate(form.pickupDate) }}</td></tr>
+
+    <!-- ✅ 집으로 보내기 -->
+    <tr v-if="form.homeAddress"><td>배송 주소</td><td>{{ form.homeAddress }}</td></tr>
+    <tr v-if="form.homeAddressDetail"><td>배송 상세주소</td><td>{{ form.homeAddressDetail }}</td></tr>
+    <tr v-if="form.deliveryDate"><td>배송일</td><td>{{ formatDate(form.deliveryDate) }}</td></tr>
+
+    <!-- ✅ 결제금액 -->
+    <tr class="total" v-if="totalPrice > 0">
+      <td>결제금액</td><td><strong>{{ formatKrw(totalPrice) }}</strong></td>
+    </tr>
+  </tbody>
+</table>
+
           </div>
         </div>
 
@@ -84,18 +96,39 @@ import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Stepper from "@/components/reserv/Stepper.vue";
 
-const route = useRoute();
 const router = useRouter();
-
-/* ✅ 전달받은 form 데이터 */
+const route = useRoute();
 const form = ref(
   route.query.form
-    ? JSON.parse(route.query.form)
-    : { name: "", phone: "", size: "", address: "", dateRange: [] }
+    ? (() => {
+        const parsed = JSON.parse(route.query.form || "{}");
+
+        // ✅ 문자열 → Date 객체 복원 (에러 방지 포함)
+        if (parsed.dateRange?.length === 2) {
+          parsed.dateRange = parsed.dateRange.map(d => new Date(d));
+        }
+        if (parsed.pickupDate) parsed.pickupDate = new Date(parsed.pickupDate);
+        if (parsed.deliveryDate) parsed.deliveryDate = new Date(parsed.deliveryDate);
+
+        return parsed;
+      })()
+    : {}
 );
 
-/* ✅ 가격 정보 */
+const formatDate = (date) => {
+  if (!date) return "";
+  const d = new Date(date);
+  if (isNaN(d)) return "";
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}-${m}-${day}`; // ✅ YYYY-MM-DD 형식으로 표시
+};
+
+
 const baseTotal = ref(Number(route.query.totalPrice || 0));
+
+
 const selectedTabs = ref(["사물함 예약"]);
 const prices = {
   "사물함 예약": baseTotal.value,

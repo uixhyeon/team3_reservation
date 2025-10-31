@@ -62,6 +62,7 @@
             format="yyyy-MM-dd"
             placeholder="날짜를 선택하세요"
             @focus="$emit('touch', 'deliveryDate')"
+            
           />
           <p v-if="touched.deliveryDate && errors.deliveryDate" class="error">
             {{ errors.deliveryDate }}

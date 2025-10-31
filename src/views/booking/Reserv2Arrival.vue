@@ -62,6 +62,7 @@
             format="yyyy-MM-dd"
             placeholder="날짜를 선택하세요"
             @focus="$emit('touch', 'pickupDate')"
+            teleport="#app" 
           />
           <p v-if="touched.pickupDate && errors.pickupDate" class="error">
             {{ errors.pickupDate }}

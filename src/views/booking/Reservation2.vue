@@ -88,27 +88,42 @@
     </div>
   </div>
 
- 
-</template>
+<FinishPayment
+  v-if="showFinish"
+  :total-price="finalTotal"
+  :payment-method="selectedPayment"
+  :order-id="orderId"
+  @close="closeFinish"
+/>
 
+
+</template>
 <script setup>
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
-import Stepper from "@/components/reserv/Stepper.vue";
 import { getCurrentInstance } from "vue";
+import Stepper from "@/components/reserv/Stepper.vue";
+import FinishPayment from "@/components/reserv/FinishPayment.vue";
 
+
+// Vue 인스턴스
 const { appContext } = getCurrentInstance();
 
+// 라우터 관련
 const router = useRouter();
 const route = useRoute();
+
+
+
+// ✅ form 데이터 복원
 const form = ref(
   route.query.form
     ? (() => {
         const parsed = JSON.parse(route.query.form || "{}");
 
-        // ✅ 문자열 → Date 객체 복원 (에러 방지 포함)
+        // ✅ 문자열 → Date 객체 복원
         if (parsed.dateRange?.length === 2) {
-          parsed.dateRange = parsed.dateRange.map(d => new Date(d));
+          parsed.dateRange = parsed.dateRange.map((d) => new Date(d));
         }
         if (parsed.pickupDate) parsed.pickupDate = new Date(parsed.pickupDate);
         if (parsed.deliveryDate) parsed.deliveryDate = new Date(parsed.deliveryDate);
@@ -118,6 +133,7 @@ const form = ref(
     : {}
 );
 
+// ✅ 날짜 포맷 함수
 const formatDate = (date) => {
   if (!date) return "";
   const d = new Date(date);
@@ -125,12 +141,11 @@ const formatDate = (date) => {
   const y = d.getFullYear();
   const m = String(d.getMonth() + 1).padStart(2, "0");
   const day = String(d.getDate()).padStart(2, "0");
-  return `${y}-${m}-${day}`; // ✅ YYYY-MM-DD 형식으로 표시
+  return `${y}-${m}-${day}`;
 };
 
-
+// ✅ 기본 요금
 const baseTotal = ref(Number(route.query.totalPrice || 0));
-
 
 const selectedTabs = ref(["사물함 예약"]);
 const prices = {
@@ -139,7 +154,7 @@ const prices = {
   "집으로 배송하기": 20000,
 };
 
-/* ✅ 쿠폰·포인트 */
+// ✅ 쿠폰/포인트
 const useCoupon = ref(false);
 const usePoints = ref(false);
 
@@ -158,7 +173,7 @@ const finalTotal = computed(() =>
   Math.max(totalPrice.value - discountAmount.value, 0)
 );
 
-/* ✅ 결제 수단 */
+// ✅ 결제 수단
 const selectedPayment = ref("card");
 const paymentMethods = [
   { id: "card", label: "신용카드", img: "/images/reservation/image490.png" },
@@ -167,30 +182,44 @@ const paymentMethods = [
   { id: "bank", label: "무통장입금", img: "/images/reservation/image492.png" },
 ];
 
-/* ✅ 통화 포맷 */
+// ✅ 금액 포맷 함수
 const formatKrw = (v) =>
   new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(v);
 
+// ===================================================
+// ✅ 결제 완료 모달 제어
+// ===================================================
+// ✅ 모달 표시 여부
+const showFinish = ref(false);
+const orderId = ref(`MATAJU-${Date.now().toString().slice(-6)}`);
 
-/* ✅ 결제 함수 */
+// ✅ 결제 버튼 클릭 시 모달 표시
 const saveAndPay = () => {
-  // ✅ 1) 기존 alert() 대신 전역 알림창 호출
-  appContext.config.globalProperties.$alert(
-    `결제가 완료되었습니다! \n\n 결제수단: ${selectedPayment.value} \n 결제금액: ${formatKrw(finalTotal.value)}\n\n`
-  );
-
-  // ✅ 2) 알림창이 뜨고 1.5초 뒤 자동 이동
-  setTimeout(() => {
-    const query = {
-      form: JSON.stringify(form.value),
-      total: finalTotal.value,
-      payment: selectedPayment.value,
-    };
-    router.push({ path: "/reservation3", query });
-  }, 1500);
+  showFinish.value = true;
 };
 
+// ✅ 모달 닫기 후 Reservation3으로 이동
+function closeFinish() {
+  showFinish.value = false;
+  const query = {
+    form: JSON.stringify(form.value),
+    totalPrice: finalTotal.value,
+    payment: selectedPayment.value,
+    orderId: orderId.value,
+  };
+  router.push({ path: "/reservation3", query });
+}
+
+
+
+
+
+
+function goHome() {
+  router.push("/");
+}
 </script>
+
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
 

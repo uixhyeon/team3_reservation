@@ -36,12 +36,11 @@
 
           <!-- 📦 예약 완료 -->
           <div class="card_header">
-            <h3>예약 완료</h3>
           </div>
-
+          
           <div class="card_content">
             <!-- ✅ 요약 보기 -->
-           <div v-if="!showDetail" class="summary-view">
+            <div v-if="!showDetail" class="summary-view">
   <h3 class="summary-title">예약 성공!</h3>
 
   <div class="branch-size">
@@ -50,7 +49,7 @@
   </div>
 
   <p class="service-type">{{ selectedServices.join(" | ") }}</p>
-
+  
   <div class="date-box">
     {{ formatShortDate(form.dateRange[0]) }} ~ {{ formatShortDate(form.dateRange[1]) }}
   </div>
@@ -59,15 +58,16 @@
     <p v-if="form.pickupDate">픽업일 <span>{{ formatShortDate(form.pickupDate) }}</span></p>
     <p v-if="form.deliveryDate">배송요청일 <span>{{ formatShortDate(form.deliveryDate) }}</span></p>
   </div>
-
+  
   <p class="toggle-mini" @click="showDetail = true">상세보기 ▸</p>
-
+  
   
 </div>
 
 
-            <!-- ✅ 상세 보기 -->
-            <div v-else class="detail-view">
+<!-- ✅ 상세 보기 -->
+<div v-else class="detail-view">
+              <h3>예약 완료</h3>
               <table class="receipt_table">
                 <colgroup>
                   <col style="width: 65%;" />
@@ -99,6 +99,7 @@
           <div class="qr-section always">
             <img :src="qrImage" alt="예약 QR코드" class="qr-thumb" @click="showQRModal = true" />
             <p class="qr-desc">예약 QR코드</p>
+            <p class="qr-desc">예약번호: MATAJU-703115</p>
           </div>
         </div>
 

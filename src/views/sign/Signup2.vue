@@ -1,66 +1,267 @@
 <template>
-
-<!-- ==================================================== -->
- <div class="join-page">
-    <!-- ✅ 상단 영역 -->
-     <header class="header">
-      <div class="logo left"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
+  <div class="join-page">
+    <header class="header">
+      <div class="logo left">
+        <img src="/public/images/mains/header/logo-1.png" alt="로고" />
+      </div>
       <h1>회원가입</h1>
-      <div class="logo right"><img src="/public/images/mains/header/logo-1.png" alt="로고"></div>
+      <div class="logo right">
+        <img src="/public/images/mains/header/logo-1.png" alt="로고" />
+      </div>
     </header>
 
-    <!-- ✅ 메인 카드 -->
     <div class="join-card">
-      <form>
-        <div class="form-group">
-          <div class="form_group">
-            <label>이메일 아이디*</label>
-            <input type="text" placeholder="Matajuu @ amail.com" />
-            <p class="label">회원가입 신청후 받음 메일에서 확인 해야 완료됩니다</p>
+      <form @submit="submitForm">
+        <!-- ✅ 이메일 (도메인 선택형) -->
+        <div class="form_group">
+          <label>이메일 아이디*</label>
+          <div class="email-row">
+            <input
+              type="text"
+              placeholder="이메일 아이디"
+              v-model="emailId"
+              @blur="validateEmail"
+            />
+            <span>@</span>
+            <select v-model="emailDomain" @change="handleDomainChange">
+              <option disabled value="">도메인 선택</option>
+              <option value="gmail.com">gmail.com</option>
+              <option value="naver.com">naver.com</option>
+              <option value="daum.net">daum.net</option>
+              <option value="kakao.com">kakao.com</option>
+              <option value="custom">직접 입력</option>
+            </select>
           </div>
-
-          <div class="form_group">
-            <label>비밀번호*</label>
-            <input type="text" placeholder="영문 숫자 포함 8글자 이상" />
-            <p class="label">일치하지 않습니다</p>
-          </div>
-          <div class="form_group">
-            <label>비밀번호 확인*</label>
-            <input type="text" placeholder="비밀번호를 입력해 주세요" />
-            <p class="label">일치하지 않습니다</p>
-          </div>
-          
-          <div class="title-wrap">
-            <h2>선택입력 정보</h2>
-            <!-- <p class="label">짐 배송 및 예약시에 사용됩니다</p> -->
-      </div>
-          <div class="form_group">
-            <label>성함*</label>
-            <input type="text" placeholder="성함을 입력해주세요" />
-            <p class="label">5자 이하</p>
-          </div>
-
-          <div class="form_group">
-            <label>주소*</label>
-            <input type="text" placeholder="지번 및 도로명 주소를 입력해주세요" />
-            <p class="label">배송시 사용됩니다</p>
-            <div class="gapp"></div>
-            <input type="text" placeholder="상세주소를 입력해주세요" />
-            <p class="label">상세주소~~</p>
-          </div>
-
-             <button type="submit" class="btn primary full" @click="goToLogin">입력 완료</button>
+          <input
+            v-if="emailDomain === 'custom'"
+            type="text"
+            placeholder="직접 입력"
+            v-model="customDomain"
+            @blur="validateEmail"
+            class="custom-domain"
+          />
+          <p class="label" :style="{ color: errors.email ? '#e53935' : '#888' }">
+            {{ errors.email || '회원가입 후 메일 인증이 필요합니다' }}
+          </p>
         </div>
+
+        <!-- ✅ 비밀번호 -->
+        <div class="form_group">
+          <label>비밀번호*</label>
+          <input
+            type="password"
+            placeholder="영문 숫자 포함 8글자 이상"
+            v-model="form.password"
+            @blur="validatePassword"
+          />
+          <p class="label" :style="{ color: errors.password ? '#e53935' : '#888' }">
+            {{ errors.password || '8자 이상 입력해주세요' }}
+          </p>
+        </div>
+
+        <!-- ✅ 비밀번호 확인 -->
+        <div class="form_group">
+          <label>비밀번호 확인*</label>
+          <input
+            type="password"
+            placeholder="비밀번호를 다시 입력해주세요"
+            v-model="form.confirm"
+            @blur="validateConfirm"
+          />
+          <p class="label" :style="{ color: errors.confirm ? '#e53935' : '#888' }">
+            {{ errors.confirm || '비밀번호 일치 여부 확인' }}
+          </p>
+        </div>
+
+        <!-- ✅ 선택 입력 정보 -->
+        <div class="title-wrap"><h2>선택입력 정보</h2></div>
+
+        <div class="form_group">
+          <label>성함*</label>
+          <input
+            type="text"
+            placeholder="성함을 입력해주세요"
+            v-model="form.name"
+            @blur="validateName"
+          />
+          <p class="label" :style="{ color: errors.name ? '#e53935' : '#888' }">
+            {{ errors.name || '2~10자 이내로 입력해주세요' }}
+          </p>
+        </div>
+
+       <!-- ✅ 주소 (카카오 주소검색 연결) -->
+<div class="form_group">
+  <label>주소*</label>
+
+  <div class="address-row">
+    <input
+      type="text"
+      placeholder="지번 및 도로명 주소를 입력해주세요"
+      v-model="form.address"
+      readonly
+      @blur="validateAddress"
+    />
+    <button type="button" class="btn search" @click="searchAddress">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <span>주소 검색</span>
+    </button>
+  </div>
+
+  <p class="label" :style="{ color: errors.address ? '#e53935' : '#888' }">
+    {{ errors.address || '검색 버튼을 눌러 주소를 선택하세요' }}
+  </p>
+
+  <div class="gapp"></div>
+
+  <input
+    type="text"
+    placeholder="상세주소를 입력해주세요"
+    v-model="form.detail"
+  />
+</div>
+
+
+<!-- 제출 버튼 -->
+<button type="submit" class="btn primary full" :disabled="!isFormValid">
+  입력 완료
+</button>
+
       </form>
     </div>
   </div>
 </template>
 <script setup>
+import { ref, computed, onMounted, getCurrentInstance } from "vue";
 import { useRouter } from "vue-router";
-// useRouter() 이동할때 사용하는 함수
+
 const router = useRouter();
-const goToLogin = () => {
-  alert("회원가입완료");
+const { appContext } = getCurrentInstance();
+
+/* ======================
+  이메일 도메인 선택형
+====================== */
+const emailId = ref("");
+const emailDomain = ref("");
+const customDomain = ref("");
+const fullEmail = computed(() => {
+  if (!emailId.value) return "";
+  if (emailDomain.value === "custom") return `${emailId.value}@${customDomain.value}`;
+  return `${emailId.value}@${emailDomain.value}`;
+});
+
+const handleDomainChange = () => {
+  if (emailDomain.value !== "custom") customDomain.value = "";
+};
+
+/* ======================
+  나머지 입력
+====================== */
+const form = ref({
+  password: "",
+  confirm: "",
+  name: "",
+  address: "",
+  detail: "",
+});
+
+const errors = ref({
+  email: "",
+  password: "",
+  confirm: "",
+  name: "",
+  address: "",
+});
+
+/* -----------------------------------------------------
+   🧭 카카오 주소검색 연결
+----------------------------------------------------- */
+onMounted(() => {
+  // ✅ 카카오 주소검색 스크립트가 없을 경우 로드
+  if (!window.daum || !window.daum.Postcode) {
+    const script = document.createElement("script");
+    script.src = "//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+    document.body.appendChild(script);
+  }
+});
+
+function searchAddress() {
+  if (!window.daum || !window.daum.Postcode) {
+    appContext.config.globalProperties.$alert("주소검색 모듈이 아직 로드되지 않았습니다. 잠시 후 다시 시도해주세요 ⏳");
+    return;
+  }
+
+  new window.daum.Postcode({
+    oncomplete: (data) => {
+      form.value.address = data.roadAddress || data.jibunAddress;
+      appContext.config.globalProperties.$alert("주소가 입력되었습니다 ✅");
+    },
+  }).open();
+}
+
+/* ======================
+  유효성 검사
+====================== */
+const validateEmail = () => {
+  const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  errors.value.email = pattern.test(fullEmail.value)
+    ? ""
+    : "올바른 이메일 형식이 아닙니다.";
+};
+
+const validatePassword = () => {
+  const pattern = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/;
+  errors.value.password = pattern.test(form.value.password)
+    ? ""
+    : "영문+숫자 포함 8자 이상 입력해주세요.";
+  validateConfirm();
+};
+
+const validateConfirm = () => {
+  errors.value.confirm =
+    form.value.password === form.value.confirm
+      ? ""
+      : "비밀번호가 일치하지 않습니다.";
+};
+
+const validateName = () => {
+  const len = form.value.name.trim().length;
+  errors.value.name =
+    len >= 2 && len <= 10 ? "" : "이름은 2~10자로 입력해주세요.";
+};
+
+const validateAddress = () => {
+  errors.value.address = form.value.address ? "" : "주소를 입력해주세요.";
+};
+
+/* ======================
+  전체 유효성 확인
+====================== */
+const isFormValid = computed(() =>
+  Object.values(errors.value).every((v) => v === "") &&
+  fullEmail.value &&
+  form.value.password &&
+  form.value.confirm &&
+  form.value.name &&
+  form.value.address
+);
+
+/* ======================
+  제출
+====================== */
+const submitForm = (e) => {
+  e.preventDefault();
+  validateEmail();
+  validatePassword();
+  validateConfirm();
+  validateName();
+  validateAddress();
+
+  if (!isFormValid.value) {
+    appContext.config.globalProperties.$alert("입력 정보를 다시 확인해주세요 ❌");
+    return;
+  }
+
+  appContext.config.globalProperties.$alert(`회원가입 완료!\n${fullEmail.value} 🎉`);
   router.push("/login");
 };
 </script>
@@ -68,115 +269,120 @@ const goToLogin = () => {
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
 
-.title-wrap{
-display: flex;
-
-  
-    width: 100%;
-    border: none;
-    border-bottom: 2px solid #999999;
-    background: transparent;
-    font-size: 14px;
-    // padding: 10px 4px;
-    outline: none;
-    color: #333;
-    transition: border-color 0.2s ease;
-
-    &:focus {
-      border-bottom: 1px solid $color_main_light;
-    }
-  
-
-}
-
-/* 전체 페이지 구조 */
+/* ✅ 기본 레이아웃 */
 .join-page {
   min-height: 100vh;
   background: #f5f7f7;
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: relative;
-  z-index: 0;
+  padding-bottom: 3rem;
 }
-//*  상단 헤더 */
+
+/* ✅ 헤더 */
 .header {
   position: relative;
   height: 200px;
   width: 100%;
-  background: #59B5B3; /* 단색 배경 */
-  overflow: hidden;
+  background: #59b5b3;
   text-align: center;
   padding: 70px 0;
-  z-index: 1;
 
-  /* 회원가입 텍스트 복구 + 명확한 색상 */
   h1 {
-    position: relative;
-    z-index: 3;             /* 로고보다 위로 */
-    color: #fff;            
+    color: #fff;
     font-size: 28px;
     font-weight: 700;
-    margin: 0;
+    z-index: 3;
+    position: relative;
   }
 
- 
   .logo {
     position: absolute;
     top: 50%;
     transform: translateY(-50%) rotate(45deg);
     width: 70px;
     height: 70px;
-    z-index: 2;
-
     img {
       width: 100%;
       height: 100%;
-      opacity: 0.12; /* ✅ 아주 은은하게 (너무 눈에 띄지 않게) */
-      object-fit: contain;
+      opacity: 0.12;
     }
-
     &.left {
       left: 80px;
     }
-
     &.right {
       right: 80px;
     }
   }
 }
 
-/*  회원가입 카드 */
+/* ✅ 카드 */
 .join-card {
   background: #fff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  // border-radius: 4px;
   padding: 50px 60px;
   width: 500px;
-  position: relative;
-  z-index: 10;
   margin-top: -60px;
+}
 
-  form {
-    position: relative;
-    z-index: 10;
+/* ✅ 이메일 입력 커스텀 */
+.email-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    padding: 8px 4px;
+    font-size: 14px;
+    outline: none;
+    &:focus {
+      border-color: $color_main_light;
+    }
+  }
+  span {
+    font-size: 15px;
+    color: #333;
+  }
+  select {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    font-size: 14px;
+    padding: 8px 4px;
+    background: transparent;
+    outline: none;
+    &:focus {
+      border-color: $color_main_light;
+    }
   }
 }
 
-/*  라인형 입력 폼 */
+.custom-domain {
+  width: 100%;
+  margin-top: 6px;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  font-size: 14px;
+  padding: 8px 4px;
+  outline: none;
+  &:focus {
+    border-color: $color_main_light;
+  }
+}
+
+/* ✅ 공통 입력폼 */
 .form_group {
   margin-bottom: 25px;
-
   label {
     font-size: 14px;
     font-weight: 600;
     color: #333;
-    display: block;
     margin-bottom: 6px;
+    display: block;
   }
-
-  input,
-  select {
+  input {
     width: 100%;
     border: none;
     border-bottom: 1px solid #e7e7e7;
@@ -186,20 +392,10 @@ display: flex;
     outline: none;
     color: #333;
     transition: border-color 0.2s ease;
-
     &:focus {
-      border-bottom: 1px solid #53b4a1;
+      border-bottom: 1px solid $color_main_light;
     }
   }
-
-  select {
-    appearance: none;
-    background: url("data:image/svg+xml;utf8,<svg fill='%2355b4a1' height='10' viewBox='0 0 20 20' width='10'><path d='M5 7l5 5 5-5H5z'/></svg>")
-      no-repeat right 10px center;
-    background-size: 12px;
-    padding-right: 28px;
-  }
-
   .label {
     font-size: 12px;
     color: #888;
@@ -207,71 +403,18 @@ display: flex;
   }
 }
 
-/* ✅ 새로운 입력 구조 (.form-group: 복수행 대응) */
-.form-group {
-  margin-bottom: 25px;
-
-  label {
-    font-size: 14px;
-    font-weight: 600;
+/* ✅ 구분선 */
+.title-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  margin: 30px 0 15px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e7e7e7;
+  h2 {
+    font-size: 16px;
+    font-weight: 700;
     color: #333;
-    display: block;
-    margin-bottom: 6px;
-  }
-
-  .input-row {
-    display: flex;
-    gap: 10px;
-
-    input {
-      flex: 1;
-      border: none;
-      border-bottom: 1px solid #ccc;
-      font-size: 14px;
-      padding: 8px 4px;
-      outline: none;
-
-      &:focus {
-        border-bottom-color: $color_main_light;
-      }
-    }
-  }
-
-  .desc {
-    font-size: 12px;
-    color: #999;
-    margin-top: 4px;
-  }
-}
-
-/* ✅ 약관 영역 */
-.terms {
-  border-top: 1px solid #e7e7e7;
-  padding-top: 15px;
-  margin-top: 10px;
-
-  .term-header {
-    margin-bottom: 10px;
-    label {
-      font-weight: 700;
-    }
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    li {
-      font-size: 13px;
-      color: #555;
-      margin-bottom: 6px;
-    }
-  }
-
-  input[type="checkbox"] {
-    margin-right: 8px;
-    accent-color: $color_main_light;
   }
 }
 
@@ -284,58 +427,106 @@ display: flex;
   cursor: pointer;
   font-weight: 600;
   padding: 12px 16px;
-
-  &.small {
-    padding: 8px 14px;
-    font-size: 13px;
-  }
-
+  transition: 0.3s;
   &.primary.full {
     width: 100%;
     padding: 16px 0;
     font-size: 15px;
     margin-top: 25px;
   }
-
-  &:hover {
+  &:hover:not(:disabled) {
     background: $color_main_deep;
   }
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
 }
-.gapp{
-  height: 6px;
-}
-// ========================라인으로 ============
-.title-wrap {
+
+// 버튼추가
+.address-row {
   display: flex;
-  flex-direction: column;
-  gap: 2px;
-  margin: 30px 0 15px;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #e7e7e7;   // ✅ 기존 입력라인과 동일한 색상
-  width: 100%;
+  align-items: center;
+  gap: 10px;
 
-  h2 {
-    font-size: 16px;
-    font-weight: 700;
+  input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+    background: transparent;
+    font-size: 14px;
+    padding: 10px 4px;
+    outline: none;
     color: #333;
-    margin: 0;
+
+    &:focus {
+      border-bottom: 1px solid $color_main_light;
+    }
   }
 
-  .label {
-    font-size: 12px;
-    color: #888;
+  .btn.line {
+    background: #f3f3f3;
+    color: #333;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #eaeaea;
+    }
+  }
+}
+// 돋보기 추가
+.address-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  input {
+    flex: 1;
+    border: none;
+    border-bottom: 1px solid #e7e7e7;
+    background: transparent;
+    font-size: 14px;
+    padding: 10px 4px;
+    outline: none;
+    color: #333;
+
+    &:focus {
+      border-bottom: 1px solid $color_main_light;
+    }
+  }
+
+  .btn.search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: $color_main;
+    color: #fff;
+    border-radius: 50px; /* ✅ 라운드형 */
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 16px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    transition: all 0.25s ease;
+
+    i {
+      font-size: 14px;
+    }
+
+    &:hover {
+      background: $color_main_deep;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+    }
   }
 }
 
-
-/* ✅ 반응형 */
-@media (max-width: 600px) {
-  .join-card {
-    width: 90%;
-    padding: 30px 20px;
-  }
-  .header .logo {
-    display: none;
-  }
-}
 </style>

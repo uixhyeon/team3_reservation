@@ -104,6 +104,12 @@
   @close="showConfirm = false"
   @submit="handleConfirmSubmit"
 />
+<!--약관동의 -->
+<ReasrAgree
+  :show="showTerms"
+  @close="showTerms = false"
+  @agree="handleAgreeTerms"
+/>
 
 
   </div>
@@ -115,6 +121,7 @@ import { useRouter } from "vue-router";
 
 
 import Stepper from "@/components/reserv/Stepper.vue";
+import ReasrAgree from "@/components/reserv/ReserAgree.vue";
 
 import Reserv1Locker from "@/views/booking/Reserv1Locker.vue";
 import Reserv2Arrival from "@/views/booking/Reserv2Arrival.vue";
@@ -128,6 +135,29 @@ import ConfirmReserv from "@/components/reserv/ConfirmReserv.vue";
 // 💚 추가된 전역 알림창 상태
 const showAlert = ref(false);
 const alertMessage = ref("");
+
+
+// 약관동의
+const showTerms = ref(false);
+
+// 약관 동의 완료 처리
+function handleAgreeTerms() {
+  showTerms.value = false;
+
+  alertMessage.value = "이용약관에 동의하였습니다.";
+  showAlert.value = true;
+
+  setTimeout(() => {
+    router.push({
+      path: "/reservation2",
+      query: {
+        form: JSON.stringify(form.value),
+        totalPrice: totalPrice.value,
+      },
+    });
+  }, 1200);
+}
+
 
 // 스탭퍼
 
@@ -513,14 +543,8 @@ const handleSubmit = () => {
     ) openSection.value = "luggage";
     return;
   }
+showTerms.value = true; // ✅ 약관 모달 열기
 
-  router.push({
-    path: "/reservation2",
-    query: {
-      form: JSON.stringify(form.value),
-      totalPrice: totalPrice.value,
-    },
-  });
 };
 // 모바일 카드분리
 // 카드 순서 배열

@@ -8,9 +8,9 @@
         :class="{ active: currentStep === i + 1 }"
         v-show="windowWidth > 768 || currentStep === i + 1"
       >
-        <div class="circle"></div>
+        <div class="circle">{{ i + 1 }}</div>
         <p>{{ step }}</p>
-        <div v-if="i < steps.length - 1 && windowWidth > 768" class="dotline"></div>
+        <div v-if="i < steps.length - 1 && windowWidth > 768" class="line"></div>
       </li>
     </ol>
   </div>
@@ -22,13 +22,12 @@ import { ref, onMounted, onUnmounted } from "vue";
 defineProps({
   currentStep: {
     type: Number,
-    default: 1, // ✅ 기본값: 첫 번째 단계 활성화
+    default: 1,
   },
 });
 
-const steps = ["예약 하기", "확인 및 결제", "변경 완료"];
+const steps = ["코드 디자인", "페이지 유형 선택", "페이지 정보 입력"];
 
-/* ✅ 반응형 감지 */
 const windowWidth = ref(window.innerWidth);
 const handleResize = () => (windowWidth.value = window.innerWidth);
 
@@ -38,106 +37,101 @@ onUnmounted(() => window.removeEventListener("resize", handleResize));
 
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
-// body{
-//   // background-color: #f5f7f7;
-// }
 
-/* ✅ 상단 스텝 표시 */
 .stepper {
-  // background-color: #f5f7f7;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 3rem auto;
+  margin: 1rem 0;
 
   ol {
     display: flex;
-    justify-content: center;
     align-items: center;
-    gap: clamp(2rem, 5vw, 5rem);
     list-style: none;
+    gap: 4rem;
     padding: 0;
     margin: 0;
   }
 }
 
-/* ✅ 각 단계 (step) */
 .step {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   position: relative;
   text-align: center;
-  font-size: 18px;
-  color: #bbb;
-  font-weight: 400;
+  color: #888;
 
-  /* ✅ 원(circle) */
+  /* ✅ 원 더 작게 (30px) */
   .circle {
-    position: relative;
-    width: 22px;
-    height: 22px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    border: 3px solid #bbb;
-    background-color: #e6e6e6;
-    margin-bottom: 0.6rem;
-    z-index: 2;
-
-    /* ✅ 점선 중앙 정렬 */
-&::after {
-  content: "";
-  position: absolute;
-  top: calc(50% - 1px);
-  left: 2rem;
-  transform: translateY(-50%);
-  width: calc(clamp(2rem, 5vw, 5rem) +  20px); // ✅ +8px 정도 여유
-  border-top: 1px solid #bbb;
-  z-index: 1;
-}
+    background: #999;
+    color: #fff;
+    font-size: 0.8rem;
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 0.4rem;
+    transition: 0.3s;
   }
 
-  &:last-child .circle::after {
-    display: none;
+  p {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #888;
+    transition: 0.3s;
   }
 
-  /* ✅ 활성화 상태 */
   &.active {
-    color:$color_main ;
-    font-weight: 600;
-
     .circle {
-      border-color: $color_main ;
-      background-color:$color_main_background;
-
-      &::after {
-        border-top-color: $color_main;
-      }
+      background: $color-main;
+      color: #fff;
+    }
+    p {
+      color: #222;
+      font-weight: 700;
     }
   }
-}
 
-// 반응형
-@media (max-width: 768px) {
-  .stepper ol {
-    flex-direction: column;
-    align-items: center;
+  /* ✅ 점선 위치/길이 조정 */
+  .line {
+    position: absolute;
+    top: 15px; /* 원 중앙 */
+    left: 100%;
+    width: 80px;
+    height: 1px;
+    background: repeating-linear-gradient(
+      to right,
+      #999,
+      #999 6px,
+      transparent 6px,
+      transparent 12px
+    );
   }
 
-  /* 기본적으로 모든 스텝 숨김 */
+  &:last-child .line {
+    display: none;
+  }
+}
+
+/* ✅ 모바일: 활성 스텝만 */
+@media (max-width: 768px) {
+  .stepper ol {
+    justify-content: center;
+    gap: 0;
+  }
+
   .step {
     display: none;
   }
 
-  /* 현재 활성 스텝만 표시 */
   .step.active {
     display: flex;
     flex-direction: column;
     align-items: center;
   }
 
-  /* 점선 완전 제거 */
-  .dotline,
-  .circle::after {
+  .line {
     display: none !important;
   }
 }

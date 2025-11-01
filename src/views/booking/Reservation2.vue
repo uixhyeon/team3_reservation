@@ -95,6 +95,9 @@
 import { ref, computed } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import Stepper from "@/components/reserv/Stepper.vue";
+import { getCurrentInstance } from "vue";
+
+const { appContext } = getCurrentInstance();
 
 const router = useRouter();
 const route = useRoute();
@@ -168,19 +171,25 @@ const paymentMethods = [
 const formatKrw = (v) =>
   new Intl.NumberFormat("ko-KR", { style: "currency", currency: "KRW" }).format(v);
 
+
 /* ✅ 결제 함수 */
 const saveAndPay = () => {
-  alert(`✅ 결제가 완료되었습니다!
-결제수단: ${selectedPayment.value}
-결제금액: ${formatKrw(finalTotal.value)}`);
+  // ✅ 1) 기존 alert() 대신 전역 알림창 호출
+  appContext.config.globalProperties.$alert(
+    `결제가 완료되었습니다! \n\n 결제수단: ${selectedPayment.value} \n 결제금액: ${formatKrw(finalTotal.value)}\n\n`
+  );
 
-  const query = {
-    form: JSON.stringify(form.value),
-    total: finalTotal.value,
-    payment: selectedPayment.value,
-  };
-  router.push({ path: "/reservation3", query });
+  // ✅ 2) 알림창이 뜨고 1.5초 뒤 자동 이동
+  setTimeout(() => {
+    const query = {
+      form: JSON.stringify(form.value),
+      total: finalTotal.value,
+      payment: selectedPayment.value,
+    };
+    router.push({ path: "/reservation3", query });
+  }, 1500);
 };
+
 </script>
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
@@ -199,18 +208,36 @@ padding: 40px 0 80px 0;
   width: 100%;
   max-width: 1120px;
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 1fr; /* ✅ 기본은 2:1 비율 가로 정렬 */
   gap: 2.5rem;
   align-items: start;
-padding: 20px;
-@media (max-width: 1020px){
-  width: 90%;
-}
+  padding: 20px;
+ 
+ 
+  
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr; /* ✅ 세로 정렬로 전환 */
+    gap: 2rem;
+  }
+
   @media (max-width: 500px) {
-    grid-template-columns: 1fr;
-   width: 100%;
+    width: 100%;
+    gap: 1.5rem;
   }
 }
+// 정렬 가온데로
+.right-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    align-items: stretch; /* ✅ 세로 전체 폭으로 확장 */
+  }
+}
+
 // ======왼오나뉨=====
 .left-section{
  width: 100%;
@@ -221,7 +248,9 @@ gap: 2.5rem;
      grid-template-columns: 1fr;
   }
 }
-
+.payment_card{
+  width: 100%;
+}
 /* ✅ 공통 카드 스타일 */
 .form_card,
 .summary_card,
@@ -259,6 +288,9 @@ gap: 2.5rem;
   h2{
     font-size: $text-md;
   }
+}
+.summary_card{
+  height: fit-content;
 }
 /* ✅ 테이블 */
 .form_card table {

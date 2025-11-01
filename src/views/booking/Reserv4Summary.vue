@@ -141,7 +141,7 @@ const formatKrw = (value) => {
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0f0f0;
-  padding: 30px 40px;
+padding: 15px 40px 10px;
   box-sizing: border-box;
   transition: all 0.3s ease;
 
@@ -168,7 +168,7 @@ const formatKrw = (value) => {
     font-size: $text-md;
     font-weight: 600;
     color: #222;
-    margin-bottom: 20px;
+    margin: 15px 0;
   }
 
   /* ✅ 요약 테이블 */
@@ -269,7 +269,7 @@ const formatKrw = (value) => {
   .summary_card {
     width: 90%;
     margin: 0 auto;
-    padding: 24px 28px;
+    padding: 15px 40px 10px;
   }
 
   .submit_btn {

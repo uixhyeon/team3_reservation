@@ -45,11 +45,11 @@
    @focus="$emit('touch', 'size')"
   >
     <option value="">사이즈를 선택해 주세요</option>
+    <option>XS</option>
     <option>S</option>
     <option>M</option>
     <option>L</option>
     <option>XL</option>
-    <option>XXL</option>
   </select>
 
   <p v-if="touched.size && errors.size" class="error">{{ errors.size }}</p>
@@ -65,9 +65,16 @@
       readonly
         @focus="$emit('touch', 'address')"
     />
-    <button type="button" class="mini-btn" @click="$emit('openBranch')">
-      지점 선택
-    </button>
+ <!-- ✅ 수정된 버튼 -->
+<button
+  type="button"
+  class="mini-btn"
+  :class="{ disabled: !localForm.size }"
+  @click="handleOpenBranch"
+>
+  지점 선택
+</button>
+
   </div>
  
   <p v-if="touched.address && errors.address" class="error">{{ errors.address }}</p>
@@ -75,28 +82,71 @@
 
 <div class="form_group">
   <label>예약 기간*</label>
-  <VueDatePicker
-    v-model="localForm.dateRange"
-    range
-    locale="ko"
-    :enable-time-picker="false"
-    format="yyyy-MM-dd"
-    placeholder="기간을 선택하세요"
-       teleport="#app" 
-  />
+  <!-- <VueDatePicker
+  v-model="localForm.dateRange"
+  range
+  locale="ko"
+  :enable-time-picker="false"
+  format="yyyy-MM-dd"
+  placeholder="기간을 선택하세요"
+  teleport="#app" 
+  /> -->
+<VueDatePicker
+  v-model="localForm.dateRange"
+  range
+  locale="ko"
+  :enable-time-picker="false"
+  format="yyyy-MM-dd"
+  placeholder="기간을 선택하세요"
+  class="date-picker"
+  @open="$emit('touch', 'dateRange')"
+  @update:model-value="$emit('touch', 'dateRange')"
+>
+  <!-- ✅ v11에서는 slot 이름이 action-row -->
+  <template #action-row="{ selectDate }">
+    <button
+      class="dp__select custom-select"
+      type="button"
+      @click="selectDate"
+    >
+      선택 완료
+    </button>
+  </template>
+</VueDatePicker>
+
 
   <p v-if="touched.dateRange && errors.dateRange" class="error">{{ errors.dateRange }}</p>
 </div>
+<!-- 버튼 부분 수정 -->
+
+<div class="btn-grup-wrap">
+  <div class="btn-group">
+    <p style="padding-left: 3px; margin-bottom:14px;"> 배송서비스를 이용하시겠어요?</p>
+    <button
+    type="button"
+    class="card-btn left"
+    @click="$emit('move', 'arrival')"
+    >
+    짐을 미리 보내요
+  </button>
+  
+  <button
+  type="button"
+  class="card-btn right"
+  @click="$emit('move', 'luggage')"
+  >
+  짐을 집으로 받아요
+  </button>
+</div>
+</div>
+
 
       </div>
     </transition>
   </div>
 </template>
-
-
-
 <script setup>
-import { computed } from "vue";
+import { computed, getCurrentInstance } from "vue";
 import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
@@ -104,16 +154,30 @@ const props = defineProps({
   form: { type: Object, required: true },
   isOpen: { type: Boolean, default: true },
   errors: { type: Object, default: () => ({}) },
-   touched: { type: Object, default: () => ({}) }, 
+  touched: { type: Object, default: () => ({}) },
 });
-const emit = defineEmits(["update:form", "openBranch", "toggle", "touch"]);
+
+const emit = defineEmits(["update:form", "openBranch", "toggle", "touch", "move"]);
+
 
 const localForm = computed({
   get: () => props.form,
   set: (val) => emit("update:form", val),
 });
 
-// 모든 필수항목이 채워졌을 때 체크 아이콘 표시
+// ✅ 전역 Alert 접근
+const { appContext } = getCurrentInstance();
+
+// ✅ 버튼 클릭 시 동작
+function handleOpenBranch() {
+  if (!localForm.value.size) {
+    appContext.config.globalProperties.$alert("사물함 사이즈를 먼저 선택해주세요.");
+    return;
+  }
+  emit("openBranch"); // 부모로 전달
+}
+
+// ✅ 입력 완료 여부 (체크 아이콘 표시)
 const isComplete = computed(() => {
   const f = props.form;
   return (
@@ -126,49 +190,31 @@ const isComplete = computed(() => {
     f.dateRange[1]
   );
 });
-</script>
 
+// <script setup> 내부 하단에 추가
+// <script setup> 내부 하단에 추가
+function goNextStep() {
+  if (window.innerWidth > 1024) return; // ✅ PC에서는 작동 안 함
+  if (!isComplete.value) {
+    appContext.config.globalProperties.$alert("사물함 예약 정보를 모두 입력해주세요.");
+    return;
+  }
+  emit("next"); // ✅ 부모에 openSection 변경 요청
+}
+
+import { onMounted } from "vue";
+
+onMounted(() => {
+  if (!localForm.value.phone) localForm.value.phone = "010";
+});
+
+
+</script>
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
+
 /* =========================================================
-  width:100%인데 화면에 꽉 차지 않는 이유
-========================================================= */
-/*
-  ⚙️ 핵심 요약:
-  .form_card의 width:100%는 "직계 부모의 콘텐츠 영역 안에서" 100%를 의미함.
-  즉, 부모가 폭을 제한하고 있으면 자식은 그 한도 내에서만 100%를 차지함.
-
-  현재 구조는 다음과 같음:
-
-  <div class="background inner">
-    <div class="container">
-      <div class="left">
-        <div class="form_card">...</div>
-      </div>
-    </div>
-  </div>
-
-  🔹 폭이 줄어드는 이유:
-  1) .inner  → max-width: 1120px + padding: 0 40px;
-      → 전체 페이지 폭이 제한되고 좌우 여백이 생김.
-  2) .container → display:grid; grid-template-columns: 3fr 2fr;
-      → 왼쪽 영역(3fr)과 오른쪽 영역(2fr)으로 나뉘어 있음.
-  3) .left → flex-direction: column; gap: 1.3rem;
-      → 카드들 사이 간격을 띄워줌.
-  4) .form_card → width:100%;
-      → 부모(.left)의 폭을 전부 채우지만, 그 부모 자체가 이미 좁음.
-
-  따라서 “화면 전체 폭”이 아니라 “왼쪽 열(3fr)” 영역만 채워짐.
-
-  🧭 해결 방법 요약:
-  - 전체 폭으로 꽉 채우고 싶다면:
-      .inner, .container의 max-width, padding을 해제해야 함.
-      (예: max-width:none; padding:0;)
-  - 현재처럼 그리드 구조(왼쪽 카드 + 오른쪽 요약) 유지 시:
-      .form_card는 width:100% 상태 그대로 두면 됨.
-*/
-/* =========================================================
-  FORM CARD (입력 카드)
+  FORM CARD 기본 구조
 ========================================================= */
 .form_card {
   background: #fff;
@@ -176,11 +222,16 @@ const isComplete = computed(() => {
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
-  padding: 30px 40px;
+  padding: 15px 40px 10px;
   transition: all 0.25s ease;
   color: #444;
   font-size: $text-sm;
   box-sizing: border-box;
+
+  // 뷰데이픽커를위한설정
+ position: relative; /* ✅ 기준점 부여 */
+  z-index: 1; /* ✅ 기본 카드보다 한 단계 위 */
+  overflow: visible !important; /* ✅ 자식 팝업이 가려지지 않도록 */
 
   &::before {
     content: "";
@@ -196,16 +247,15 @@ const isComplete = computed(() => {
 
   &.open {
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-    // transform: translateY(-2px);
   }
 
-  /* 헤더 (제목 + 체크아이콘) */
+  /* 헤더 */
   .card_header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    margin-bottom: 15px;
+    margin: 15px 0;
 
     h3 {
       font-size: $text-md;
@@ -253,22 +303,16 @@ const isComplete = computed(() => {
         color: #aaa;
       }
     }
-
-    .label {
-      font-size: $label-sm;
-      color: #888;
-      margin-top: 4px;
-      padding-left: 3px;
-    }
   }
 
-  /* 주소 입력 행 */
+  /* 주소 입력 */
   .addr-input {
     display: flex;
     gap: 8px;
     align-items: center;
 
     .mini-btn {
+      width: 100px;
       padding: 8px 12px;
       border-radius: 6px;
       background: $color_main;
@@ -281,27 +325,17 @@ const isComplete = computed(() => {
       &:hover {
         background: $color_main_deep;
       }
+
+      &.disabled {
+        background: #ccc;
+        cursor: pointer;
+        opacity: 0.7;
+      }
     }
   }
-
-  // /* 반응형 */
-  // @media (max-width: 1024px) {
-  //   padding: 25px 30px;
-  // }
-
-  // @media (max-width: 480px) {
-  //   padding: 20px;
-  //   .card_header h3 {
-  //     font-size: $label-md;
-  //   }
-  // }
-}
-// 열닫추가
-.form_card {
-  transition: box-shadow 0.25s ease, transform 0.25s ease;
 }
 
-
+/* 에러 메시지 */
 .error {
   color: #e53935;
   font-size: 0.85rem;
@@ -309,31 +343,31 @@ const isComplete = computed(() => {
   padding-left: 3px;
   line-height: 1.4;
 }
+// ============뷰데이픽커================
+//==========외부================
+.date-picker {
+  width: 100%;
+  display: block;
+  position: relative;
 
-/* =========================================================
-  VueDatePicker (날짜 선택기) 통일 커스터마이징
-========================================================= */
-
-/* 📌 기본 입력 필드 통일 */
-.form_group {
-  .dp__main,
-  .dp__input_wrap {
+  /* 내부 인풋 래퍼 초기화 */
+  :deep(.dp__input_wrap),
+  :deep(.dp__main) {
     width: 100%;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
 
-  /* 📌 내부 인풋 (placeholder, focus 효과 포함) */
+  /* 인풋 필드 */
   :deep(.dp__input) {
-    width: 100%;
+    width: 100% !important;
     background: transparent !important;
     border: none !important;
     border-bottom: 1px solid #e7e7e7 !important;
     border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 10px 10px !important;
-    font-size: $label-md !important;
+    padding: 8px 8px !important;
+    font-size: clamp(0.85rem, 0.9vw, 0.95rem) !important;
     color: #333 !important;
     transition: border-color 0.25s ease;
 
@@ -347,56 +381,208 @@ const isComplete = computed(() => {
     }
   }
 
-  /* 📌 포커스 시 테두리 컬러 유지 */
-  :deep(.dp__input:focus) {
-    border-bottom: 1px solid $color_main_light !important;
-    outline: none !important;
-  }
-
-  /* 📌 기본 달력 아이콘 제거 */
+  /* 달력 아이콘 제거 */
   :deep(.dp__input_icon) {
     display: none !important;
   }
-
-  /* 📌 팝업 달력의 외곽 메뉴 스타일 */
-  :deep(.dp__outer_menu_wrap) {
-    border-radius: 10px !important;
-    border: 1px solid #ddd !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  }
 }
 
 /* =========================================================
-  VueDatePicker - 브랜드 컬러 테마 (라이트/다크 공통)
+  📅 VueDatePicker 팝업 스타일
+========================================================= */
+:deep(.dp__outer_menu_wrap) {
+  position: absolute !important;
+  top: 100% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  margin-top: 8px !important;
+
+  z-index: 9999 !important;
+  width: 350px !important;
+  max-width: calc(100vw - 40px) !important;
+  max-height: 90vh !important;
+  overflow-y: auto !important;
+
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid #d2e8e8 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  padding: 20px !important;
+}
+
+/* ✅ 팝업 딤 제거 및 화살표 제거 */
+:deep(.dp__outer_menu_wrap::before),
+:deep(.dp__arrow_top),
+:deep(.dp__arrow_bottom) {
+  display: none !important;
+}
+
+/* =========================================================
+  내부 달력 스타일
+========================================================= */
+:deep(.dp__menu_inner) {
+  padding: 16px 0 0 0 !important; /* ✅ 좌우 패딩 제거로 버튼 꽉 차게 */
+  background: #fff !important;
+  border-radius: 12px !important;
+}
+
+:deep(.dp__calendar_header) {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  margin-bottom: 10px !important;
+}
+
+:deep(.dp__calendar_item) {
+  font-size: 0.9rem !important;
+  border-radius: 6px !important;
+  padding: 6px 0 !important;
+  transition: 0.2s;
+}
+
+/* ✅ 선택 구간 색상 */
+:deep(.dp__range_start),
+:deep(.dp__range_end) {
+  background: $color_main !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+}
+:deep(.dp__range_between) {
+  background: #eaf8f6 !important;
+}
+
+/* =========================================================
+  🎨 테마 컬러 변수
 ========================================================= */
 :deep(.dp__theme_light),
 :deep(.dp__theme_dark) {
-  --dp-primary-color: #53b4a1 !important; /* ✅ 선택된 날짜 배경 */
-  --dp-primary-text-color: #fff !important; /* 선택된 날짜 텍스트 */
-  --dp-hover-color: #449b8a !important; /* hover 배경 */
+  --dp-primary-color: #53b4a1 !important;
+  --dp-primary-text-color: #fff !important;
+  --dp-hover-color: #449b8a !important;
   --dp-hover-text-color: #fff !important;
-  --dp-range-between-dates-background-color: #eaf8f6 !important; /* 기간 중간색 */
-  --dp-border-color: #d2e8e8 !important;
-  --dp-menu-border-color: #d2e8e8 !important;
-  --dp-success-color: #53b4a1 !important; /* Select 버튼 색 */
-  --dp-icon-color: #53b4a1 !important; /* 내부 달력 화살표 */
-  --dp-text-color: #333 !important;
+  --dp-success-color: #53b4a1 !important;
+  --dp-success-text-color: #fff !important;
+  --dp-icon-color: #53b4a1 !important;
   --dp-hover-icon-color: #3a8c88 !important;
   --dp-secondary-color: #f7fcfb !important;
+  --dp-border-color: #d2e8e8 !important;
+  --dp-menu-border-color: #d2e8e8 !important;
+  --dp-range-between-dates-background-color: #eaf8f6 !important;
+
+  /* ✅ 버튼 색상 */
+  --dp-action-button-bg: #53b4a1 !important;
+  --dp-action-button-hover-bg: #449b8a !important;
+  --dp-action-button-text-color: #fff !important;
 }
 
 /* =========================================================
-  반응형 처리
+  ✅ 버튼 영역 (v11 + slot 통합)
 ========================================================= */
-@media (max-width: 768px) {
-  :deep(.dp__outer_menu_wrap) {
-    width: 95vw !important;
+:deep(.dp__action_row),
+:deep(.dp__action_buttons) {
+  display: flex !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  gap: 0 !important;
+}
+
+/* ❌ 취소 버튼 숨김 */
+:deep(.dp__action_cancel),
+:deep(.dp__cancel) {
+  display: none !important;
+}
+
+/* ✅ “선택 완료” 버튼 (기본/slot 동일 적용) */
+:deep(.dp__action_select),
+:deep(.dp__select),
+:deep(.custom-select) {
+  display: block !important;
+  width: 100% !important;
+  padding: 16px 0 !important;
+  background: #53b4a1 !important;
+  color: #fff !important;
+  text-align: center !important;
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+  border: none !important;
+  border-radius: 0 0 18px 18px !important;
+  cursor: pointer !important;
+  transition: background 0.25s ease !important;
+}
+
+:deep(.dp__action_select:hover),
+:deep(.dp__select:hover),
+:deep(.custom-select:hover) {
+  background: #449b8a !important;
+}
+
+/* =========================================================
+  [4] 모바일 하단 버튼 그룹
+========================================================= */
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  padding-bottom: 25px;
+
+  .card-btn {
+    flex: 1;
+    border-radius: 12px;
+    padding: 20px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
   }
-  :deep(.dp__calendar_header) {
-    font-size: 0.85rem !important;
+
+  /* 💚 왼쪽 버튼 (중립 회색톤) */
+  .card-btn.left {
+    background: #f5f5f5;
+    color: #616161;
+    border: 1.5px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
+    &:hover {
+      background: #eaeaea;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
   }
-  :deep(.dp__calendar_item) {
-    font-size: 0.8rem !important;
+
+  /* 💚 오른쪽 버튼 (메인컬러 투명버전) */
+  .card-btn.right {
+    background: rgba(83, 180, 161, 0.15);
+    color: #2e7e73;
+    border: 1.5px solid rgba(83, 180, 161, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+
+    &:hover {
+      background: rgba(83, 180, 161, 0.25);
+      box-shadow: 0 4px 10px rgba(83, 180, 161, 0.15);
+    }
+  }
+}
+/* ✅ PC에서는 버튼그룹 숨김 */
+@media (min-width: 1025px) {
+  .btn-group {
+    display: none !important;
+  }
+}
+/* 📱 모바일 대응 */
+@media (max-width: 480px) {
+  .btn-group {
+    flex-direction: column;
+    gap: 10px;
+
+    .card-btn {
+      padding: 16px 0;
+      font-size: 0.95rem;
+    }
   }
 }
 

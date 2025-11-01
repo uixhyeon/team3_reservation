@@ -53,21 +53,44 @@
         </div>
 
         <!-- 픽업일 -->
-        <div class="form_group">
-          <label>픽업일*</label>
-          <VueDatePicker
-            v-model="localForm.pickupDate"
-            locale="ko"
-            :enable-time-picker="false"
-            format="yyyy-MM-dd"
-            placeholder="날짜를 선택하세요"
-            @focus="$emit('touch', 'pickupDate')"
-            teleport="#app" 
-          />
-          <p v-if="touched.pickupDate && errors.pickupDate" class="error">
-            {{ errors.pickupDate }}
-          </p>
+    <div class="form_group">
+  <label>픽업일*</label>
+<VueDatePicker
+  v-model="localForm.pickupDate"
+  locale="ko"
+  :enable-time-picker="false"
+  :auto-apply="false"
+  format="yyyy-MM-dd"
+  class="date-picker"
+  placeholder="날짜를 선택해 주세요"
+  :action-row="{ showSelect: true, selectText: '선택 완료', showCancel: false }"
+  @update:model-value="$emit('touch', 'pickupDate')"
+  @focus-input="$emit('touch', 'pickupDate')"
+/>
+
+
+  <p v-if="touched.pickupDate && errors.pickupDate" class="error">
+    {{ errors.pickupDate }}
+  </p>
+</div>
+
+        <!-- @@@@@@@@@@@@@@@@추가함 -->
+       <div class="btn-grup-wrap">
+
+         <div class="btn-group">
+           <p style="padding-left: 3px; margin-bottom:14px;"> 추가서비스를 이용하시겠어요?</p>
+           <button type="button" class="card-btn left" @click="$emit('move', 'locker' )">
+             사물함 예약을 수정해요
+            </button>
+            <button   type="button"
+            class="card-btn right"
+            @click="$emit('move', 'luggage' )">
+            짐을 집으로 받아요
+          </button>
         </div>
+      </div>
+
+
       </div>
     </transition>
   </div>
@@ -85,7 +108,14 @@ const props = defineProps({
   touched: { type: Object, default: () => ({}) }, // ✅ 추가
 });
 
-const emit = defineEmits(["update:form", "openPickup", "toggle", "touch"]);
+const emit = defineEmits([
+  "update:form",
+  "openPickup",
+  "toggle",
+  "touch",
+  "move" // ✅ 단일 이동 이벤트
+]);
+
 
 const localForm = computed({
   get: () => props.form,
@@ -108,7 +138,7 @@ const isComplete = computed(() => {
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
-  padding: 30px 40px;
+  padding: 15px 40px 10px;
   transition: all 0.25s ease;
   color: #444;
   font-size: $text-sm;
@@ -135,7 +165,7 @@ const isComplete = computed(() => {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
-    margin-bottom: 15px;
+    margin: 15px 0;
 
     h3 {
       font-size: $text-md;
@@ -190,6 +220,7 @@ const isComplete = computed(() => {
     align-items: center;
 
     .mini-btn {
+      width: 100px;
       padding: 8px 12px;
       border-radius: 6px;
       background: $color_main;
@@ -213,31 +244,33 @@ const isComplete = computed(() => {
   padding-left: 3px;
   line-height: 1.4;
 }
+// ============뷰데이픽커================
 
-/* =========================================================
- ✅ VueDatePicker (날짜 선택기) 통일 커스터마이징
-========================================================= */
+// ============뷰데이픽커================
+//==========외부================
+.date-picker {
+  width: 100%; /* ✅ 입력라인은 카드 전체 폭 기준으로 복구 */
+  display: block;
+  position: relative;
 
-/* 📌 기본 입력 필드 통일 */
-.form_group {
-  .dp__main,
-  .dp__input_wrap {
+  /* 내부 인풋 래퍼 초기화 */
+  :deep(.dp__input_wrap),
+  :deep(.dp__main) {
     width: 100%;
     background: transparent !important;
     border: none !important;
     box-shadow: none !important;
   }
 
-  /* 📌 내부 인풋 (placeholder, focus 효과 포함) */
+  /* 인풋 필드 */
   :deep(.dp__input) {
-    width: 100%;
+    width: 100% !important; /* ✅ 카드 전체 폭 */
     background: transparent !important;
     border: none !important;
     border-bottom: 1px solid #e7e7e7 !important;
     border-radius: 0 !important;
-    box-shadow: none !important;
-    padding: 10px 10px !important;
-    font-size: $label-md !important;
+    padding: 8px 8px !important;
+    font-size: clamp(0.85rem, 0.9vw, 0.95rem) !important;
     color: #333 !important;
     transition: border-color 0.25s ease;
 
@@ -251,57 +284,211 @@ const isComplete = computed(() => {
     }
   }
 
-  /* 📌 포커스 시 테두리 컬러 유지 */
-  :deep(.dp__input:focus) {
-    border-bottom: 1px solid $color_main_light !important;
-    outline: none !important;
-  }
-
-  /* 📌 기본 달력 아이콘 제거 */
+  /* 달력 아이콘 제거 */
   :deep(.dp__input_icon) {
     display: none !important;
   }
+}
 
-  /* 📌 팝업 달력의 외곽 메뉴 스타일 */
-  :deep(.dp__outer_menu_wrap) {
-    border-radius: 10px !important;
-    border: 1px solid #ddd !important;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
-  }
+//==========팝업================
+/* =========================================================
+  📅 VueDatePicker 팝업 스타일 (입력창 아래 자연스럽게 뜨는 형태)
+========================================================= */
+
+/* 팝업 전체 래퍼 */
+:deep(.dp__outer_menu_wrap) {
+  position: absolute !important;          /* ✅ 인풋 기준 */
+  top: 100% !important;                   /* ✅ 바로 밑 */
+  left: 50% !important;                   /* ✅ 가운데 정렬 */
+  transform: translateX(-50%) !important; /* ✅ 좌우 보정 */
+  margin-top: 8px !important;
+
+  z-index: 9999 !important;
+  width: 350px !important;                /* ✅ 가로 350px 고정 */
+  height: auto !important;                /* ✅ 세로 자동 */
+  max-width: calc(100vw - 40px) !important; /* ✅ 모바일 대응 */
+  max-height: 90vh !important;            /* ✅ 너무 커지면 스크롤 */
+  overflow-y: auto !important;
+
+  border-radius: 12px !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: 1px solid #d2e8e8 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
+  padding: 20px !important;
+}
+
+/* ✅ 팝업 배경 딤 제거 (인풋 아래 뜨는 형태라 필요 없음) */
+:deep(.dp__outer_menu_wrap::before) {
+  display: none !important;
+}
+
+/* ✅ 뾰족한 삼각형 제거 */
+:deep(.dp__arrow_top),
+:deep(.dp__arrow_bottom) {
+  display: none !important;
 }
 
 /* =========================================================
- ✅ VueDatePicker - 브랜드 컬러 테마 (라이트/다크 공통)
+  내부 달력 스타일
+========================================================= */
+:deep(.dp__menu_inner) {
+  padding: 16px !important;
+  background: #fff !important;
+  border-radius: 12px !important;
+}
+
+:deep(.dp__calendar_header) {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  font-weight: 600 !important;
+  color: #333 !important;
+  margin-bottom: 10px !important;
+}
+
+:deep(.dp__calendar_item) {
+  font-size: 0.9rem !important;
+  border-radius: 6px !important;
+  padding: 6px 0 !important;
+  transition: 0.2s;
+}
+
+/* ✅ 선택된 구간 색상 */
+:deep(.dp__range_start),
+:deep(.dp__range_end) {
+  background: $color_main !important;
+  color: #fff !important;
+  border-radius: 6px !important;
+}
+
+:deep(.dp__range_between) {
+  background: #eaf8f6 !important;
+}
+
+/* =========================================================
+  🎨 테마 컬러 변수 (색상 전체 통일)
 ========================================================= */
 :deep(.dp__theme_light),
 :deep(.dp__theme_dark) {
-  --dp-primary-color: #53b4a1 !important; /* ✅ 선택된 날짜 배경 */
-  --dp-primary-text-color: #fff !important; /* 선택된 날짜 텍스트 */
-  --dp-hover-color: #449b8a !important; /* hover 배경 */
+  --dp-primary-color: #53b4a1 !important;
+  --dp-primary-text-color: #fff !important;
+  --dp-hover-color: #449b8a !important;
   --dp-hover-text-color: #fff !important;
-  --dp-range-between-dates-background-color: #eaf8f6 !important; /* 기간 중간색 */
+
+  --dp-success-color: #53b4a1 !important;
+  --dp-success-text-color: #fff !important;
+
+  --dp-icon-color: #53b4a1 !important;
+  --dp-hover-icon-color: #3a8c88 !important;
+
+  --dp-secondary-color: #f7fcfb !important;
   --dp-border-color: #d2e8e8 !important;
   --dp-menu-border-color: #d2e8e8 !important;
-  --dp-success-color: #53b4a1 !important; /* Select 버튼 색 */
-  --dp-icon-color: #53b4a1 !important; /* 내부 달력 화살표 */
-  --dp-text-color: #333 !important;
-  --dp-hover-icon-color: #3a8c88 !important;
-  --dp-secondary-color: #f7fcfb !important;
+  --dp-range-between-dates-background-color: #eaf8f6 !important;
+
+  /* ✅ “선택 완료” 버튼 컬러 */
+  --dp-action-button-bg: #53b4a1 !important;
+  --dp-action-button-hover-bg: #449b8a !important;
+  --dp-action-button-text-color: #fff !important;
 }
 
 /* =========================================================
- ✅ 반응형 처리
+  [2] 버튼 영역 커스터마이징
 ========================================================= */
-@media (max-width: 768px) {
-  :deep(.dp__outer_menu_wrap) {
-    width: 95vw !important;
+:deep(.dp__action_row) {
+  display: flex !important;
+  justify-content: center !important;
+
+}
+
+/* ❌ 취소 버튼 숨기기 */
+:deep(.dp__cancel) {
+  display: none !important;
+}
+
+/* ✅ “선택 완료” 버튼 */
+:deep(.dp__select) {
+  flex: 1 !important;
+  width: 100% !important;
+  padding: 14px 0 !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: #fff !important;
+  background-color: #53b4a1 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  transition: background-color 0.25s ease !important;
+}
+:deep(.dp__select:hover) {
+  background-color: #449b8a !important;
+}
+// 버튼이 커지게
+
+
+
+// //모바일 버튼
+// ==============================
+.btn-group {
+  display: flex;
+  justify-content: space-between;
+  gap: 14px;
+  margin-top: 14px;
+   padding-bottom: 25px;
+
+  .card-btn {
+    flex: 1;
+    border-radius: 12px;
+    padding: 20px 0;
+    font-size: 1rem;
+    font-weight: 600;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: all 0.25s ease;
   }
-  :deep(.dp__calendar_header) {
-    font-size: 0.85rem !important;
+
+  /* 💚 왼쪽 버튼: 메인색 투명도 */
+  .card-btn.left {
+    background: #f5f5f5;
+    color: #616161;
+    border: 1.5px solid #e0e0e0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+
+    &:hover {
+      background: #eaeaea;
+      // transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    }
   }
-  :deep(.dp__calendar_item) {
-    font-size: 0.8rem !important;
+    
+    /* ⚪ 오른쪽 버튼 */
+  .card-btn.right {
+    background: rgba(83, 180, 161, 0.15); /* 메인색 15% 투명 */
+    color: #2E7E73;                       /* 본래 메인 텍스트 색 */
+    border: 1.5px solid rgba(83, 180, 161, 0.25);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+  
+    &:hover {
+      background: rgba(83, 180, 161, 0.25);
+      // transform: translateY(-2px);
+      box-shadow: 0 4px 10px rgba(83, 180, 161, 0.15);
+    }
+  }
+  }
+
+/* 📱 모바일 대응 */
+@media (max-width: 1024px) {
+  .btn-group-wrap {
+    flex-direction: column;
+    gap: 10px;
+
+    .card-btn {
+      padding: 16px 0;
+      font-size: 0.95rem;
+    }
   }
 }
+
 
 </style>

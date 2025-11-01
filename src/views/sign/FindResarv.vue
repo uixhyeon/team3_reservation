@@ -25,6 +25,8 @@
 
       <div class="link-row">
         <a href="#" @click.prevent="openFindModal">예약번호 찾기</a>
+        <p>|</p>
+       <RouterLink to="/changereserv">예약 변경하기</RouterLink>
       </div>
     </main>
 
@@ -35,7 +37,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { RouterLink } from "vue-router";
 import FindReservationModal from "@/views/sign/FindReservModal.vue";
+import ChangeReserv from "@/components/reserv/ChangeReserv.vue";
 
 const reservationCode = ref("");
 const showModal = ref(false);
@@ -132,7 +136,7 @@ const openFindModal = () => {
 
   .link-row {
     margin-top: 16px;
-
+display: flex;
     a {
       font-size: 14px;
       color: #666;

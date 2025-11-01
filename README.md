@@ -39,4 +39,7 @@ npm run build
 만들 서비스들을 구체화 > 질문 대비.
 
 ================================
+
 npm install @vuepic/vue-datepicker
+
+ㄴ----이거버전은 @vuepic/vue-datepicker@11.0.3

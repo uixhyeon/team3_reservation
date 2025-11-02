@@ -108,6 +108,7 @@ function finish() {
 </script>
 
 <style lang="scss" scoped>
+@use "/src/assets/style/variables" as *;
 .step ul {
   display: flex;
   justify-content: center;
@@ -127,7 +128,7 @@ function finish() {
 .card {
   background: #fff;
   border: 1px solid #e6e6e6;
-  border-radius: 8px;
+  border-radius: $radius-m;
   padding: 16px;
 }
 .card h3 {
@@ -165,7 +166,7 @@ td {
 .pay-method {
   margin-top: 16px;
   background: #f8f8f8;
-  border-radius: 8px;
+  border-radius: $radius-s;
   padding: 16px;
 }
 .chips {
@@ -190,7 +191,7 @@ td {
   background: #2ca39f;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: $radius-s;
 }
 @media (min-width: 860px) {
   .cards {

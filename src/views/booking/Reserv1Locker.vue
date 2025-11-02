@@ -121,7 +121,7 @@
 
 <div class="btn-grup-wrap">
   <div class="btn-group">
-    <p style="padding-left: 3px; margin-bottom:14px;"> 배송서비스를 이용하시겠어요?</p>
+    <!-- <p style="padding-left: 3px; margin-bottom:14px;"> 배송서비스를 이용하시겠어요?</p> -->
     <button
     type="button"
     class="card-btn left"
@@ -218,7 +218,7 @@ onMounted(() => {
 ========================================================= */
 .form_card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-m;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
@@ -241,8 +241,8 @@ onMounted(() => {
     width: 100%;
     height: 12px;
     background: $color_main;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: $radius-m;
+    border-top-right-radius: $radius-m;
   }
 
   &.open {
@@ -314,7 +314,7 @@ onMounted(() => {
     .mini-btn {
       width: 100px;
       padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: $radius-s;
       background: $color_main;
       color: #fff;
       border: none;
@@ -403,7 +403,7 @@ onMounted(() => {
   max-height: 90vh !important;
   overflow-y: auto !important;
 
-  border-radius: 12px !important;
+  border-radius: $radius-m !important;
   background: rgba(255, 255, 255, 0.98) !important;
   border: 1px solid #d2e8e8 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
@@ -423,7 +423,7 @@ onMounted(() => {
 :deep(.dp__menu_inner) {
   padding: 16px 0 0 0 !important; /* ✅ 좌우 패딩 제거로 버튼 꽉 차게 */
   background: #fff !important;
-  border-radius: 12px !important;
+  border-radius: $radius-m !important;
 }
 
 :deep(.dp__calendar_header) {
@@ -437,7 +437,7 @@ onMounted(() => {
 
 :deep(.dp__calendar_item) {
   font-size: 0.9rem !important;
-  border-radius: 6px !important;
+  border-radius: $radius-s  !important;
   padding: 6px 0 !important;
   transition: 0.2s;
 }
@@ -447,7 +447,7 @@ onMounted(() => {
 :deep(.dp__range_end) {
   background: $color_main !important;
   color: #fff !important;
-  border-radius: 6px !important;
+  border-radius: $radius-s  !important;
 }
 :deep(.dp__range_between) {
   background: #eaf8f6 !important;
@@ -509,7 +509,7 @@ onMounted(() => {
   font-weight: 700 !important;
   font-size: 1rem !important;
   border: none !important;
-  border-radius: 0 0 18px 18px !important;
+  border-radius: $radius-m !important;
   cursor: pointer !important;
   transition: background 0.25s ease !important;
 }
@@ -531,7 +531,7 @@ onMounted(() => {
 
   .card-btn {
     flex: 1;
-    border-radius: 12px;
+    border-radius: $radius-m ;
     padding: 20px 0;
     font-size: 1rem;
     font-weight: 600;

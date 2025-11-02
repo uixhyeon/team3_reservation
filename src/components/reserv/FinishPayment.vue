@@ -48,7 +48,7 @@ defineEmits(["close", "goHome"]);
 
 .confirm-box {
   background: #fff;
-  border-radius: 16px;
+  border-radius: $radius-m;
   padding: 2rem 1.5rem;
   width: min(90vw, 420px);
   text-align: center;
@@ -71,7 +71,7 @@ defineEmits(["close", "goHome"]);
   .complete-message {
     background: #f8fdfa;
     border: 1px solid #d5eee9;
-    border-radius: 10px;
+    border-radius: $radius-m;
     padding: 14px 16px;
     font-size: 0.95rem;
     line-height: 1.6;
@@ -92,7 +92,7 @@ defineEmits(["close", "goHome"]);
     .btn {
       width: 120px;
       border: none;
-      border-radius: 6px;
+      border-radius: $radius-s ;
       padding: 10px 20px;
       font-weight: 600;
       font-size: 0.95rem;

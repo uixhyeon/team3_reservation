@@ -79,7 +79,7 @@
                     left: 10px;
                     background: white;
                     padding: 8px;
-                    border-radius: 4px;
+                    border-radius: 8px;
                     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
                     font-size: 12px;
                   ">
@@ -443,7 +443,7 @@ onMounted(async () => {
   background: #e8f5e8;
   color: #2d5a2d;
   padding: 2px 6px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 10px;
 }
@@ -451,7 +451,7 @@ onMounted(async () => {
   background: #ffe8e8;
   color: #8b0000;
   padding: 2px 6px;
-  border-radius: 10px;
+  border-radius: 12px;
   font-weight: 600;
   font-size: 10px;
 }
@@ -461,7 +461,7 @@ onMounted(async () => {
   color: #fff;
   border: none;
   padding: 6px 12px;
-  border-radius: 4px;
+  border-radius: 8px;
   font-size: 12px;
   cursor: pointer;
   margin-top: 6px;

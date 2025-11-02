@@ -78,7 +78,7 @@
        <div class="btn-grup-wrap">
 
          <div class="btn-group">
-           <p style="padding-left: 3px; margin-bottom:14px;"> 추가서비스를 이용하시겠어요?</p>
+           <!-- <p style="padding-left: 3px; margin-bottom:14px;"> 추가서비스를 이용하시겠어요?</p> -->
            <button type="button" class="card-btn left" @click="$emit('move', 'locker' )">
              사물함 예약을 수정해요
             </button>
@@ -134,7 +134,7 @@ const isComplete = computed(() => {
 
 .form_card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-m ;
   border: 1px solid #f0f0f0;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   position: relative;
@@ -152,8 +152,8 @@ const isComplete = computed(() => {
     width: 100%;
     height: 12px;
     background: $color_main;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: $radius-m ;
+    border-top-right-radius: $radius-m ;
   }
 
   &.open {
@@ -222,7 +222,7 @@ const isComplete = computed(() => {
     .mini-btn {
       width: 100px;
       padding: 8px 12px;
-      border-radius: 6px;
+      border-radius: $radius-s;
       background: $color_main;
       color: #fff;
       border: none;
@@ -310,7 +310,7 @@ const isComplete = computed(() => {
   max-height: 90vh !important;            /* ✅ 너무 커지면 스크롤 */
   overflow-y: auto !important;
 
-  border-radius: 12px !important;
+  border-radius: $radius-m  !important;
   background: rgba(255, 255, 255, 0.98) !important;
   border: 1px solid #d2e8e8 !important;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12) !important;
@@ -334,7 +334,7 @@ const isComplete = computed(() => {
 :deep(.dp__menu_inner) {
   padding: 16px !important;
   background: #fff !important;
-  border-radius: 12px !important;
+  border-radius: $radius-m  !important;
 }
 
 :deep(.dp__calendar_header) {
@@ -348,7 +348,7 @@ const isComplete = computed(() => {
 
 :deep(.dp__calendar_item) {
   font-size: 0.9rem !important;
-  border-radius: 6px !important;
+  border-radius: $radius-s  !important;
   padding: 6px 0 !important;
   transition: 0.2s;
 }
@@ -358,7 +358,7 @@ const isComplete = computed(() => {
 :deep(.dp__range_end) {
   background: $color_main !important;
   color: #fff !important;
-  border-radius: 6px !important;
+  border-radius: $radius-s  !important;
 }
 
 :deep(.dp__range_between) {
@@ -415,7 +415,7 @@ const isComplete = computed(() => {
   font-weight: 600 !important;
   color: #fff !important;
   background-color: #53b4a1 !important;
-  border-radius: 8px !important;
+  border-radius: $radius-s  !important;
   border: none !important;
   cursor: pointer !important;
   transition: background-color 0.25s ease !important;
@@ -438,7 +438,7 @@ const isComplete = computed(() => {
 
   .card-btn {
     flex: 1;
-    border-radius: 12px;
+    border-radius: $radius-m ;
     padding: 20px 0;
     font-size: 1rem;
     font-weight: 600;

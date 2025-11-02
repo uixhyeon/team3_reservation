@@ -73,3 +73,8 @@ $label-small-gap-small : clamp(0.75rem, 0.7rem + 0.2vw, 1rem); // 12px → 16px
   --dp-menu-border-color : #d2e8e8;
   --dp-range-between-dates-background-color : #eaf8f6;
 }
+
+// border-radius
+$radius-l : 20px;
+$radius-m : 12px;
+$radius-s : 8px;

@@ -201,6 +201,7 @@ const saveAndPay = () => {
 // ✅ 모달 닫기 후 Reservation3으로 이동
 function closeFinish() {
   showFinish.value = false;
+  
   const query = {
     form: JSON.stringify(form.value),
     totalPrice: finalTotal.value,
@@ -285,7 +286,7 @@ gap: 2.5rem;
 .summary_card,
 .payment_card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-m ;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0f0f0;
   padding: 30px 40px;
@@ -300,8 +301,8 @@ gap: 2.5rem;
     width: 100%;
     height: 12px;
     background: $color_main;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: $radius-m ;
+    border-top-right-radius: $radius-m ;
   }
 
   @media (max-width: 1024px) {
@@ -443,7 +444,7 @@ color: #444444;
     align-items: center;
     justify-content: center;
     border: 1px solid #ddd;
-    border-radius: 8px;
+    border-radius: $radius-s ;
     background: #fff;
     cursor: pointer;
     padding: 18px 0;
@@ -495,7 +496,7 @@ color: #444444;
   color: #fff;
   background: $color_main ;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s ;
   cursor: pointer;
   margin: 20px auto 0;
   display: block;

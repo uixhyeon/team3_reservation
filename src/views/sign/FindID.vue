@@ -10,6 +10,8 @@
 
       <div class="modal-body">
         <p class="desc">가입 시 등록한 휴대폰 번호를 입력해주세요.</p>
+
+        <!-- 휴대폰 번호 입력 -->
         <div class="form-group">
           <label>휴대폰 번호</label>
           <div class="input-row">
@@ -18,6 +20,7 @@
           </div>
         </div>
 
+        <!-- 인증번호 입력 -->
         <div v-if="codeSent" class="form-group">
           <label>인증번호</label>
           <div class="input-row">
@@ -26,6 +29,7 @@
           </div>
         </div>
 
+        <!-- 결과 표시 -->
         <div v-if="foundId" class="result">
           <p>회원님의 아이디는 <strong>{{ foundId }}</strong> 입니다.</p>
         </div>
@@ -39,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 const emit = defineEmits(["close"]);
 
 const phone = ref("");
@@ -47,23 +51,31 @@ const verifyCode = ref("");
 const codeSent = ref(false);
 const foundId = ref("");
 
+// ✅ 전역 $alert 접근 (Composition API에서)
+const { appContext } = getCurrentInstance();
+const $alert = appContext.config.globalProperties.$alert;
+
+// ✅ 인증 요청
 const sendCode = () => {
   if (!phone.value) {
-    alert("휴대폰 번호를 입력해주세요.");
+    $alert("휴대폰 번호를 입력해주세요.");
     return;
   }
-  alert("인증번호를 발송했습니다.");
+  $alert("인증번호를 발송했습니다.");
   codeSent.value = true;
 };
 
+// ✅ 인증 확인
 const verify = () => {
   if (verifyCode.value === "1234") {
     foundId.value = "uixhyeon123"; // 예시
+    $alert("인증이 완료되었습니다.");
   } else {
-    alert("인증번호가 올바르지 않습니다.");
+    $alert("인증번호가 올바르지 않습니다.");
   }
 };
 
+// ✅ 모달 닫기
 const closeModal = () => {
   emit("close");
 };
@@ -87,7 +99,7 @@ const closeModal = () => {
 .modal-box {
   background: #fff;
   width: 420px;
-  border-radius: 10px;
+  border-radius: $radius-m;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   animation: fadeIn 0.25s ease;
@@ -149,7 +161,7 @@ const closeModal = () => {
       input {
         flex: 1;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: $radius-s ;
         padding: 10px;
         outline: none;
 
@@ -163,7 +175,7 @@ const closeModal = () => {
   .result {
     margin-top: 15px;
     background: #f7f7f7;
-    border-radius: 6px;
+    border-radius: $radius-s ;
     padding: 12px 15px;
     text-align: center;
 
@@ -186,7 +198,7 @@ const closeModal = () => {
   background: $color_main;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s ;
   cursor: pointer;
   font-weight: 600;
   padding: 10px 14px;

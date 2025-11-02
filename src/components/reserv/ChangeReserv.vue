@@ -1,5 +1,5 @@
 <template>
-  <!-- ✅ 새로 추가된 프레임 -->
+  <!-- ✅ 전체 프레임 -->
   <div class="page-frame">
     <div class="change-wrap">
       <!-- ✅ 상단 영역 -->
@@ -13,6 +13,7 @@
 
       <!-- ✅ 본문 -->
       <main class="content">
+        <!-- 예약번호 입력 -->
         <section class="input-section">
           <label for="res-code">예약번호</label>
           <div class="input-row">
@@ -26,6 +27,7 @@
           </div>
         </section>
 
+        <!-- 조회 결과 -->
         <section v-if="reservationData" class="info-card">
           <h2>예약 정보</h2>
           <ul>
@@ -38,32 +40,41 @@
           <button class="btn primary full" @click="goToEdit">예약 수정하기</button>
         </section>
 
-        <p class="hint">
-          예약번호를 모르시나요?
-          <a href="#" @click.prevent="openFindModal">예약번호 찾기</a>
-        </p>
+        <!-- ✅ 버튼 기반 안내 -->
+        <div class="hint">
+          <p>예약번호를 모르시나요?</p>
+          <button type="button" class="link-btn" @click="openFindModal">
+            예약번호 찾기
+          </button>
+        </div>
       </main>
 
+      <!-- ✅ 예약번호 찾기 모달 -->
       <FindReservationModal v-if="showModal" @close="showModal = false" />
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, getCurrentInstance } from "vue";
 import FindReservationModal from "@/views/sign/FindResarv.vue";
+
+// ✅ 전역 $alert 접근
+const { appContext } = getCurrentInstance();
+const $alert = appContext.config.globalProperties.$alert;
 
 const reservationCode = ref("");
 const reservationData = ref(null);
 const showModal = ref(false);
 
+// ✅ 예약번호 조회
 const loadReservation = () => {
   if (!reservationCode.value) {
-    alert("예약번호를 입력해주세요.");
+    $alert("예약번호를 입력해주세요.");
     return;
   }
 
-  // ✅ 실제 API 조회 대신 예시 데이터
+  // 예시 데이터
   reservationData.value = {
     name: "정현영",
     branch: "칠성시장점",
@@ -72,11 +83,13 @@ const loadReservation = () => {
   };
 };
 
+// ✅ 예약 수정 이동
 const goToEdit = () => {
-  alert("예약 수정 페이지로 이동합니다!");
+  $alert("예약 수정 페이지로 이동합니다!");
   // router.push(`/reservation/edit/${reservationCode.value}`);
 };
 
+// ✅ 모달 열기
 const openFindModal = () => {
   showModal.value = true;
 };
@@ -93,16 +106,13 @@ const openFindModal = () => {
   justify-content: center;
   align-items: center;
   border: 1px solid $color_main;
-  border-radius: 24px;
+  border-radius: $radius-l;
   margin: 40px;
   background: #f6f8f8;
   padding: 40px 0;
   box-sizing: border-box;
 }
 
-/* =========================================================
-   내부 컨테이너 (내용 영역)
-========================================================= */
 .change-wrap {
   background: #f6f8f8;
   display: flex;
@@ -114,14 +124,14 @@ const openFindModal = () => {
 }
 
 /* =========================================================
-   상단 영역 (깨짐 방지 완전 수정)
+   상단 영역
 ========================================================= */
 .header {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  flex-wrap: wrap; /* ✅ 줄바꿈 허용 */
-  gap: 20px; /* ✅ 로고-텍스트 간격 */
+  flex-wrap: wrap;
+  gap: 20px;
   width: 100%;
   max-width: 640px;
   margin-bottom: 40px;
@@ -160,7 +170,7 @@ const openFindModal = () => {
   width: 100%;
   max-width: 640px;
   padding: 40px 50px;
-  border-radius: 10px;
+  border-radius: $radius-m;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
 }
 
@@ -182,7 +192,7 @@ const openFindModal = () => {
     input {
       flex: 1;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: $radius-s ;
       padding: 12px;
       font-size: 15px;
       outline: none;
@@ -198,7 +208,7 @@ const openFindModal = () => {
       border: none;
       background: $color_main;
       color: #fff;
-      border-radius: 6px;
+      border-radius: $radius-s ;
       cursor: pointer;
 
       &:hover {
@@ -214,7 +224,7 @@ const openFindModal = () => {
 .info-card {
   background: #f9fbfb;
   border: 1px solid #e5e8e8;
-  border-radius: 8px;
+  border-radius: $radius-s ;
   padding: 24px 28px;
   margin-bottom: 20px;
 
@@ -250,7 +260,7 @@ const openFindModal = () => {
     background: $color_main;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: $radius-s ;
     cursor: pointer;
 
     &:hover {
@@ -264,14 +274,23 @@ const openFindModal = () => {
 ========================================================= */
 .hint {
   text-align: center;
-  margin-top: 10px;
+  margin-top: 20px;
   font-size: 14px;
   color: #666;
 
-  a {
+  p {
+    margin-bottom: 6px;
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
     color: $color_main;
+    font-weight: 600;
     text-decoration: underline;
-    margin-left: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
 
     &:hover {
       color: $color_main_deep;
@@ -285,7 +304,7 @@ const openFindModal = () => {
 @media (max-width: 768px) {
   .page-frame {
     border-width: 6px;
-    border-radius: 16px;
+    border-radius: $radius-m;
     margin: 20px;
     padding: 20px 0;
   }
@@ -294,7 +313,6 @@ const openFindModal = () => {
     padding: 40px 16px;
   }
 
-  /* ✅ header 부분 완전 보완 */
   .header {
     flex-direction: column;
     align-items: center;

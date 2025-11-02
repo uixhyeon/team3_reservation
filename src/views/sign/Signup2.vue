@@ -268,32 +268,32 @@ const submitForm = (e) => {
 
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
-
-/* ✅ 기본 레이아웃 */
 .join-page {
   min-height: 100vh;
   background: #f5f7f7;
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 3rem;
+  padding: 60px 0 3rem; /* ✅ 상단 여백 추가 */
+  position: relative;
+  z-index: 1;
 }
 
 /* ✅ 헤더 */
 .header {
   position: relative;
-  height: 200px;
+  height: 180px;
   width: 100%;
   background: #59b5b3;
   text-align: center;
-  padding: 70px 0;
+  padding: 60px 0;
 
   h1 {
     color: #fff;
     font-size: 28px;
     font-weight: 700;
-    z-index: 3;
     position: relative;
+    z-index: 2;
   }
 
   .logo {
@@ -302,27 +302,34 @@ const submitForm = (e) => {
     transform: translateY(-50%) rotate(45deg);
     width: 70px;
     height: 70px;
+    opacity: 0.1;
+
     img {
       width: 100%;
       height: 100%;
       opacity: 0.12;
     }
+
     &.left {
       left: 80px;
     }
+
     &.right {
       right: 80px;
     }
   }
 }
 
-/* ✅ 카드 */
+/* ✅ 카드 (헤더에 묻히지 않게 조정) */
 .join-card {
   background: #fff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
   padding: 50px 60px;
   width: 500px;
-  margin-top: -60px;
+  margin-top: 40px; /* ✅ 기존 -60px → +40px으로 수정 */
+  border-radius: 12px; /* ✅ 더 자연스러운 카드형 */
+  position: relative;
+  z-index: 3; /* ✅ 배경보다 위에 */
 }
 
 /* ✅ 이메일 입력 커스텀 */
@@ -528,5 +535,207 @@ const submitForm = (e) => {
     }
   }
 }
+
+//===================추가함======
+
+/* ✅ 전체 페이지 */
+.join-page {
+  min-height: 100vh;
+  background: #f5f7f7;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 0;
+  padding-bottom: 4rem;
+}
+
+/* ✅ 상단 헤더 (브랜드 영역) */
+.header {
+  position: relative;
+  width: 100%;
+  height: 200px;
+  background: $color_main;
+  color: #fff;
+  text-align: center;
+  padding: 60px 0;
+  z-index: 1;
+
+  h1 {
+    font-size: 28px;
+    font-weight: 700;
+    position: relative;
+    z-index: 3;
+    margin: 0;
+  }
+
+  .logo {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%) rotate(45deg);
+    background: rgba(255, 255, 255, 0.3);
+    width: 70px;
+    height: 70px;
+    text-align: center;
+    line-height: 70px;
+    font-weight: 600;
+    border-radius: 6px;
+    color: #333;
+    z-index: 2;
+    opacity: 0.15;
+
+    &.left {
+      left: 80px;
+    }
+
+    &.right {
+      right: 80px;
+    }
+  }
+}
+
+/* ✅ 회원가입 카드 */
+.join-card {
+  background: #fff;
+  width: 500px;
+  padding: 50px 60px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  border-radius: 12px;
+  margin-top: 40px; /* ✅ 기존 -60px → 양수 40px */
+  z-index: 5;
+  position: relative;
+}
+
+/* ✅ 입력 그룹 (공통 스타일) */
+.form-group {
+  margin-bottom: 25px;
+
+  label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .input-row {
+    display: flex;
+    gap: 10px;
+
+    input {
+      flex: 1;
+      border: none;
+      border-bottom: 1px solid #ccc;
+      font-size: 14px;
+      padding: 8px 4px;
+      outline: none;
+      background: transparent;
+      color: #333;
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        border-bottom: 1px solid $color_main_light;
+      }
+    }
+  }
+
+  .desc {
+    font-size: 12px;
+    color: #999;
+    margin-top: 4px;
+  }
+}
+
+/* ✅ 약관 영역 */
+.terms {
+  border-top: 1px solid #e7e7e7;
+  padding-top: 15px;
+  margin-top: 20px;
+
+  .term-header {
+    margin-bottom: 10px;
+
+    label {
+      font-weight: 700;
+      font-size: 14px;
+      color: #222;
+    }
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      font-size: 13px;
+      color: #555;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+  }
+
+  input[type="checkbox"] {
+    accent-color: $color_main_light;
+    margin-right: 8px;
+  }
+}
+
+/* ✅ 버튼 스타일 */
+.btn {
+  background: $color_main;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  padding: 12px 16px;
+  transition: background 0.3s ease;
+
+  &.small {
+    padding: 8px 14px;
+    font-size: 13px;
+  }
+
+  &.primary.full {
+    width: 100%;
+    padding: 16px 0;
+    font-size: 15px;
+    margin-top: 25px;
+  }
+
+  &:hover:not(:disabled) {
+    background: $color_main_deep;
+  }
+
+  &:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+}
+
+/* ✅ 반응형 (모바일 대응) */
+@media (max-width: 600px) {
+  .join-card {
+    width: 90%;
+    padding: 30px 20px;
+    margin-top: 30px;
+  }
+
+  .header {
+    height: 160px;
+    padding: 40px 0;
+
+    .logo {
+      display: none; /* 작은 화면에서는 장식 로고 숨김 */
+    }
+
+    h1 {
+      font-size: 22px;
+    }
+  }
+}
+
 
 </style>

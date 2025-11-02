@@ -94,7 +94,7 @@ function formatDate(date) {
 
 .confirm-box {
   background: #fff;
-  border-radius: 12px;
+  border-radius: $radius-m;
   padding: 24px 20px;
   width: min(95vw, 420px);
 
@@ -170,7 +170,7 @@ function formatDate(date) {
 
     .btn {
       border: none;
-      border-radius: 6px;
+      border-radius: $radius-s;
       padding: 9px 16px;
       font-size: 0.9rem;
       cursor: pointer;

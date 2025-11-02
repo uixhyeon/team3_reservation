@@ -54,6 +54,7 @@ function cancel() {
 </script>
 
 <style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
 /* =============================
    Fade Animation
 ============================= */
@@ -84,7 +85,7 @@ function cancel() {
 ============================= */
 .confirm-box {
   background: #fff;
-  border-radius: 18px;
+  border-radius: $radius-m;
   text-align: center;
   padding: 30px 38px;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
@@ -145,7 +146,7 @@ function cancel() {
 .btn-cancel,
 .btn-confirm {
   border: none;
-  border-radius: 12px;
+  border-radius: $radius-s;
   padding: 10px 24px;
   font-size: 15px;
   font-weight: 600;

@@ -34,6 +34,7 @@ function closeAlert() {
 </script>
 
 <style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
 /* =============================
    Fade Animation
 ============================= */
@@ -65,7 +66,7 @@ function closeAlert() {
 .alert-box {
   background: #fff;
   padding: 28px 36px;
-  border-radius: 18px;
+  border-radius: $radius-m;
   text-align: center;
   box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
   width: 320px;
@@ -110,7 +111,7 @@ function closeAlert() {
   color: #fff;
   border: none;
   padding: 10px 24px;
-  border-radius: 12px;
+  border-radius: $radius-s;
   font-size: 15px;
   font-weight: 600;
   cursor: pointer;

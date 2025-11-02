@@ -101,7 +101,7 @@ const handleAgree = () => {
 
 .terms-box {
   background: #fff;
-  border-radius: 12px;
+  border-radius: $radius-m;
   width: min(90vw, 480px);
   max-height: 80vh;
   overflow-y: auto;
@@ -149,7 +149,7 @@ const handleAgree = () => {
 
     .btn {
       border: none;
-      border-radius: 6px;
+      border-radius: $radius-s;
       font-weight: 600;
       padding: 10px 18px;
       cursor: pointer;

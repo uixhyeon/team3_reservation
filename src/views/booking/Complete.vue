@@ -60,7 +60,7 @@
       </div>
 
       <div class="buttons">
-        <button class="btn ghost" @click="goHome">홈으로 가기</button>
+        <!-- <button class="btn ghost" @click="goHome">홈으로 가기</button> -->
         <button class="btn primary" @click="goReserve">예약 확인</button>
       </div>
     </section>
@@ -108,7 +108,9 @@ function goReserve() {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@use "/src/assets/style/variables" as *;
+
 .inner {
   max-width: 720px;
   margin: 0 auto;
@@ -128,7 +130,7 @@ function goReserve() {
 .receipt {
   background: #fff;
   border: 1px solid #eee;
-  border-radius: 12px;
+  border-radius: $radius-m;
   padding: 18px;
 }
 .receipt h3 {
@@ -162,7 +164,7 @@ h4 {
   border: 1px dashed #ccc;
   display: grid;
   place-items: center;
-  border-radius: 8px;
+  border-radius: $radius-s;
   color: #999;
 }
 .buttons {
@@ -173,7 +175,7 @@ h4 {
 }
 .btn {
   padding: 12px;
-  border-radius: 8px;
+  border-radius: $radius-s;
   border: none;
   cursor: pointer;
 }

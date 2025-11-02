@@ -173,7 +173,7 @@ onMounted(async () => {
   width: min(720px, 80vw);
   background: #fff;
 
-  border-radius: 12px;
+  border-radius: $radius-m;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -217,7 +217,7 @@ onMounted(async () => {
   width: 100%;
 
   border: 1px solid #eee;
-  border-radius: 8px;
+  border-radius: $radius-s;
   overflow: hidden;
   position: relative;
   background-color: red;
@@ -267,7 +267,7 @@ onMounted(async () => {
   background: $color_main;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: $radius-s;
   font-size: 16px;
 }
 /* 비활성화 */
@@ -280,7 +280,7 @@ onMounted(async () => {
   width: 100%;
   padding: 12px;
   border: none;
-  border-radius: 8px;
+  border-radius: $radius-s;
   font-size: 16px;
   cursor: pointer;
   transition: 0.25s;

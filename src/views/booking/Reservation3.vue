@@ -28,10 +28,11 @@
               </tbody>
             </table>
 
-            <div class="receipt_footer">
-              <p>주문번호 : 2025-1023-001</p>
-              <p>결제일시 : {{ formattedNow }}</p>
-            </div>
+         <div class="receipt_footer">
+  <p>주문번호 : {{ orderId }}</p>
+  <p>결제일시 : {{ formattedNow }}</p>
+</div>
+
           </div>
 
           <!-- 📦 예약 완료 -->
@@ -99,7 +100,8 @@
           <div class="qr-section always">
             <img :src="qrImage" alt="예약 QR코드" class="qr-thumb" @click="showQRModal = true" />
             <p class="qr-desc">예약 QR코드</p>
-            <p class="qr-desc">예약번호: MATAJU-703115</p>
+           <p class="qr-desc">예약번호: {{ orderId }}</p>
+
           </div>
         </div>
 
@@ -129,6 +131,9 @@ import Stepper from "@/components/reserv/Stepper.vue";
 
 const route = useRoute();
 const router = useRouter();
+
+// 예약받기
+const orderId = ref(route.query.orderId || "");
 
 // ✅ 전달된 데이터 받기
 const form = ref(
@@ -244,110 +249,141 @@ const formatShortDate = (date) => {
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
 
-//====배경 레아웃================
+/* =========================================================
+🎨 폰트 계층 시스템 (Responsive Type Scale)
+========================================================= */
+
+/* // 메인제목 : 20~22px */
+.main-title, .card_header h3 {
+  font-size: clamp(1.25rem, 1.8vw, 1.375rem);
+  font-weight: 700;
+  color: #222;
+  line-height: 1.4;
+  margin-bottom: 1rem;
+}
+
+/* // 소제목 : 18~20px */
+.section-title, .summary-title {
+  font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+  font-weight: 600;
+  color: #333;
+  line-height: 1.5;
+  margin-bottom: 0.8rem;
+}
+
+/* // 본문텍스트 : 16~18px */
+.body-text, .receipt_table td, .pickup-delivery, .date-box {
+  font-size: clamp(1rem, 1.1vw, 1.125rem);
+  color: #444;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+/* // 부가텍스트 : 14~15px */
+.sub-text, .qr-desc, .toggle-mini, .receipt_footer {
+  font-size: clamp(0.875rem, 0.9vw, 0.95rem);
+  color: #777;
+  line-height: 1.5;
+}
+
+/* =========================================================
+📦 기존 Reservation3.vue 스타일 유지
+========================================================= */
+
+//====배경 레이아웃================
 .reserve-page {
   background: #f5f7f7;
 }
 
 .inner {
   width: 100%;
-  // max-width: 1300px; 
   margin: 0 auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  // padding: 40px 0 80px 0;
 }
 
 //====공통================
 .form_card {
   background: #fff;
-  border-radius: 10px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06); 
-  border: 1px solid #fff; 
+  border-radius: $radius-m;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  border: 1px solid #fff;
   position: relative;
-  width: 100%;           
-  max-width: 768px;      
-  padding: 30px 5vw;    
-  box-sizing: border-box; 
+  width: 100%;
+  max-width: 768px;
+  padding: clamp(20px, 3vw, 28px) clamp(16px, 4vw, 24px);
+  box-sizing: border-box;
+  transition: padding 0.2s ease, font-size 0.2s ease;
 
   &::before {
     content: "";
     position: absolute;
     top: 0; left: 0;
-    width: 100%; 
+    width: 100%;
     height: 12px;
     background: $color_main;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: $radius-m;
+    border-top-right-radius: $radius-m;
   }
 
   .card_header h3 {
-    font-size: $text-md;
-    font-weight: 600;
-    color: #333;
-    margin: 0 0 15px;
+    letter-spacing: -0.2px;
+  }
+
+  .card_content {
+    color: #444;
+    line-height: 1.6;
+    word-break: keep-all;
   }
 }
 
-// 결제완료
+//====결제완료 테이블================
 .receipt_card {
   text-align: center;
 
-  .check_icon {
-    font-size: $title-md;
-    margin-bottom: 10px;
-  }
-
-  h4 {
-    font-size: 18px;
-    color: #222;
-    margin-bottom: 20px;
-  }
-
   .receipt_table {
     width: 100%;
-    font-size: $text-sm;
     border-collapse: collapse;
-    margin-bottom: 24px;
+    margin-bottom: 1.5rem;
 
     tr {
-      border-bottom: 1px solid #e7e7e7;
+      border-bottom: 1px solid #eee;
 
       td {
-        padding: 10px 0;
+        padding: clamp(8px, 1vw, 10px) 0;
         text-align: left;
-        color: #444;
 
         &:first-child {
           width: 45%;
           color: #777;
         }
-      }
-
-      &.total td {
-        font-weight: 500;
-        color: #111;
 
         &:last-child {
-          color: $color_main;
-          font-size: $text-md;
+          text-align: right;
         }
+      }
+
+      &.total td:last-child {
+        font-weight: 600;
+        color: $color_main;
       }
     }
   }
 
   .receipt_footer {
     text-align: left;
-    font-size: $label-md;
-    color: #888;
-    border-top: 1px dashed #e7e7e7;
+    border-top: 1px dashed #ddd;
     padding-top: 10px;
-    margin-bottom: 20px;
+    margin-top: 10px;
+
+    p {
+      margin: 3px 0;
+    }
   }
 }
 
-// 공통 버튼
+//====공통 버튼================
 .submit_btn {
   width: 80%;
   margin-top: 20px;
@@ -358,17 +394,18 @@ const formatShortDate = (date) => {
   color: #fff;
   background: $color_main;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
-  transition: background 0.2s ease; 
+  transition: background 0.2s ease;
 
   &:hover {
     background: $color_main_deep;
   }
 }
 
+//====카드 컨테이너================
 .card-test {
-  width: 100% ;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -376,45 +413,32 @@ const formatShortDate = (date) => {
   background: #f5f7f7;
 }
 
-// QR 코드
+//====QR 코드================
 .qr-section {
   text-align: center;
-  margin-top: 40px;
+  margin-top: clamp(24px, 3vw, 32px);
   margin-bottom: 10px;
 
   &.always {
     margin-top: 30px;
   }
 
-  .qr-title {
-    font-size: $text-md;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 8px;
-  }
-
   .qr-thumb {
-    width: 120px;
-    height: 120px;
-    border-radius: 8px;
+    width: clamp(90px, 12vw, 120px);
+    height: clamp(90px, 12vw, 120px);
+    border-radius: $radius-s;
     border: 1px solid #ddd;
+    background: #fff;
     cursor: pointer;
     transition: transform 0.2s ease;
-    background: #fff;
 
     &:hover {
       transform: scale(1.05);
     }
   }
-
-  .qr-desc {
-    margin-top: 8px;
-    font-size: $label-md;
-    color: #777;
-  }
 }
 
-// QR 모달
+//====QR 모달================
 .qr-modal {
   position: fixed;
   inset: 0;
@@ -427,7 +451,7 @@ const formatShortDate = (date) => {
 
 .qr-modal-content {
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-m;
   padding: 24px;
   text-align: center;
   max-width: 360px;
@@ -435,9 +459,9 @@ const formatShortDate = (date) => {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
 
   .qr-large {
-    width: 250px;
-    height: 250px;
-    border-radius: 10px;
+    width: clamp(200px, 30vw, 250px);
+    height: clamp(200px, 30vw, 250px);
+    border-radius: $radius-m;
     border: 1px solid #e7e7e7;
   }
 
@@ -450,7 +474,7 @@ const formatShortDate = (date) => {
     button {
       padding: 8px 14px;
       border: none;
-      border-radius: 6px;
+      border-radius: $radius-s;
       cursor: pointer;
       font-size: 0.9rem;
       font-weight: 500;
@@ -476,22 +500,9 @@ const formatShortDate = (date) => {
   }
 }
 
-// 모달 애니메이션
-.fade-enter-active,
-.fade-leave-active {
-  transition: opacity 0.3s;
-}
-
-.fade-enter-from,
-.fade-leave-to {
-  opacity: 0;
-}
-
-// 토글 버튼
+//====토글 버튼================
 .toggle-mini {
-  margin-top: 8px;
-  font-size: 0.85rem;
-  color: #999;
+  margin-top: 10px;
   cursor: pointer;
   text-align: right;
   padding-right: 1rem;
@@ -502,19 +513,86 @@ const formatShortDate = (date) => {
   }
 }
 
-// 요약 보기
+//====@사라진것 다시 살리기@================
 .summary-view {
   width: 100%;
 
   &::before {
     content: "😊";
     display: block;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .branch-size {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 0.8rem;
+
+    span {
+      border: 1px solid #ccc;
+      border-radius: $radius-l;
+      padding: clamp(4px, 1vw, 6px) clamp(12px, 3vw, 20px);
+      background: #fff;
+    }
+  }
+}
+
+//====모달 애니메이션================
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+//====미디어 쿼리================
+@media (max-width: 600px) {
+  .form_card {
+    padding: 20px 16px;
+
+    .receipt_table td {
+      padding: 6px 0;
+    }
+
+    .summary-title {
+      font-size: 1.05rem !important;
+    }
+
+    .qr-thumb {
+      width: 90px !important;
+      height: 90px !important;
+    }
+
+    .branch-size span {
+      padding: 4px 12px !important;
+    }
+  }
+
+  .submit_btn {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+
+//====요약 보기================
+.summary-view {
+  width: 100%;
+
+  &::before {
+    content: "😊";
+    display: block;
+    font-size: 2.5rem;
     margin-bottom: 0.8rem;
   }
 
   .summary-title {
-    font-size: 1.4rem;
+    font-size: clamp(1.1rem, 1.4vw, 1.3rem);
     font-weight: 700;
     color: $color_main;
     margin-bottom: 1.2rem;
@@ -528,34 +606,34 @@ const formatShortDate = (date) => {
 
     span {
       border: 1px solid #ccc;
-      border-radius: 30px;
-      padding: 6px 20px;
-      font-size: $label-md;
-      color: #333;
+      border-radius: $radius-l;
+      padding: clamp(4px, 1vw, 6px) clamp(12px, 3vw, 20px);
       background: #fff;
     }
   }
 
   .service-type {
     color: #555;
-    font-size: $label-md;
+    font-size: clamp(0.85rem, 1vw, 0.9rem);
     margin-bottom: 1rem;
   }
 
+  /* ✅ 여기 추가 */
   .date-box {
-    background: $color_main_background;
-    color: #222;
-    border-radius: 8px;
-    padding: 12px 16px;
-    font-size: $text-md;
-    font-weight: 600;
-    display: inline-block;
-    margin-bottom: 1.2rem;
+    background: $color_main_background; /* 연두색 배경 */
     border: 1px solid rgba(0, 0, 0, 0.05);
+    border-radius: $radius-s;
+    color: #222;
+    font-weight: 600;
+    font-size: clamp(0.9rem, 1.1vw, 1rem);
+    display: inline-block;
+    padding: clamp(10px, 1vw, 12px) clamp(14px, 2vw, 16px);
+    margin-bottom: 1.2rem;
+    box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.03); /* 💡 은은한 입체감 */
   }
 
   .pickup-delivery {
-    font-size: $label-md;
+    font-size: clamp(0.8rem, 1vw, 0.9rem);
     color: #444;
     margin-bottom: 0.5rem;
     line-height: 1.6;
@@ -573,20 +651,5 @@ const formatShortDate = (date) => {
   }
 }
 
-// 미디어 쿼리
-@media (max-width: 768px) {
-  // .form_card {
-  //   max-width: 90%;      
-  //   padding: 24px 20px;  
-  // }
 
-  .receipt_table td {
-    font-size: $label-sm; 
-  }
-
-  .submit_btn {
-    width: 100%;         
-    max-width: none;
-  }
-}
 </style>

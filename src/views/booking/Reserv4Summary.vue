@@ -137,7 +137,7 @@ const formatKrw = (value) => {
 .summary_card {
   position: relative;
   width: 100%;
-  border-radius: 10px;
+  border-radius: $radius-m;
   background: #fff;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0f0f0;
@@ -154,8 +154,8 @@ padding: 15px 40px 10px;
     width: 100%;
     height: 12px;
     background: $color_main;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    border-top-left-radius: $radius-m;
+    border-top-right-radius: $radius-m;
   }
 
   /* 🔹 hover 효과 (밝은 테두리 강조) */
@@ -226,7 +226,7 @@ padding: 15px 40px 10px;
     font-weight: 500;
     background: #f9fbfb;
     border: 1px dashed #cfe2e2;
-    border-radius: 10px;
+    border-radius: $radius-m;
     transition: opacity 0.3s ease;
   }
 
@@ -253,7 +253,7 @@ padding: 15px 40px 10px;
   color: #fff;
   background: $color_main;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
   transition: 0.3s ease;
 

@@ -248,6 +248,7 @@ const formatShortDate = (date) => {
 </script>
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
+@use "/src/assets/style/_reservation" as *;
 
 /* =========================================================
 🎨 폰트 계층 시스템 (Responsive Type Scale)

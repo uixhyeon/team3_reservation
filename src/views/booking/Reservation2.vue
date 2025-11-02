@@ -223,6 +223,8 @@ function goHome() {
 
 <style lang="scss" scoped>
 @use "/src/assets/style/variables" as *;
+@use "/src/assets/style/_reservation" as *;
+
 
 /* ✅ 기본 구조 */
 .reserve-page {

@@ -257,7 +257,7 @@ const onSubmit = () => {
     line-height: 70px;
     font-weight: 600;
     text-align: center;
-    border-radius: 4px;
+    border-radius: $radius-s;
     z-index: 2;
 
     &.left {
@@ -275,7 +275,7 @@ const onSubmit = () => {
 .join-card {
   background: #fff;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  // border-radius: 4px;
+  // border-radius: $radius-s;
   padding: 50px 60px;
   width: 500px;
   position: relative;
@@ -405,7 +405,7 @@ const onSubmit = () => {
   background: $color_main;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
   font-weight: 600;
   padding: 12px 16px;

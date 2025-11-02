@@ -235,7 +235,7 @@ const goGuestReserve = () => {
     width: 100%;
     padding: 14px 16px;
     border: 1px solid #e7e7e7;
-    border-radius: 6px;
+    border-radius: $radius-s;
     font-size: 14px;
     outline: none;
     transition: border-color 0.2s ease;
@@ -250,7 +250,7 @@ const goGuestReserve = () => {
     background: $color_main;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: $radius-s;
     font-weight: 600;
     padding: 14px 0;
     cursor: pointer;
@@ -267,7 +267,7 @@ const goGuestReserve = () => {
     background: rgb(201, 201, 201);
     color: #616161;
     border: none;
-    border-radius: 6px;
+    border-radius: $radius-s;
     font-weight: 600;
     padding: 14px 0;
     cursor: pointer;
@@ -357,7 +357,7 @@ const goGuestReserve = () => {
     ),
     url(/public/images/sign/2462865.png) no-repeat center center / cover;
   padding: 40px;
-  border-radius: 6px;
+  border-radius: $radius-s;
   border: 1px solid #e7e7e7;
   text-align: center;
   max-width: 400px;
@@ -382,7 +382,7 @@ const goGuestReserve = () => {
     width: 100%;
     position: relative;
     color: #fff;
-    border-radius: 6px;
+    border-radius: $radius-s;
     text-align: center;
 
     h1 {
@@ -425,7 +425,7 @@ const goGuestReserve = () => {
   width: 100%;
   height: 46px; /* 비밀번호 input과 동일 높이 */
   border: 1px solid #e7e7e7;
-  border-radius: 6px;
+  border-radius: $radius-s;
   padding: 0 10px;
   background: #fff;
   transition: border-color 0.25s ease;
@@ -466,7 +466,7 @@ const goGuestReserve = () => {
 .custom-domain {
   width: 100%;
   border: 1px solid #e7e7e7;
-  border-radius: 6px;
+  border-radius: $radius-s;
   font-size: 14px;
   padding: 12px 10px;
   margin-top: 8px;

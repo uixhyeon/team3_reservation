@@ -161,7 +161,7 @@ padding: 15px 40px 10px;
   /* 🔹 hover 효과 (밝은 테두리 강조) */
   &:hover {
     border-color: #d9efeb;
-    box-shadow: 0 4px 16px rgba(83, 180, 161, 0.1);
+    // box-shadow: 0 4px 16px rgba(83, 180, 161, 0.1);
   }
 
   .card_title {
@@ -257,9 +257,7 @@ padding: 15px 40px 10px;
   cursor: pointer;
   transition: 0.3s ease;
 
-  &:hover {
-    background: $color_main_deep;
-  }
+
 }
 
 /* =========================================================

@@ -327,7 +327,7 @@ const submitForm = (e) => {
   padding: 50px 60px;
   width: 500px;
   margin-top: 40px; /* ✅ 기존 -60px → +40px으로 수정 */
-  border-radius: 12px; /* ✅ 더 자연스러운 카드형 */
+  border-radius: $radius-m; /* ✅ 더 자연스러운 카드형 */
   position: relative;
   z-index: 3; /* ✅ 배경보다 위에 */
 }
@@ -430,7 +430,7 @@ const submitForm = (e) => {
   background: $color_main;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
   font-weight: 600;
   padding: 12px 16px;
@@ -475,7 +475,7 @@ const submitForm = (e) => {
   .btn.line {
     background: #f3f3f3;
     color: #333;
-    border-radius: 6px;
+    border-radius: $radius-s;
     font-size: 13px;
     font-weight: 600;
     padding: 8px 14px;
@@ -515,7 +515,7 @@ const submitForm = (e) => {
     gap: 6px;
     background: $color_main;
     color: #fff;
-    border-radius: 50px; /* ✅ 라운드형 */
+    border-radius: $radius-s; /* ✅ 라운드형 */
     font-size: 13px;
     font-weight: 600;
     padding: 9px 16px;
@@ -579,7 +579,7 @@ const submitForm = (e) => {
     text-align: center;
     line-height: 70px;
     font-weight: 600;
-    border-radius: 6px;
+    border-radius: $radius-s;
     color: #333;
     z-index: 2;
     opacity: 0.15;
@@ -600,7 +600,7 @@ const submitForm = (e) => {
   width: 500px;
   padding: 50px 60px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
-  border-radius: 12px;
+  border-radius: $radius-m;
   margin-top: 40px; /* ✅ 기존 -60px → 양수 40px */
   z-index: 5;
   position: relative;
@@ -686,7 +686,7 @@ const submitForm = (e) => {
   background: $color_main;
   color: #fff;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
   font-weight: 600;
   padding: 12px 16px;

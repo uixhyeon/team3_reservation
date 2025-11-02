@@ -644,6 +644,7 @@ function handleMobileComplete() {
 </script>
 <style scoped lang="scss">
 @use "/src/assets/style/variables" as *;
+@use "/src/assets/style/_reservation" as *;
 
 .wrap {
   background: #f5f7f7;
@@ -687,7 +688,7 @@ function handleMobileComplete() {
 .summary_card {
   width: 100%;
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-m;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   border: 1px solid #f0f0f0;
   transition: all 0.25s ease;
@@ -706,7 +707,7 @@ function handleMobileComplete() {
   color: #fff;
   background: $color_main;
   border: none;
-  border-radius: 6px;
+  border-radius: $radius-s;
   cursor: pointer;
   transition: 0.3s ease;
   margin: 20px auto 0;
@@ -791,7 +792,7 @@ function handleMobileComplete() {
     background: $color_main;
     color: #fff;
     border: none;
-    border-radius: 6px;
+    border-radius: $radius-s;
     padding: 14px 0;
     font-weight: 600;
     text-align: center;
@@ -810,7 +811,7 @@ function handleMobileComplete() {
 }
 .confirm-box {
   background: #fff;
-  border-radius: 10px;
+  border-radius: $radius-s;
   padding: 20px;
   width: min(90vw, 400px);
 }

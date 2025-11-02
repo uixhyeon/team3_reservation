@@ -81,7 +81,7 @@ const close = () => {
 .modal-box {
   background: #fff;
   width: 400px;
-  border-radius: 10px;
+  border-radius: $radius-m;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   animation: fadeIn 0.25s ease;
   overflow: hidden;
@@ -144,7 +144,7 @@ const close = () => {
     input {
       width: 100%;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: $radius-s;
       padding: 10px;
       outline: none;
 
@@ -159,7 +159,7 @@ const close = () => {
     background: $color_main;
     color: #fff;
     padding: 12px 0;
-    border-radius: 6px;
+    border-radius: $radius-s;
     border: none;
     cursor: pointer;
     margin-top: 8px;
@@ -173,7 +173,7 @@ const close = () => {
   .result {
     margin-top: 15px;
     background: #f7f7f7;
-    border-radius: 6px;
+    border-radius: $radius-s;
     padding: 12px 15px;
     text-align: center;
     color: #333;

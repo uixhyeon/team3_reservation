@@ -19,7 +19,8 @@ $bp-tablet: 1024px;
 $bp-mobile: 600px;
 $bp-small: 480px;
 
-// 공통 유틸
+// 공통 유틸d
+
 @mixin center-flex($dir: row) {
   display: flex;
   flex-direction: $dir;

@@ -24,6 +24,7 @@ import '../css/footer-eng.css'
 import '../css/modal.css'
 import '../css/modal-eng.css'
 import '../css/hy-header.css'
+import '../css/sayu.css'
 
 const app = createApp(App)
 const pinia = createPinia()

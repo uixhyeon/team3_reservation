@@ -1,7 +1,8 @@
 .review-wrap{
   padding-top: 15vw;
   padding-bottom: 10vw;
-  background-color: black;
+  background: radial-gradient(circle at center, rgba(138, 43, 226, 0.15) 0%, rgba(138, 43, 226, 0) 50%, #000 100%);
+  background-color: #000;
 }
 
 .review .swiper-container-review {
@@ -39,4 +40,3 @@
   display: block;
   margin: 0 auto;
 }
-

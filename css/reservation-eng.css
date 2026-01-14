@@ -5,14 +5,11 @@
 } */
 .reservation-wrap {
   font-family: "Inter", "Poiret One", sans-serif;
-  background: url("../images/reservation/calendarBgImg.png");
+  background: radial-gradient(circle at center, rgba(138, 43, 226, 0.15) 0%, rgba(138, 43, 226, 0) 50%, #000 100%);
+  background-color: #000;
   min-height: 100vh;
   padding: 20px;
   align-content: center;
-  background-size: cover, 100% 100%;
-  background-position: center, center;
-  background-repeat: no-repeat, no-repeat;
-  /* background-attachment: fixed, scroll; */
 }
 .reservation-title {
   padding: 40px;

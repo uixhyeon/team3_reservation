@@ -1,0 +1,180 @@
+/* Sayu 페이지 전체 배경 */
+main {
+  background: radial-gradient(circle at center, rgba(138, 43, 226, 0.15) 0%, rgba(138, 43, 226, 0) 50%, #000 100%);
+  background-color: #000;
+  min-height: 100vh;
+}
+
+/* 히어로 섹션 */
+.exhibit-hero {
+  background: transparent;
+  padding: 5vw 0;
+}
+
+.exhibit-hero .wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 5%;
+}
+
+.exhibit-hero .title {
+  font-family: "Simple", sans-serif;
+  font-size: clamp(32px, 5vw, 70px);
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.exhibit-hero .subtitle {
+  font-size: clamp(16px, 2vw, 24px);
+  color: #ccc;
+  margin-bottom: 1rem;
+}
+
+.exhibit-hero .location-pill {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: rgba(138, 43, 226, 0.3);
+  border-radius: 20px;
+  color: #fff;
+  font-size: clamp(12px, 1.5vw, 18px);
+}
+
+/* 전면 배너 */
+.exhibit-banner {
+  padding: 3vw 0;
+}
+
+.exhibit-banner img {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  display: block;
+  border-radius: 10px;
+}
+
+/* 전시품 그리드 */
+.exhibit-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 5vw 5%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.exhibit-card {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 10px;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.exhibit-card:hover {
+  transform: translateY(-5px);
+}
+
+.exhibit-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.exhibit-card .cap {
+  padding: 1rem;
+  color: #fff;
+  text-align: center;
+  font-size: clamp(14px, 2vw, 20px);
+}
+
+/* 전시 설명 */
+.exhibit-desc {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5vw 5%;
+  color: #fff;
+}
+
+.exhibit-desc p {
+  font-size: clamp(16px, 2vw, 22px);
+  line-height: 1.8;
+  margin-bottom: 1.5rem;
+  color: #ccc;
+}
+
+.exhibit-desc .highlight {
+  font-size: clamp(18px, 2.5vw, 28px);
+  color: #fff;
+  font-weight: 600;
+}
+
+/* 영상 섹션 */
+.exhibit-videos {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5vw 5%;
+}
+
+.exhibit-videos h2 {
+  font-family: "Simple", sans-serif;
+  font-size: clamp(28px, 4vw, 50px);
+  color: #fff;
+  margin-bottom: 2rem;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  gap: 2rem;
+}
+
+.video-grid iframe {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 10px;
+}
+
+/* 빠른 링크 */
+.quick-links {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 5vw 5%;
+}
+
+.qgrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.qtile {
+  display: block;
+  padding: 2rem;
+  background: rgba(138, 43, 226, 0.2);
+  border: 1px solid rgba(138, 43, 226, 0.3);
+  border-radius: 10px;
+  color: #fff;
+  text-align: center;
+  font-size: clamp(16px, 2vw, 22px);
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.qtile:hover {
+  background: rgba(138, 43, 226, 0.3);
+  transform: translateY(-3px);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .exhibit-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .qgrid {
+    grid-template-columns: 1fr;
+  }
+}

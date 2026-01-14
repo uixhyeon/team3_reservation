@@ -1,6 +1,5 @@
 <template>
   <section class="info-wrap">
-    <img src="/images/info/info-bg.png" alt="배경이미지" class="info-bg" />
     <div class="info-inner">
       <h3 data-translate>
         {{ languageStore.isKorean ? '관람 정보' : 'Info' }}
